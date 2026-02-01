@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru" | "et";
@@ -35,11 +35,6 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
     }
   }, []);
 
-  const centerText = useMemo(() => {
-    // ВАЖНО: скажи какой точный текст нужен — сейчас поставил безопасный плейсхолдер
-    return "AKWELD";
-  }, []);
-
   return (
     <header
       className="header"
@@ -50,7 +45,7 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         gap: 12,
       }}
     >
-      {/* СЛЕВА: эмблема */}
+      {/* СЛЕВА: маленькая эмблема (как было) */}
       <Link
         href={`/${locale}`}
         aria-label="AKWELD"
@@ -72,25 +67,34 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         />
       </Link>
 
-      {/* ЦЕНТР: только на ПК */}
+      {/* ЦЕНТР: большая эмблема (только на ПК) */}
       {isDesktop ? (
         <div
           className="headerCenter"
           style={{
             flex: 1,
-            textAlign: "center",
-            fontWeight: 700,
-            letterSpacing: "0.02em",
-            fontSize: 18,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             padding: "0 12px",
             pointerEvents: "none",
             userSelect: "none",
           }}
         >
-          {centerText}
+          <Image
+            src="/akweld-emblem.png.PNG"
+            alt="AKWELD"
+            width={280}
+            height={96}
+            priority
+            sizes="(min-width: 900px) 280px, 0px"
+            style={{
+              width: "clamp(180px, 22vw, 320px)",
+              height: "clamp(60px, 7vw, 110px)",
+              objectFit: "contain",
+              filter: "drop-shadow(0 10px 22px rgba(0,0,0,0.55))",
+            }}
+          />
         </div>
       ) : (
         <div style={{ flex: 1 }} />
