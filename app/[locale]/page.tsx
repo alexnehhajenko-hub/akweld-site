@@ -1,13 +1,209 @@
+"use client";
+
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getT, type Locale } from "@/src/i18n";
+
+type ModalItem = {
+  kind: "service" | "project";
+  title: string;
+  text: string;
+  imageSrc: string;
+  detailsHref?: string;
+};
+
+const CONTACT_PHONE = "+372 5561 5108";
+const CONTACT_EMAIL = ""; // <-- сюда вставим, когда ты дашь email
+
+function Modal({
+  item,
+  onClose,
+  locale,
+}: {
+  item: ModalItem;
+  onClose: () => void;
+  locale: Locale;
+}) {
+  if (!item) return null;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.title}
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 2000,
+        background: "rgba(0,0,0,0.65)",
+        backdropFilter: "blur(6px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "min(980px, 100%)",
+          maxHeight: "85vh",
+          overflow: "auto",
+          borderRadius: 16,
+          border: "1px solid rgba(255,255,255,0.14)",
+          background: "rgba(11, 15, 20, 0.92)",
+          boxShadow: "0 20px 70px rgba(0,0,0,0.55)",
+        }}
+      >
+        <div style={{ position: "relative" }}>
+          <div style={{ position: "relative", width: "100%", height: 280 }}>
+            <Image
+              src={item.imageSrc}
+              alt={item.title}
+              fill
+              sizes="(max-width: 900px) 100vw, 980px"
+              style={{ objectFit: "cover" }}
+              priority
+            />
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.72) 85%)",
+              }}
+            />
+          </div>
+
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              width: 40,
+              height: 40,
+              borderRadius: 999,
+              border: "1px solid rgba(255,255,255,0.18)",
+              background: "rgba(0,0,0,0.35)",
+              color: "rgba(255,255,255,0.9)",
+              cursor: "pointer",
+              fontSize: 18,
+              lineHeight: "40px",
+            }}
+          >
+            ✕
+          </button>
+
+          <div style={{ position: "absolute", left: 16, right: 16, bottom: 14 }}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+              <span
+                style={{
+                  border: "1px solid rgba(255,196,0,0.30)",
+                  background: "rgba(255,196,0,0.10)",
+                  borderRadius: 999,
+                  padding: "6px 10px",
+                  fontSize: 12,
+                  fontWeight: 700,
+                }}
+              >
+                {item.kind === "service" ? "Service" : "Project"}
+              </span>
+            </div>
+            <h2 style={{ margin: "10px 0 0", fontSize: 24 }}>{item.title}</h2>
+          </div>
+        </div>
+
+        <div style={{ padding: 16 }}>
+          <p style={{ margin: 0, color: "rgba(255,255,255,0.75)", lineHeight: 1.6 }}>
+            {item.text}
+          </p>
+
+          <div
+            style={{
+              marginTop: 14,
+              display: "flex",
+              gap: 10,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <a
+              className="btn"
+              href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+            >
+              Позвонить: {CONTACT_PHONE}
+            </a>
+
+            {CONTACT_EMAIL ? (
+              <a
+                className="btnGhost"
+                href={`mailto:${CONTACT_EMAIL}`}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+              >
+                Email: {CONTACT_EMAIL}
+              </a>
+            ) : (
+              <span className="small">Email: (дай адрес — вставлю)</span>
+            )}
+
+            <Link className="btnGhost" href={`/${locale}/contact`}>
+              {locale === "ru" ? "Запросить цену" : "Get a quote"}
+            </Link>
+
+            {item.detailsHref ? (
+              <Link className="btnGhost" href={item.detailsHref}>
+                {locale === "ru" ? "Подробнее" : "Details"}
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
   const topServices = t.services.cards.slice(0, 3);
 
+  const [modalItem, setModalItem] = useState<ModalItem | null>(null);
+
+  // Пока у нас нет отдельных картинок на каждую услугу/проект —
+  // используем одну подложку. Позже заменим на реальные файлы из public/.
+  const DEFAULT_IMAGE = "/hero-bg.jpg";
+
+  const openService = (s: { slug: string; title: string; text: string }) => {
+    setModalItem({
+      kind: "service",
+      title: s.title,
+      text: s.text,
+      imageSrc: DEFAULT_IMAGE,
+      detailsHref: `/${params.locale}/services/${s.slug}`,
+    });
+  };
+
+  const openProject = (p: { title: string; text: string }) => {
+    setModalItem({
+      kind: "project",
+      title: p.title,
+      text: p.text,
+      imageSrc: DEFAULT_IMAGE,
+      detailsHref: `/${params.locale}/projects`,
+    });
+  };
+
   return (
     <div className="container">
+      {modalItem ? (
+        <Modal item={modalItem} onClose={() => setModalItem(null)} locale={params.locale} />
+      ) : null}
+
       <section className="hero">
         <div className="heroGrid">
           <div className="heroCard">
@@ -50,15 +246,21 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
 
             <div className="cards">
               {topServices.map((c) => (
-                <Link
+                <button
                   key={c.slug}
-                  href={`/${params.locale}/services/${c.slug}`}
+                  type="button"
                   className="card"
-                  style={{ display: "block" }}
+                  onClick={() => openService(c)}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    textAlign: "left",
+                    cursor: "pointer",
+                  }}
                 >
                   <h3>{c.title}</h3>
                   <p>{c.text}</p>
-                </Link>
+                </button>
               ))}
             </div>
 
@@ -73,15 +275,21 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
         <h2 className="sectionTitle">{t.home.servicesTitle}</h2>
         <div className="cards">
           {t.services.cards.slice(0, 6).map((s) => (
-            <Link
+            <button
               key={s.slug}
-              href={`/${params.locale}/services/${s.slug}`}
+              type="button"
               className="card"
-              style={{ display: "block" }}
+              onClick={() => openService(s)}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                cursor: "pointer",
+              }}
             >
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-            </Link>
+            </button>
           ))}
         </div>
       </section>
@@ -90,10 +298,21 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
         <h2 className="sectionTitle">{t.home.projectsTitle}</h2>
         <div className="cards">
           {t.projects.items.slice(0, 6).map((p) => (
-            <div key={p.title} className="card">
+            <button
+              key={p.title}
+              type="button"
+              className="card"
+              onClick={() => openProject(p)}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                cursor: "pointer",
+              }}
+            >
               <h3>{p.title}</h3>
               <p>{p.text}</p>
-            </div>
+            </button>
           ))}
         </div>
         <div style={{ marginTop: 12 }}>
