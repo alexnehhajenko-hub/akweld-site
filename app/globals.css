@@ -9,6 +9,9 @@
   --accent2: #ff8a00;
   --max: 1120px;
   --radius: 14px;
+
+  /* примерная высота верхней панели (чтобы центрирование было корректным) */
+  --topbar-h: 64px;
 }
 
 * { box-sizing: border-box; }
@@ -143,52 +146,35 @@ button, select, input, textarea { font: inherit; }
 }
 .btnGhost:hover { background: rgba(255,255,255,0.07); }
 
-/* HERO: background on main screen */
+/* HERO: центрируем 2 окна на экране и чуть опускаем вниз */
 .hero {
-  padding: 28px 0 16px;          /* чуть меньше, чтобы ниже блоки были ближе */
   position: relative;
-  min-height: 92vh;             /* не “съедаем” весь экран полностью */
+  padding: 0;
+  min-height: calc(100vh - var(--topbar-h));
+  display: flex;
+  align-items: center;
 }
-
-/* background image full width even inside .container */
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
-  background-image: url("/hero-bg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.42;                /* было темно — делаем фото заметнее */
-  filter: saturate(1.05) contrast(1.08);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ВАЖНО: убрали общий затемняющий слой по всему экрану.
-   Затемнение делаем только на карточках с текстом/кнопками (heroCard). */
 
 .heroGrid {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
-  position: relative;
-  z-index: 1;
+  margin: 0 auto;
+}
+
+/* на десктопе слегка опускаем ниже центра */
+@media (min-width: 900px) {
+  .heroGrid { transform: translateY(40px); }
 }
 
 .heroCard {
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(7, 10, 14, 0.70);    /* темно только там, где текст */
-  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
   border-radius: var(--radius);
   overflow: hidden;
   position: relative;
   padding: 18px;
-  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
 }
 
 /* blueprint pattern overlay */
@@ -196,7 +182,7 @@ button, select, input, textarea { font: inherit; }
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.08;                /* чуть слабее, чтобы не “грязнило” */
+  opacity: 0.10;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.9' stroke-width='1'%3E%3Cpath d='M0 40H240M0 80H240M0 120H240M0 160H240M0 200H240'/%3E%3Cpath d='M40 0V240M80 0V240M120 0V240M160 0V240M200 0V240'/%3E%3Cpath d='M30 30h180v180H30z'/%3E%3Cpath d='M60 140h120M120 60v120'/%3E%3Cpath d='M70 70l100 0 0 100 -100 0z'/%3E%3Cpath d='M90 110h60'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 240px 240px;
@@ -209,7 +195,9 @@ button, select, input, textarea { font: inherit; }
   letter-spacing: -0.4px;
   position: relative;
 }
-.heroTitle span { color: var(--accent); }
+.heroTitle span {
+  color: var(--accent);
+}
 
 .heroText {
   margin: 10px 0 0;
@@ -236,14 +224,16 @@ button, select, input, textarea { font: inherit; }
 }
 .kpi {
   border: 1px solid var(--line);
-  background: rgba(0,0,0,0.28);
+  background: rgba(0,0,0,0.22);
   border-radius: 12px;
   padding: 12px;
 }
 .kpi strong { display: block; font-size: 16px; }
 .kpi span { color: var(--muted); font-size: 12px; }
 
-.section { padding: 22px 0; }
+.section {
+  padding: 22px 0;
+}
 
 .sectionTitle {
   margin: 0 0 12px;
@@ -263,7 +253,10 @@ button, select, input, textarea { font: inherit; }
   border-radius: var(--radius);
   padding: 14px;
 }
-.card h3 { margin: 0; font-size: 15px; }
+.card h3 {
+  margin: 0;
+  font-size: 15px;
+}
 .card p {
   margin: 8px 0 0;
   color: var(--muted);
@@ -291,7 +284,10 @@ button, select, input, textarea { font: inherit; }
 .footerLinks a { color: var(--muted); }
 .footerLinks a:hover { color: var(--text); }
 
-.form { display: grid; gap: 10px; }
+.form {
+  display: grid;
+  gap: 10px;
+}
 .input, .textarea {
   width: 100%;
   border: 1px solid var(--line);
@@ -303,7 +299,10 @@ button, select, input, textarea { font: inherit; }
 }
 .textarea { min-height: 110px; resize: vertical; }
 
-.small { font-size: 12px; color: var(--muted); }
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
 
 /* Desktop */
 @media (min-width: 900px) {
