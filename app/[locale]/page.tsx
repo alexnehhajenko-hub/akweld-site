@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getT, type Locale } from "@/src/i18n";
@@ -16,6 +16,96 @@ type ModalItem = {
 const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = ""; // <-- сюда вставим, когда ты дашь email
 
+function labels(locale: Locale) {
+  const map: Record<
+    Locale,
+    {
+      call: string;
+      close: string;
+      service: string;
+      project: string;
+      quote: string;
+      details: string;
+      email: string;
+      emailMissing: string;
+    }
+  > = {
+    ru: {
+      call: "Позвонить",
+      close: "Закрыть",
+      service: "Услуга",
+      project: "Проект",
+      quote: "Запросить цену",
+      details: "Подробнее",
+      email: "Email",
+      emailMissing: "Email: (дай адрес — вставлю)",
+    },
+    en: {
+      call: "Call",
+      close: "Close",
+      service: "Service",
+      project: "Project",
+      quote: "Get a quote",
+      details: "Details",
+      email: "Email",
+      emailMissing: "Email: (send me the address — I’ll add it)",
+    },
+    et: {
+      call: "Helista",
+      close: "Sulge",
+      service: "Teenus",
+      project: "Projekt",
+      quote: "Küsi pakkumist",
+      details: "Loe lähemalt",
+      email: "E-post",
+      emailMissing: "E-post: (anna aadress — lisan)",
+    },
+    sv: {
+      call: "Ring",
+      close: "Stäng",
+      service: "Tjänst",
+      project: "Projekt",
+      quote: "Begär offert",
+      details: "Detaljer",
+      email: "E-post",
+      emailMissing: "E-post: (skicka adressen — jag lägger in)",
+    },
+    fi: {
+      call: "Soita",
+      close: "Sulje",
+      service: "Palvelu",
+      project: "Projekti",
+      quote: "Pyydä tarjous",
+      details: "Lisätiedot",
+      email: "Sähköposti",
+      emailMissing: "Sähköposti: (anna osoite — lisään)",
+    },
+    no: {
+      call: "Ring",
+      close: "Lukk",
+      service: "Tjeneste",
+      project: "Prosjekt",
+      quote: "Be om tilbud",
+      details: "Detaljer",
+      email: "E-post",
+      emailMissing: "E-post: (send adressen — så legger jeg den inn)",
+    },
+    da: {
+      call: "Ring",
+      close: "Luk",
+      service: "Ydelse",
+      project: "Projekt",
+      quote: "Få et tilbud",
+      details: "Detaljer",
+      email: "Email",
+      emailMissing: "Email: (send adressen — så indsætter jeg den)",
+    },
+  };
+
+  // если вдруг придёт неизвестная локаль — fallback на EN
+  return map[locale] ?? map.en;
+}
+
 function Modal({
   item,
   onClose,
@@ -26,6 +116,11 @@ function Modal({
   locale: Locale;
 }) {
   if (!item) return null;
+
+  const L = labels(locale);
+
+  const phoneNoSpaces = CONTACT_PHONE.replace(/\s+/g, "");
+  const callTitle = `${L.call}: ${CONTACT_PHONE}`;
 
   return (
     <div
@@ -53,7 +148,7 @@ function Modal({
           overflow: "auto",
           borderRadius: 16,
           border: "1px solid rgba(255,255,255,0.14)",
-          background: "rgba(11, 15, 20, 0.92)",
+          background: "rgba(11, 15, 20, 0.96)",
           boxShadow: "0 20px 70px rgba(0,0,0,0.55)",
         }}
       >
@@ -72,14 +167,15 @@ function Modal({
                 position: "absolute",
                 inset: 0,
                 background:
-                  "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.72) 85%)",
+                  "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.78) 85%)",
               }}
             />
           </div>
 
           <button
             onClick={onClose}
-            aria-label="Close"
+            aria-label={L.close}
+            title={L.close}
             style={{
               position: "absolute",
               top: 10,
@@ -89,7 +185,7 @@ function Modal({
               borderRadius: 999,
               border: "1px solid rgba(255,255,255,0.18)",
               background: "rgba(0,0,0,0.35)",
-              color: "rgba(255,255,255,0.9)",
+              color: "rgba(255,255,255,0.92)",
               cursor: "pointer",
               fontSize: 18,
               lineHeight: "40px",
@@ -99,7 +195,14 @@ function Modal({
           </button>
 
           <div style={{ position: "absolute", left: 16, right: 16, bottom: 14 }}>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+                alignItems: "center",
+              }}
+            >
               <span
                 style={{
                   border: "1px solid rgba(255,196,0,0.30)",
@@ -110,7 +213,7 @@ function Modal({
                   fontWeight: 700,
                 }}
               >
-                {item.kind === "service" ? "Service" : "Project"}
+                {item.kind === "service" ? L.service : L.project}
               </span>
             </div>
             <h2 style={{ margin: "10px 0 0", fontSize: 24 }}>{item.title}</h2>
@@ -118,7 +221,14 @@ function Modal({
         </div>
 
         <div style={{ padding: 16 }}>
-          <p style={{ margin: 0, color: "rgba(255,255,255,0.75)", lineHeight: 1.6 }}>
+          <p
+            style={{
+              margin: 0,
+              color: "rgba(255,255,255,0.80)",
+              lineHeight: 1.65,
+              fontSize: 15,
+            }}
+          >
             {item.text}
           </p>
 
@@ -133,31 +243,35 @@ function Modal({
           >
             <a
               className="btn"
-              href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}
+              href={`tel:${phoneNoSpaces}`}
+              title={callTitle}
+              aria-label={callTitle}
               style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
             >
-              Позвонить: {CONTACT_PHONE}
+              {L.call}: {CONTACT_PHONE}
             </a>
 
             {CONTACT_EMAIL ? (
               <a
                 className="btnGhost"
                 href={`mailto:${CONTACT_EMAIL}`}
+                title={`${L.email}: ${CONTACT_EMAIL}`}
+                aria-label={`${L.email}: ${CONTACT_EMAIL}`}
                 style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
               >
-                Email: {CONTACT_EMAIL}
+                {L.email}: {CONTACT_EMAIL}
               </a>
             ) : (
-              <span className="small">Email: (дай адрес — вставлю)</span>
+              <span className="small">{L.emailMissing}</span>
             )}
 
             <Link className="btnGhost" href={`/${locale}/contact`}>
-              {locale === "ru" ? "Запросить цену" : "Get a quote"}
+              {L.quote}
             </Link>
 
             {item.detailsHref ? (
               <Link className="btnGhost" href={item.detailsHref}>
-                {locale === "ru" ? "Подробнее" : "Details"}
+                {L.details}
               </Link>
             ) : null}
           </div>
@@ -201,7 +315,11 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   return (
     <div className="container">
       {modalItem ? (
-        <Modal item={modalItem} onClose={() => setModalItem(null)} locale={params.locale} />
+        <Modal
+          item={modalItem}
+          onClose={() => setModalItem(null)}
+          locale={params.locale}
+        />
       ) : null}
 
       <section className="hero">
@@ -264,7 +382,10 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
               ))}
             </div>
 
-            <p className="small" style={{ marginTop: 12, position: "relative" }}>
+            <p
+              className="small"
+              style={{ marginTop: 12, position: "relative" }}
+            >
               {t.home.complianceNote}
             </p>
           </div>
