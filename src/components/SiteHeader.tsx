@@ -15,7 +15,7 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         gap: 12,
       }}
     >
-      {/* СЛЕВА: только эмблема */}
+      {/* СЛЕВА: только эмблема (больше и шире) */}
       <Link
         href={`/${locale}`}
         aria-label="AKWELD"
@@ -24,13 +24,15 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         <Image
           src="/akweld-emblem.png.PNG"
           alt="AKWELD"
-          width={72}
-          height={72}
-          className="brandLogo"
+          width={160}
+          height={56}
           priority
+          className="brandLogo"
+          sizes="(min-width: 900px) 160px, 90px"
           style={{
-            width: "clamp(44px, 5vw, 72px)",
-            height: "clamp(44px, 5vw, 72px)",
+            width: "clamp(90px, 10vw, 160px)",
+            height: "clamp(44px, 4vw, 56px)",
+            objectFit: "contain",
           }}
         />
       </Link>
