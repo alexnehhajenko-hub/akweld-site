@@ -143,15 +143,55 @@ button, select, input, textarea { font: inherit; }
 }
 .btnGhost:hover { background: rgba(255,255,255,0.07); }
 
+/* HERO: full-screen background on main page */
 .hero {
   padding: 34px 0 18px;
   position: relative;
+  min-height: 100vh;
+}
+
+/* background image full width even inside .container */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background-image: url("/hero-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.22;
+  filter: saturate(0.9) contrast(1.05);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* dark overlay for readability */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(900px 520px at 20% 10%, rgba(255,196,0,0.12), transparent 60%),
+    radial-gradient(900px 520px at 80% 20%, rgba(255,138,0,0.08), transparent 55%),
+    linear-gradient(180deg, rgba(11,15,20,0.65) 0%, rgba(7,10,14,0.92) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .heroGrid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .heroCard {
