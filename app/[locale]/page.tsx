@@ -17,8 +17,11 @@ const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = ""; // <-- сюда вставим, когда ты дашь email
 
 function labels(locale: Locale) {
+  // ВАЖНО:
+  // В i18n тип Locale сейчас может не включать "et", но в проекте она нужна.
+  // Поэтому тут делаем Record<string,...>, чтобы "et" не ломал сборку.
   const map: Record<
-    Locale,
+    string,
     {
       call: string;
       close: string;
@@ -102,7 +105,6 @@ function labels(locale: Locale) {
     },
   };
 
-  // если вдруг придёт неизвестная локаль — fallback на EN
   return map[locale] ?? map.en;
 }
 
@@ -288,8 +290,6 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
 
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
 
-  // Пока у нас нет отдельных картинок на каждую услугу/проект —
-  // используем одну подложку. Позже заменим на реальные файлы из public/.
   const DEFAULT_IMAGE = "/hero-bg.jpg";
 
   const openService = (s: { slug: string; title: string; text: string }) => {
@@ -315,11 +315,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   return (
     <div className="container">
       {modalItem ? (
-        <Modal
-          item={modalItem}
-          onClose={() => setModalItem(null)}
-          locale={params.locale}
-        />
+        <Modal item={modalItem} onClose={() => setModalItem(null)} locale={params.locale} />
       ) : null}
 
       <section className="hero">
@@ -382,10 +378,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
               ))}
             </div>
 
-            <p
-              className="small"
-              style={{ marginTop: 12, position: "relative" }}
-            >
+            <p className="small" style={{ marginTop: 12, position: "relative" }}>
               {t.home.complianceNote}
             </p>
           </div>
