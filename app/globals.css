@@ -143,11 +143,11 @@ button, select, input, textarea { font: inherit; }
 }
 .btnGhost:hover { background: rgba(255,255,255,0.07); }
 
-/* HERO: full-screen background on main page */
+/* HERO: background on main screen */
 .hero {
-  padding: 34px 0 18px;
+  padding: 28px 0 16px;          /* чуть меньше, чтобы ниже блоки были ближе */
   position: relative;
-  min-height: 100vh;
+  min-height: 92vh;             /* не “съедаем” весь экран полностью */
 }
 
 /* background image full width even inside .container */
@@ -163,28 +163,14 @@ button, select, input, textarea { font: inherit; }
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.22;
-  filter: saturate(0.9) contrast(1.05);
+  opacity: 0.42;                /* было темно — делаем фото заметнее */
+  filter: saturate(1.05) contrast(1.08);
   pointer-events: none;
   z-index: 0;
 }
 
-/* dark overlay for readability */
-.hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
-  background:
-    radial-gradient(900px 520px at 20% 10%, rgba(255,196,0,0.12), transparent 60%),
-    radial-gradient(900px 520px at 80% 20%, rgba(255,138,0,0.08), transparent 55%),
-    linear-gradient(180deg, rgba(11,15,20,0.65) 0%, rgba(7,10,14,0.92) 100%);
-  pointer-events: none;
-  z-index: 0;
-}
+/* ВАЖНО: убрали общий затемняющий слой по всему экрану.
+   Затемнение делаем только на карточках с текстом/кнопками (heroCard). */
 
 .heroGrid {
   display: grid;
@@ -195,12 +181,14 @@ button, select, input, textarea { font: inherit; }
 }
 
 .heroCard {
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(7, 10, 14, 0.70);    /* темно только там, где текст */
+  backdrop-filter: blur(10px);
   border-radius: var(--radius);
   overflow: hidden;
   position: relative;
   padding: 18px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
 }
 
 /* blueprint pattern overlay */
@@ -208,7 +196,7 @@ button, select, input, textarea { font: inherit; }
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.10;
+  opacity: 0.08;                /* чуть слабее, чтобы не “грязнило” */
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.9' stroke-width='1'%3E%3Cpath d='M0 40H240M0 80H240M0 120H240M0 160H240M0 200H240'/%3E%3Cpath d='M40 0V240M80 0V240M120 0V240M160 0V240M200 0V240'/%3E%3Cpath d='M30 30h180v180H30z'/%3E%3Cpath d='M60 140h120M120 60v120'/%3E%3Cpath d='M70 70l100 0 0 100 -100 0z'/%3E%3Cpath d='M90 110h60'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 240px 240px;
@@ -221,9 +209,7 @@ button, select, input, textarea { font: inherit; }
   letter-spacing: -0.4px;
   position: relative;
 }
-.heroTitle span {
-  color: var(--accent);
-}
+.heroTitle span { color: var(--accent); }
 
 .heroText {
   margin: 10px 0 0;
@@ -250,16 +236,14 @@ button, select, input, textarea { font: inherit; }
 }
 .kpi {
   border: 1px solid var(--line);
-  background: rgba(0,0,0,0.22);
+  background: rgba(0,0,0,0.28);
   border-radius: 12px;
   padding: 12px;
 }
 .kpi strong { display: block; font-size: 16px; }
 .kpi span { color: var(--muted); font-size: 12px; }
 
-.section {
-  padding: 22px 0;
-}
+.section { padding: 22px 0; }
 
 .sectionTitle {
   margin: 0 0 12px;
@@ -279,10 +263,7 @@ button, select, input, textarea { font: inherit; }
   border-radius: var(--radius);
   padding: 14px;
 }
-.card h3 {
-  margin: 0;
-  font-size: 15px;
-}
+.card h3 { margin: 0; font-size: 15px; }
 .card p {
   margin: 8px 0 0;
   color: var(--muted);
@@ -310,10 +291,7 @@ button, select, input, textarea { font: inherit; }
 .footerLinks a { color: var(--muted); }
 .footerLinks a:hover { color: var(--text); }
 
-.form {
-  display: grid;
-  gap: 10px;
-}
+.form { display: grid; gap: 10px; }
 .input, .textarea {
   width: 100%;
   border: 1px solid var(--line);
@@ -325,10 +303,7 @@ button, select, input, textarea { font: inherit; }
 }
 .textarea { min-height: 110px; resize: vertical; }
 
-.small {
-  font-size: 12px;
-  color: var(--muted);
-}
+.small { font-size: 12px; color: var(--muted); }
 
 /* Desktop */
 @media (min-width: 900px) {
