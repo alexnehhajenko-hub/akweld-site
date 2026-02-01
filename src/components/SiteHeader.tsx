@@ -1,10 +1,45 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
-type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru";
+type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru" | "et";
+
+const CTA_LABEL: Record<Locale, string> = {
+  ru: "Запросить цену",
+  en: "Get a quote",
+  et: "Request a quote",
+  sv: "Begär offert",
+  fi: "Pyydä tarjous",
+  no: "Be om tilbud",
+  da: "Få et tilbud",
+};
 
 export default function SiteHeader({ locale }: { locale: Locale }) {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 900px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    } else {
+      // Safari fallback
+      mq.addListener(update);
+      return () => mq.removeListener(update);
+    }
+  }, []);
+
+  const centerText = useMemo(() => {
+    // ВАЖНО: скажи какой точный текст нужен — сейчас поставил безопасный плейсхолдер
+    return "AKWELD";
+  }, []);
+
   return (
     <header
       className="header"
@@ -15,11 +50,11 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         gap: 12,
       }}
     >
-      {/* СЛЕВА: только эмблема (больше и шире) */}
+      {/* СЛЕВА: эмблема */}
       <Link
         href={`/${locale}`}
         aria-label="AKWELD"
-        style={{ display: "flex", alignItems: "center" }}
+        style={{ display: "flex", alignItems: "center", minWidth: 90 }}
       >
         <Image
           src="/akweld-emblem.png.PNG"
@@ -37,15 +72,45 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         />
       </Link>
 
+      {/* ЦЕНТР: только на ПК */}
+      {isDesktop ? (
+        <div
+          className="headerCenter"
+          style={{
+            flex: 1,
+            textAlign: "center",
+            fontWeight: 700,
+            letterSpacing: "0.02em",
+            fontSize: 18,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            padding: "0 12px",
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        >
+          {centerText}
+        </div>
+      ) : (
+        <div style={{ flex: 1 }} />
+      )}
+
       {/* СПРАВА: язык + кнопка */}
       <div
         className="actions"
-        style={{ display: "flex", alignItems: "center", gap: 12 }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          justifyContent: "flex-end",
+          minWidth: 200,
+        }}
       >
         <LanguageSwitcher currentLocale={locale} />
 
         <Link href={`/${locale}/quote`} className="cta">
-          {locale === "ru" ? "Запросить цену" : "Get a quote"}
+          {CTA_LABEL[locale]}
         </Link>
       </div>
     </header>
