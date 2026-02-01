@@ -24,10 +24,14 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         <Image
           src="/akweld-emblem.png.PNG"
           alt="AKWELD"
-          width={44}
-          height={44}
+          width={72}
+          height={72}
           className="brandLogo"
           priority
+          style={{
+            width: "clamp(44px, 5vw, 72px)",
+            height: "clamp(44px, 5vw, 72px)",
+          }}
         />
       </Link>
 
