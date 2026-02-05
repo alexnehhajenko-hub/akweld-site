@@ -283,26 +283,27 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
   // ФОН главной (реальный файл в /public)
-  const HERO_BG = "/hero-bg.jpg";
+  const HERO_BG = "/hero_bg_01.jpg";
 
-  // ВАЖНО: пути 1-в-1 как у тебя в public (включая .PNG/.JPG)
+  // Фото по услугам (по slug) — одинаково работает на всех языках
   const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
-    fabrication: "/work_steel_beams_shop_01.jpg.PNG",
-    installation: "/work_platform_site_01.jpg.PNG",
-    workforce: "/work_platform_stairs_01.jpg.JPG",
-    repairs: "/work_duct_inside_01.jpg.PNG",
-    capacity: "/work_painted_beams_01.jpg.PNG",
-    custom: "/work_curved_beams_outdoor_01.jpg.PNG",
+    fabrication: "/work_steel_beams_shop_01.jpg",
+    installation: "/work_platform_site_01.jpg",
+    workforce: "/work_platform_stairs_01.jpg",
+    repairs: "/work_duct_inside_01.jpg",
+    capacity: "/work_painted_beams_01.jpg",
+    custom: "/work_curved_beams_outdoor_01.jpg",
   };
 
-  const PROJECT_IMAGE_BY_TITLE: Record<string, string> = {
-    "Industrial platforms": "/work_platform_walkway_01.jpg.JPG",
-    "Staircases & railings": "/work_platform_stairs_01.jpg.JPG",
-    "Steel frames": "/work_painted_beams_01.jpg.PNG",
-    "Supports & brackets": "/work_steel_beams_shop_01.jpg.PNG",
-    "Repair works": "/work_duct_inside_01.jpg.PNG",
-    "Workforce projects": "/work_tank_vertical_01.jpg.JPG",
-  };
+  // Фото по проектам — маппинг по индексу (не зависит от языка)
+  const PROJECT_IMAGES: string[] = [
+    "/work_platform_walkway_01.jpg",
+    "/work_platform_stairs_01.jpg",
+    "/work_painted_beams_01.jpg",
+    "/work_steel_beams_shop_01.jpg",
+    "/work_duct_inside_01.jpg",
+    "/work_tank_vertical_01.jpg",
+  ];
 
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
 
@@ -318,8 +319,8 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
     });
   };
 
-  const openProject = (p: { title: string; text: string }) => {
-    const imageSrc = PROJECT_IMAGE_BY_TITLE[p.title] ?? HERO_BG;
+  const openProject = (p: { title: string; text: string }, idx: number) => {
+    const imageSrc = PROJECT_IMAGES[idx] ?? HERO_BG;
 
     setModalItem({
       kind: "project",
@@ -344,7 +345,6 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
             position: "absolute",
             inset: 0,
             zIndex: 0,
-            borderRadius: 0,
             backgroundImage: `url(${HERO_BG})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -404,7 +404,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
           <div className="heroCard">
             <h2 className="sectionTitle">{t.home.focusTitle}</h2>
 
-            {/* ОСТАВЛЯЕМ ОДИН список услуг: показываем 6 карточек ТУТ */}
+            {/* УБРАЛИ ДУБЛЬ: показываем услуги только тут */}
             <div className="cards">
               {t.services.cards.slice(0, 6).map((c) => (
                 <button
@@ -432,17 +432,15 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
         </div>
       </section>
 
-      {/* УБРАЛИ СЕКЦИЮ Services ниже — чтобы не было дубля */}
-
       <section className="section">
         <h2 className="sectionTitle">{t.home.projectsTitle}</h2>
         <div className="cards">
-          {t.projects.items.slice(0, 6).map((p) => (
+          {t.projects.items.slice(0, 6).map((p, idx) => (
             <button
               key={p.title}
               type="button"
               className="card"
-              onClick={() => openProject(p)}
+              onClick={() => openProject(p, idx)}
               style={{
                 display: "block",
                 width: "100%",
