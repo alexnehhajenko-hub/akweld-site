@@ -117,7 +117,6 @@ function Modal({
   if (!item) return null;
 
   const L = labels(locale);
-
   const phoneNoSpaces = CONTACT_PHONE.replace(/\s+/g, "");
   const callTitle = `${L.call}: ${CONTACT_PHONE}`;
 
@@ -283,28 +282,50 @@ function Modal({
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
-  const topServices = t.services.cards.slice(0, 3);
+  // ФОН главной (реальный файл в /public)
+  const HERO_BG = "/hero-bg.jpg";
+
+  // ВАЖНО: пути 1-в-1 как у тебя в public (включая .PNG/.JPG)
+  const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
+    fabrication: "/work_steel_beams_shop_01.jpg.PNG",
+    installation: "/work_platform_site_01.jpg.PNG",
+    workforce: "/work_platform_stairs_01.jpg.JPG",
+    repairs: "/work_duct_inside_01.jpg.PNG",
+    capacity: "/work_painted_beams_01.jpg.PNG",
+    custom: "/work_curved_beams_outdoor_01.jpg.PNG",
+  };
+
+  const PROJECT_IMAGE_BY_TITLE: Record<string, string> = {
+    "Industrial platforms": "/work_platform_walkway_01.jpg.JPG",
+    "Staircases & railings": "/work_platform_stairs_01.jpg.JPG",
+    "Steel frames": "/work_painted_beams_01.jpg.PNG",
+    "Supports & brackets": "/work_steel_beams_shop_01.jpg.PNG",
+    "Repair works": "/work_duct_inside_01.jpg.PNG",
+    "Workforce projects": "/work_tank_vertical_01.jpg.JPG",
+  };
 
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
 
-  const DEFAULT_IMAGE = "/hero-bg.jpg";
-
   const openService = (s: { slug: string; title: string; text: string }) => {
+    const imageSrc = SERVICE_IMAGE_BY_SLUG[s.slug] ?? HERO_BG;
+
     setModalItem({
       kind: "service",
       title: s.title,
       text: s.text,
-      imageSrc: DEFAULT_IMAGE,
+      imageSrc,
       detailsHref: `/${params.locale}/services/${s.slug}`,
     });
   };
 
   const openProject = (p: { title: string; text: string }) => {
+    const imageSrc = PROJECT_IMAGE_BY_TITLE[p.title] ?? HERO_BG;
+
     setModalItem({
       kind: "project",
       title: p.title,
       text: p.text,
-      imageSrc: DEFAULT_IMAGE,
+      imageSrc,
       detailsHref: `/${params.locale}/projects`,
     });
   };
@@ -316,7 +337,35 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
       ) : null}
 
       <section className="hero">
-        <div className="heroGrid">
+        {/* фоновая картинка на главной */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 0,
+            borderRadius: 0,
+            backgroundImage: `url(${HERO_BG})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "contrast(1.05) saturate(1.05)",
+            opacity: 0.35,
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 0,
+            background:
+              "radial-gradient(1200px 700px at 20% 10%, rgba(255,196,0,0.12), transparent 60%), linear-gradient(180deg, rgba(11,15,20,0.65) 0%, rgba(7,10,14,0.92) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div className="heroGrid" style={{ position: "relative", zIndex: 1 }}>
           <div className="heroCard">
             <h1 className="heroTitle">
               {t.home.heroTitle1} <span>{t.home.heroTitle2}</span>
@@ -355,8 +404,9 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
           <div className="heroCard">
             <h2 className="sectionTitle">{t.home.focusTitle}</h2>
 
+            {/* ОСТАВЛЯЕМ ОДИН список услуг: показываем 6 карточек ТУТ */}
             <div className="cards">
-              {topServices.map((c) => (
+              {t.services.cards.slice(0, 6).map((c) => (
                 <button
                   key={c.slug}
                   type="button"
@@ -382,7 +432,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
         </div>
       </section>
 
-      {/* УБРАЛИ секцию "Services" на главной — она дублировала "What we do" */}
+      {/* УБРАЛИ СЕКЦИЮ Services ниже — чтобы не было дубля */}
 
       <section className="section">
         <h2 className="sectionTitle">{t.home.projectsTitle}</h2>
