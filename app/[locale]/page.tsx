@@ -284,47 +284,27 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
   const topServices = t.services.cards.slice(0, 3);
+
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
 
-  // Фон главной (ты решил переименовать)
-  const DEFAULT_IMAGE = "/hero_bg_01.jpg";
-
-  // Картинки для модалок услуг — по slug из i18n (en.ts / ru.ts и т.д.)
-  const SERVICE_IMAGES: Record<string, string> = {
-    fabrication: "/works/work_fabrication_01.jpg",
-    installation: "/works/work_installation_01.jpg",
-    workforce: "/works/work_workforce_01.jpg",
-    repairs: "/works/work_repairs_01.jpg",
-    capacity: "/works/work_capacity_01.jpg",
-    custom: "/works/work_custom_01.jpg",
-  };
-
-  // Проекты пока можно оставить общими или позже добавить свои
-  const PROJECT_IMAGES: string[] = [
-    "/works/project_01.jpg",
-    "/works/project_02.jpg",
-    "/works/project_03.jpg",
-    "/works/project_04.jpg",
-    "/works/project_05.jpg",
-    "/works/project_06.jpg",
-  ];
+  const DEFAULT_IMAGE = "/hero-bg.jpg";
 
   const openService = (s: { slug: string; title: string; text: string }) => {
     setModalItem({
       kind: "service",
       title: s.title,
       text: s.text,
-      imageSrc: SERVICE_IMAGES[s.slug] ?? DEFAULT_IMAGE,
+      imageSrc: DEFAULT_IMAGE,
       detailsHref: `/${params.locale}/services/${s.slug}`,
     });
   };
 
-  const openProject = (p: { title: string; text: string }, idx: number) => {
+  const openProject = (p: { title: string; text: string }) => {
     setModalItem({
       kind: "project",
       title: p.title,
       text: p.text,
-      imageSrc: PROJECT_IMAGES[idx] ?? DEFAULT_IMAGE,
+      imageSrc: DEFAULT_IMAGE,
       detailsHref: `/${params.locale}/projects`,
     });
   };
@@ -332,11 +312,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   return (
     <div className="container">
       {modalItem ? (
-        <Modal
-          item={modalItem}
-          onClose={() => setModalItem(null)}
-          locale={params.locale}
-        />
+        <Modal item={modalItem} onClose={() => setModalItem(null)} locale={params.locale} />
       ) : null}
 
       <section className="hero">
@@ -406,38 +382,17 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
         </div>
       </section>
 
-      <section className="section">
-        <h2 className="sectionTitle">{t.home.servicesTitle}</h2>
-        <div className="cards">
-          {t.services.cards.slice(0, 6).map((s) => (
-            <button
-              key={s.slug}
-              type="button"
-              className="card"
-              onClick={() => openService(s)}
-              style={{
-                display: "block",
-                width: "100%",
-                textAlign: "left",
-                cursor: "pointer",
-              }}
-            >
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-            </button>
-          ))}
-        </div>
-      </section>
+      {/* УБРАЛИ секцию "Services" на главной — она дублировала "What we do" */}
 
       <section className="section">
         <h2 className="sectionTitle">{t.home.projectsTitle}</h2>
         <div className="cards">
-          {t.projects.items.slice(0, 6).map((p, idx) => (
+          {t.projects.items.slice(0, 6).map((p) => (
             <button
               key={p.title}
               type="button"
               className="card"
-              onClick={() => openProject(p, idx)}
+              onClick={() => openProject(p)}
               style={{
                 display: "block",
                 width: "100%",
