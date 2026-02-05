@@ -287,17 +287,64 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
   const topServices = t.services.cards.slice(0, 3);
-
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
 
+  // Фон главной страницы (ОСТАВЛЯЕМ)
   const DEFAULT_IMAGE = "/hero-bg.jpg";
+
+  /**
+   * СЮДА ПОДКЛАДЫВАЕМ ФОТО ДЛЯ МОДАЛОК
+   * Положи файлы в /public/works/ и укажи пути ниже.
+   *
+   * Пример:
+   *  /public/works/work-stairs-01.jpg
+   *  /public/works/work-beams-01.jpg
+   *  /public/works/work-tank-01.jpg
+   */
+  const SERVICE_IMAGES: Record<string, string> = {
+    // ВАЖНО: ключ = slug услуги (s.slug)
+    // Ниже — типовые варианты. Если у тебя slug другие — просто замени ключи.
+    fabrication: "/works/work-beams-01.jpg",
+    installation: "/works/work-platform-01.jpg",
+    workforce: "/works/work-stairs-01.jpg",
+    workshop: "/works/work-beams-01.jpg",
+    "steel-fabrication": "/works/work-beams-01.jpg",
+    "on-site": "/works/work-platform-01.jpg",
+    "skilled-workforce": "/works/work-stairs-01.jpg",
+  };
+
+  const PROJECT_IMAGES: Record<string, string> = {
+    // Ключ = нормализованный title проекта (см. normalizeKey ниже)
+    // Если хочешь — можешь не трогать, тогда будет fallback на DEFAULT_IMAGE.
+    "painted-beams": "/works/work-painted-01.jpg",
+    "curved-frames": "/works/work-curved-01.jpg",
+    "steel-tank": "/works/work-tank-01.jpg",
+    "industrial-platform": "/works/work-platform-01.jpg",
+  };
+
+  const normalizeKey = (s: string) =>
+    s
+      .toLowerCase()
+      .trim()
+      .replace(/[’'"]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const pickServiceImage = (slug: string) => {
+    return SERVICE_IMAGES[slug] ?? DEFAULT_IMAGE;
+  };
+
+  const pickProjectImage = (title: string) => {
+    const k = normalizeKey(title);
+    return PROJECT_IMAGES[k] ?? DEFAULT_IMAGE;
+  };
 
   const openService = (s: { slug: string; title: string; text: string }) => {
     setModalItem({
       kind: "service",
       title: s.title,
-      text: s.text,
-      imageSrc: DEFAULT_IMAGE,
+      text: s.text, // описание услуги уже есть
+      imageSrc: pickServiceImage(s.slug), // <-- ВОТ ТУТ подставляем фото
       detailsHref: `/${params.locale}/services/${s.slug}`,
     });
   };
@@ -306,8 +353,8 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
     setModalItem({
       kind: "project",
       title: p.title,
-      text: p.text,
-      imageSrc: DEFAULT_IMAGE,
+      text: p.text, // описание проекта/работы
+      imageSrc: pickProjectImage(p.title), // <-- фото по названию проекта (fallback на фон)
       detailsHref: `/${params.locale}/projects`,
     });
   };
