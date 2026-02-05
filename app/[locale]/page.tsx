@@ -17,9 +17,6 @@ const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = ""; // <-- сюда вставим, когда ты дашь email
 
 function labels(locale: Locale) {
-  // ВАЖНО:
-  // В i18n тип Locale сейчас может не включать "et", но в проекте она нужна.
-  // Поэтому тут делаем Record<string,...>, чтобы "et" не ломал сборку.
   const map: Record<
     string,
     {
@@ -289,72 +286,45 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   const topServices = t.services.cards.slice(0, 3);
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
 
-  // Фон главной страницы (ОСТАВЛЯЕМ)
-  const DEFAULT_IMAGE = "/hero-bg.jpg";
+  // Фон главной (ты решил переименовать)
+  const DEFAULT_IMAGE = "/hero_bg_01.jpg";
 
-  /**
-   * СЮДА ПОДКЛАДЫВАЕМ ФОТО ДЛЯ МОДАЛОК
-   * Положи файлы в /public/works/ и укажи пути ниже.
-   *
-   * Пример:
-   *  /public/works/work-stairs-01.jpg
-   *  /public/works/work-beams-01.jpg
-   *  /public/works/work-tank-01.jpg
-   */
+  // Картинки для модалок услуг — по slug из i18n (en.ts / ru.ts и т.д.)
   const SERVICE_IMAGES: Record<string, string> = {
-    // ВАЖНО: ключ = slug услуги (s.slug)
-    // Ниже — типовые варианты. Если у тебя slug другие — просто замени ключи.
-    fabrication: "/works/work-beams-01.jpg",
-    installation: "/works/work-platform-01.jpg",
-    workforce: "/works/work-stairs-01.jpg",
-    workshop: "/works/work-beams-01.jpg",
-    "steel-fabrication": "/works/work-beams-01.jpg",
-    "on-site": "/works/work-platform-01.jpg",
-    "skilled-workforce": "/works/work-stairs-01.jpg",
+    fabrication: "/works/work_fabrication_01.jpg",
+    installation: "/works/work_installation_01.jpg",
+    workforce: "/works/work_workforce_01.jpg",
+    repairs: "/works/work_repairs_01.jpg",
+    capacity: "/works/work_capacity_01.jpg",
+    custom: "/works/work_custom_01.jpg",
   };
 
-  const PROJECT_IMAGES: Record<string, string> = {
-    // Ключ = нормализованный title проекта (см. normalizeKey ниже)
-    // Если хочешь — можешь не трогать, тогда будет fallback на DEFAULT_IMAGE.
-    "painted-beams": "/works/work-painted-01.jpg",
-    "curved-frames": "/works/work-curved-01.jpg",
-    "steel-tank": "/works/work-tank-01.jpg",
-    "industrial-platform": "/works/work-platform-01.jpg",
-  };
-
-  const normalizeKey = (s: string) =>
-    s
-      .toLowerCase()
-      .trim()
-      .replace(/[’'"]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-  const pickServiceImage = (slug: string) => {
-    return SERVICE_IMAGES[slug] ?? DEFAULT_IMAGE;
-  };
-
-  const pickProjectImage = (title: string) => {
-    const k = normalizeKey(title);
-    return PROJECT_IMAGES[k] ?? DEFAULT_IMAGE;
-  };
+  // Проекты пока можно оставить общими или позже добавить свои
+  const PROJECT_IMAGES: string[] = [
+    "/works/project_01.jpg",
+    "/works/project_02.jpg",
+    "/works/project_03.jpg",
+    "/works/project_04.jpg",
+    "/works/project_05.jpg",
+    "/works/project_06.jpg",
+  ];
 
   const openService = (s: { slug: string; title: string; text: string }) => {
     setModalItem({
       kind: "service",
       title: s.title,
-      text: s.text, // описание услуги уже есть
-      imageSrc: pickServiceImage(s.slug), // <-- ВОТ ТУТ подставляем фото
+      text: s.text,
+      imageSrc: SERVICE_IMAGES[s.slug] ?? DEFAULT_IMAGE,
       detailsHref: `/${params.locale}/services/${s.slug}`,
     });
   };
 
-  const openProject = (p: { title: string; text: string }) => {
+  const openProject = (p: { title: string; text: string }, idx: number) => {
     setModalItem({
       kind: "project",
       title: p.title,
-      text: p.text, // описание проекта/работы
-      imageSrc: pickProjectImage(p.title), // <-- фото по названию проекта (fallback на фон)
+      text: p.text,
+      imageSrc: PROJECT_IMAGES[idx] ?? DEFAULT_IMAGE,
       detailsHref: `/${params.locale}/projects`,
     });
   };
@@ -362,7 +332,11 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
   return (
     <div className="container">
       {modalItem ? (
-        <Modal item={modalItem} onClose={() => setModalItem(null)} locale={params.locale} />
+        <Modal
+          item={modalItem}
+          onClose={() => setModalItem(null)}
+          locale={params.locale}
+        />
       ) : null}
 
       <section className="hero">
@@ -458,12 +432,12 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
       <section className="section">
         <h2 className="sectionTitle">{t.home.projectsTitle}</h2>
         <div className="cards">
-          {t.projects.items.slice(0, 6).map((p) => (
+          {t.projects.items.slice(0, 6).map((p, idx) => (
             <button
               key={p.title}
               type="button"
               className="card"
-              onClick={() => openProject(p)}
+              onClick={() => openProject(p, idx)}
               style={{
                 display: "block",
                 width: "100%",
