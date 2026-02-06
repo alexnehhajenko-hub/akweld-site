@@ -193,14 +193,7 @@ function Modal({
           </button>
 
           <div style={{ position: "absolute", left: 16, right: 16, bottom: 14 }}>
-            <div
-              style={{
-                display: "flex",
-                gap: 8,
-                flexWrap: "wrap",
-                alignItems: "center",
-              }}
-            >
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
               <span
                 style={{
                   border: "1px solid rgba(255,196,0,0.30)",
@@ -282,27 +275,27 @@ function Modal({
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
-  // ФОН главной (реальный файл в /public)
-  const HERO_BG = "/hero_bg_01.jpg";
+  // ВАЖНО: путь 1-в-1 как у тебя в public (с .PNG)
+  const HERO_BG = "/hero-bg.jpg.PNG";
 
-  // Фото по услугам (по slug) — одинаково работает на всех языках
+  // Фото по услугам (по slug)
   const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
-    fabrication: "/work_steel_beams_shop_01.jpg",
-    installation: "/work_platform_site_01.jpg",
-    workforce: "/work_platform_stairs_01.jpg",
-    repairs: "/work_duct_inside_01.jpg",
-    capacity: "/work_painted_beams_01.jpg",
-    custom: "/work_curved_beams_outdoor_01.jpg",
+    fabrication: "/service_fabrication_01.png.PNG",
+    installation: "/hero-bg.jpg.PNG", // пока нет отдельного фото — используем общий фон
+    workforce: "/workforce_dino_team_01.png.PNG",
+    repairs: "/work_repairs_01.jpg.PNG",
+    capacity: "/work_capacity_01.jpg.PNG",
+    custom: "/work_custom_01.jpg.PNG",
   };
 
-  // Фото по проектам — маппинг по индексу (не зависит от языка)
+  // Фото по проектам — чтобы не зависеть от языка, маппим по индексу
   const PROJECT_IMAGES: string[] = [
-    "/work_platform_walkway_01.jpg",
-    "/work_platform_stairs_01.jpg",
-    "/work_painted_beams_01.jpg",
-    "/work_steel_beams_shop_01.jpg",
-    "/work_duct_inside_01.jpg",
-    "/work_tank_vertical_01.jpg",
+    "/hero-bg.jpg.PNG",
+    "/workforce_dino_electrodes_01.png.PNG",
+    "/work_repairs_01.jpg.PNG",
+    "/work_capacity_01.jpg.PNG",
+    "/work_custom_01.jpg.PNG",
+    "/workforce_dino_team_01.png.PNG",
   ];
 
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
@@ -338,7 +331,6 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
       ) : null}
 
       <section className="hero">
-        {/* фоновая картинка на главной */}
         <div
           aria-hidden="true"
           style={{
@@ -404,7 +396,6 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
           <div className="heroCard">
             <h2 className="sectionTitle">{t.home.focusTitle}</h2>
 
-            {/* УБРАЛИ ДУБЛЬ: показываем услуги только тут */}
             <div className="cards">
               {t.services.cards.slice(0, 6).map((c) => (
                 <button
@@ -412,12 +403,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
                   type="button"
                   className="card"
                   onClick={() => openService(c)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    textAlign: "left",
-                    cursor: "pointer",
-                  }}
+                  style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }}
                 >
                   <h3>{c.title}</h3>
                   <p>{c.text}</p>
@@ -441,12 +427,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
               type="button"
               className="card"
               onClick={() => openProject(p, idx)}
-              style={{
-                display: "block",
-                width: "100%",
-                textAlign: "left",
-                cursor: "pointer",
-              }}
+              style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }}
             >
               <h3>{p.title}</h3>
               <p>{p.text}</p>
