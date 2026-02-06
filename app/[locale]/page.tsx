@@ -14,7 +14,7 @@ type ModalItem = {
 };
 
 const CONTACT_PHONE = "+372 5561 5108";
-const CONTACT_EMAIL = ""; // <-- сюда вставим, когда ты дашь email
+const CONTACT_EMAIL = "Akwelder87@gmail.com";
 
 function labels(locale: Locale) {
   const map: Record<
@@ -193,7 +193,14 @@ function Modal({
           </button>
 
           <div style={{ position: "absolute", left: 16, right: 16, bottom: 14 }}>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+                alignItems: "center",
+              }}
+            >
               <span
                 style={{
                   border: "1px solid rgba(255,196,0,0.30)",
@@ -242,19 +249,15 @@ function Modal({
               {L.call}: {CONTACT_PHONE}
             </a>
 
-            {CONTACT_EMAIL ? (
-              <a
-                className="btnGhost"
-                href={`mailto:${CONTACT_EMAIL}`}
-                title={`${L.email}: ${CONTACT_EMAIL}`}
-                aria-label={`${L.email}: ${CONTACT_EMAIL}`}
-                style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
-              >
-                {L.email}: {CONTACT_EMAIL}
-              </a>
-            ) : (
-              <span className="small">{L.emailMissing}</span>
-            )}
+            <a
+              className="btnGhost"
+              href={`mailto:${CONTACT_EMAIL}`}
+              title={`${L.email}: ${CONTACT_EMAIL}`}
+              aria-label={`${L.email}: ${CONTACT_EMAIL}`}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+            >
+              {L.email}: {CONTACT_EMAIL}
+            </a>
 
             <Link className="btnGhost" href={`/${locale}/contact`}>
               {L.quote}
@@ -275,27 +278,28 @@ function Modal({
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
-  // ВАЖНО: путь 1-в-1 как у тебя в public (с .PNG)
+  // ФОН главной: поставь сюда РЕАЛЬНО существующий файл.
+  // Если у тебя есть hero-bg.jpg.PNG — используем его:
   const HERO_BG = "/hero-bg.jpg.PNG";
 
-  // Фото по услугам (по slug)
+  // Точные имена из /public (как на твоём скрине!)
   const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
     fabrication: "/service_fabrication_01.png.PNG",
-    installation: "/hero-bg.jpg.PNG", // пока нет отдельного фото — используем общий фон
-    workforce: "/workforce_dino_team_01.png.PNG",
-    repairs: "/work_repairs_01.jpg.PNG",
-    capacity: "/work_capacity_01.jpg.PNG",
-    custom: "/work_custom_01.jpg.PNG",
+    installation: HERO_BG,
+    workforce: "/workforce_dino_team_01.PNG",
+    repairs: "/work_repairs_01.PNG",
+    capacity: HERO_BG,
+    custom: "/work_custom_01.PNG",
   };
 
-  // Фото по проектам — чтобы не зависеть от языка, маппим по индексу
+  // Проекты: пока используем то, что есть; остальные — фон
   const PROJECT_IMAGES: string[] = [
-    "/hero-bg.jpg.PNG",
-    "/workforce_dino_electrodes_01.png.PNG",
-    "/work_repairs_01.jpg.PNG",
-    "/work_capacity_01.jpg.PNG",
-    "/work_custom_01.jpg.PNG",
-    "/workforce_dino_team_01.png.PNG",
+    "/work_custom_01.PNG",
+    "/work_repairs_01.PNG",
+    "/workforce_dino_team_01.PNG",
+    "/workforce_dino_electrodes_01.PNG",
+    HERO_BG,
+    HERO_BG,
   ];
 
   const [modalItem, setModalItem] = useState<ModalItem | null>(null);
@@ -403,7 +407,12 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
                   type="button"
                   className="card"
                   onClick={() => openService(c)}
-                  style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    textAlign: "left",
+                    cursor: "pointer",
+                  }}
                 >
                   <h3>{c.title}</h3>
                   <p>{c.text}</p>
@@ -427,7 +436,12 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
               type="button"
               className="card"
               onClick={() => openProject(p, idx)}
-              style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                cursor: "pointer",
+              }}
             >
               <h3>{p.title}</h3>
               <p>{p.text}</p>
