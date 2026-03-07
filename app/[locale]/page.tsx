@@ -1,17 +1,27 @@
-// app/[locale]/page.tsx
+"use client";
+
+import React from "react";
 import Link from "next/link";
 import { getT, type Locale } from "@/src/i18n";
 
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
-  // ФОН главной (как у тебя в public на скрине)
+  // фон как в public (пока оставляем .PNG, если ты не переименовывал)
   const HERO_BG = "/hero-bg.jpg.PNG";
+
+  const PROJECT_SLUGS = [
+    "industrial-platforms",
+    "staircases-railings",
+    "steel-frames",
+    "supports-brackets",
+    "repair-works",
+    "workforce-projects",
+  ];
 
   return (
     <div className="container">
       <section className="hero">
-        {/* фоновая картинка на главной */}
         <div
           aria-hidden="true"
           style={{
@@ -77,13 +87,12 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
           <div className="heroCard">
             <h2 className="sectionTitle">{t.home.focusTitle}</h2>
 
-            {/* УСЛУГИ: теперь это ссылки на SEO-страницы */}
             <div className="cards">
               {t.services.cards.slice(0, 6).map((c) => (
                 <Link
                   key={c.slug}
-                  className="card"
                   href={`/${params.locale}/services/${c.slug}`}
+                  className="card"
                   style={{ display: "block" }}
                 >
                   <h3>{c.title}</h3>
@@ -99,15 +108,14 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
         </div>
       </section>
 
-      {/* ПРОЕКТЫ: тоже ссылки на SEO-страницы */}
       <section className="section">
         <h2 className="sectionTitle">{t.home.projectsTitle}</h2>
         <div className="cards">
           {t.projects.items.slice(0, 6).map((p, idx) => (
             <Link
               key={p.title}
+              href={`/${params.locale}/projects/${PROJECT_SLUGS[idx] ?? "project"}`}
               className="card"
-              href={`/${params.locale}/projects/${projectSlugByIndex(idx)}`}
               style={{ display: "block" }}
             >
               <h3>{p.title}</h3>
@@ -123,16 +131,4 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
       </section>
     </div>
   );
-}
-
-function projectSlugByIndex(idx: number) {
-  const slugs = [
-    "industrial-platforms",
-    "staircases-railings",
-    "steel-frames",
-    "supports-brackets",
-    "repair-works",
-    "workforce-projects",
-  ];
-  return slugs[idx] ?? "project";
 }
