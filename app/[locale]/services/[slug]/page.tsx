@@ -6,20 +6,17 @@ import { getT, type Locale } from "@/src/i18n";
 const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = "Akwelder87@gmail.com";
 
-// Фон (у тебя сейчас именно так в public по логам/grep)
-const HERO_BG = "/hero-bg.jpg.PNG";
+// Пока фон берём из существующего файла
+const HERO_BG = "/work_custom_01.png";
 
-// ВАЖНО: имена должны 1-в-1 совпадать с public/ (регистр важен)
+// ВАЖНО: строго как в public/
 const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
-  fabrication: "/service_fabrication_01.png.PNG",
-  installation: HERO_BG,
-
-  // динозавры ты переименовал в .png (маленькими)
+  fabrication: "/service_fabrication_01.png",
+  installation: "/work_custom_01.png", // пока нет отдельного фото монтажа
   workforce: "/workforce_dino_team_01.png",
-
-  repairs: "/work_repairs_01.jpg.PNG",
-  capacity: "/work_capacity_01.jpg.PNG",
-  custom: "/work_custom_01.jpg.PNG",
+  repairs: "/work_repairs_01.png",
+  capacity: "/work_custom_01.png", // пока нет work_capacity_01.png
+  custom: "/work_custom_01.png",
 };
 
 export default function ServicePage({
