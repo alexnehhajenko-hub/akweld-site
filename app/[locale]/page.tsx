@@ -7,8 +7,8 @@ import { getT, type Locale } from "@/src/i18n";
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
 
-  // фон как в public (пока оставляем .PNG, если ты не переименовывал)
-  const HERO_BG = "/hero-bg.jpg.PNG";
+  // Фон главной — пока используем существующий файл (позже заменишь на hero_bg_01.jpg)
+  const HERO_BG = "/work_custom_01.png";
 
   const PROJECT_SLUGS = [
     "industrial-platforms",
