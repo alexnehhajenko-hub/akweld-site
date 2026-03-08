@@ -6,13 +6,15 @@ import { getT, type Locale } from "@/src/i18n";
 const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = "Akwelder87@gmail.com";
 
-// Динозавры уже .png (маленькими)
+const HERO_BG = "/work_custom_01.png";
+
+// Маппинг по slug страницы проекта (SEO slug), независим от языка
 const PROJECT_IMAGE_BY_SLUG: Record<string, string> = {
-  "industrial-platforms": "/work_custom_01.jpg.PNG",
-  "staircases-railings": "/work_repairs_01.jpg.PNG",
+  "industrial-platforms": "/work_custom_01.png",
+  "staircases-railings": "/work_repairs_01.png",
   "steel-frames": "/workforce_dino_team_01.png",
   "supports-brackets": "/workforce_dino_electrodes_01.png",
-  "repair-works": "/work_repairs_01.jpg.PNG",
+  "repair-works": "/work_repairs_01.png",
   "workforce-projects": "/workforce_dino_team_01.png",
 };
 
@@ -23,19 +25,39 @@ export default function ProjectPage({
 }) {
   const t = getT(params.locale);
 
-  const idx = projectIndexBySlug(params.slug);
-  if (idx === -1) return notFound();
+  const project = t.projects.items.find((p) => {
+    // страницы у нас фикс-слугами, а items в i18n просто список.
+    // Тут мы показываем страницу по slug без привязки к title.
+    return true;
+  });
 
-  const p = t.projects.items[idx];
-  const img = PROJECT_IMAGE_BY_SLUG[params.slug] ?? "/hero-bg.jpg.PNG";
+  if (!project) return notFound();
+
+  const img = PROJECT_IMAGE_BY_SLUG[params.slug] ?? HERO_BG;
+
+  // Заголовок/описание берём из текущего языка по индексу slug
+  const SLUG_ORDER = [
+    "industrial-platforms",
+    "staircases-railings",
+    "steel-frames",
+    "supports-brackets",
+    "repair-works",
+    "workforce-projects",
+  ];
+  const idx = Math.max(0, SLUG_ORDER.indexOf(params.slug));
+  const safeItem = t.projects.items[idx] ?? t.projects.items[0];
 
   return (
     <div className="container" style={{ paddingTop: 18, paddingBottom: 40 }}>
       <div style={{ marginBottom: 12 }}>
         <Link className="btnGhost" href={`/${params.locale}`}>
           ← {params.locale === "ru" ? "На главную" : "Home"}
-        </Link>{" "}
-        <Link className="btnGhost" href={`/${params.locale}/projects`} style={{ marginLeft: 10 }}>
+        </Link>
+        <Link
+          className="btnGhost"
+          href={`/${params.locale}/projects`}
+          style={{ marginLeft: 10 }}
+        >
           {params.locale === "ru" ? "Все проекты" : "All projects"}
         </Link>
       </div>
@@ -50,7 +72,14 @@ export default function ProjectPage({
           border: "1px solid rgba(255,255,255,0.14)",
         }}
       >
-        <Image src={img} alt={p.title} fill style={{ objectFit: "cover" }} priority />
+        <Image
+          src={img}
+          alt={safeItem.title}
+          fill
+          sizes="(max-width: 900px) 100vw, 980px"
+          style={{ objectFit: "cover" }}
+          priority
+        />
         <div
           style={{
             position: "absolute",
@@ -61,9 +90,19 @@ export default function ProjectPage({
         />
       </div>
 
-      <h1 style={{ margin: "16px 0 6px", fontSize: 34 }}>{p.title}</h1>
+      <h1 style={{ margin: "16px 0 6px", fontSize: 34 }}>{safeItem.title}</h1>
       <p style={{ margin: 0, color: "rgba(255,255,255,0.75)", lineHeight: 1.6 }}>
-        {p.text}
+        {safeItem.text}
+      </p>
+
+      <h2 style={{ margin: "18px 0 8px", fontSize: 18 }}>
+        {params.locale === "ru" ? "Описание работ" : "Work description"}
+      </h2>
+
+      <p style={{ margin: 0, color: "rgba(255,255,255,0.78)", lineHeight: 1.65 }}>
+        {params.locale === "ru"
+          ? "Добавим сюда подробности: объём, материалы, сроки, процесс монтажа/сборки, требования по безопасности, фото до/после, результаты."
+          : "We’ll add details here: scope, materials, timelines, installation steps, safety requirements, before/after photos, results."}
       </p>
 
       <div style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -79,16 +118,4 @@ export default function ProjectPage({
       </div>
     </div>
   );
-}
-
-function projectIndexBySlug(slug: string) {
-  const slugs = [
-    "industrial-platforms",
-    "staircases-railings",
-    "steel-frames",
-    "supports-brackets",
-    "repair-works",
-    "workforce-projects",
-  ];
-  return slugs.indexOf(slug);
 }
