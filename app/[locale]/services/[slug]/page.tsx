@@ -6,11 +6,17 @@ import { getT, type Locale } from "@/src/i18n";
 const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = "Akwelder87@gmail.com";
 
-// ВАЖНО: динозавры уже переименованы в .png (маленькими)
+// Фон (у тебя сейчас именно так в public по логам/grep)
+const HERO_BG = "/hero-bg.jpg.PNG";
+
+// ВАЖНО: имена должны 1-в-1 совпадать с public/ (регистр важен)
 const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
   fabrication: "/service_fabrication_01.png.PNG",
-  installation: "/hero-bg.jpg.PNG",
+  installation: HERO_BG,
+
+  // динозавры ты переименовал в .png (маленькими)
   workforce: "/workforce_dino_team_01.png",
+
   repairs: "/work_repairs_01.jpg.PNG",
   capacity: "/work_capacity_01.jpg.PNG",
   custom: "/work_custom_01.jpg.PNG",
@@ -25,15 +31,19 @@ export default function ServicePage({
   const card = t.services.cards.find((c) => c.slug === params.slug);
   if (!card) return notFound();
 
-  const img = SERVICE_IMAGE_BY_SLUG[card.slug] ?? "/hero-bg.jpg.PNG";
+  const img = SERVICE_IMAGE_BY_SLUG[card.slug] ?? HERO_BG;
 
   return (
     <div className="container" style={{ paddingTop: 18, paddingBottom: 40 }}>
       <div style={{ marginBottom: 12 }}>
         <Link className="btnGhost" href={`/${params.locale}`}>
           ← {params.locale === "ru" ? "На главную" : "Home"}
-        </Link>{" "}
-        <Link className="btnGhost" href={`/${params.locale}/services`} style={{ marginLeft: 10 }}>
+        </Link>
+        <Link
+          className="btnGhost"
+          href={`/${params.locale}/services`}
+          style={{ marginLeft: 10 }}
+        >
           {params.locale === "ru" ? "Все услуги" : "All services"}
         </Link>
       </div>
@@ -48,7 +58,14 @@ export default function ServicePage({
           border: "1px solid rgba(255,255,255,0.14)",
         }}
       >
-        <Image src={img} alt={card.title} fill style={{ objectFit: "cover" }} priority />
+        <Image
+          src={img}
+          alt={card.title}
+          fill
+          sizes="(max-width: 900px) 100vw, 980px"
+          style={{ objectFit: "cover" }}
+          priority
+        />
         <div
           style={{
             position: "absolute",
@@ -68,7 +85,14 @@ export default function ServicePage({
         {params.locale === "ru" ? "Что входит" : "What’s included"}
       </h2>
 
-      <ul style={{ margin: 0, paddingLeft: 18, color: "rgba(255,255,255,0.78)", lineHeight: 1.65 }}>
+      <ul
+        style={{
+          margin: 0,
+          paddingLeft: 18,
+          color: "rgba(255,255,255,0.78)",
+          lineHeight: 1.65,
+        }}
+      >
         {card.points.map((p, i) => (
           <li key={i}>{p}</li>
         ))}
