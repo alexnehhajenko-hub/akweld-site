@@ -22,7 +22,7 @@ export default function LocaleLayout({
           </div>
         </div>
 
-        <main className="container">{children}</main>
+        <main>{children}</main>
 
         <SiteFooter locale={locale} />
       </body>
