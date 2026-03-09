@@ -13,6 +13,24 @@ const PROJECT_SLUGS = [
   "workforce-projects",
 ];
 
+const CAREERS_LABEL: Record<Locale, string> = {
+  ru: "Ищем работников",
+  en: "We are hiring",
+  sv: "We are hiring",
+  fi: "We are hiring",
+  da: "We are hiring",
+  no: "We are hiring",
+};
+
+const PARTNERS_LABEL: Record<Locale, string> = {
+  ru: "Ищем партнёров",
+  en: "Looking for partners",
+  sv: "Looking for partners",
+  fi: "Looking for partners",
+  da: "Looking for partners",
+  no: "Looking for partners",
+};
+
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
   const HERO_BG = "/service_fabrication_01.png";
@@ -61,6 +79,14 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
 
               <Link className="btnGhost" href={`/${params.locale}/services`}>
                 {t.common.viewServices}
+              </Link>
+
+              <Link className="btnGhost" href={`/${params.locale}/careers`}>
+                {CAREERS_LABEL[params.locale]}
+              </Link>
+
+              <Link className="btnGhost" href={`/${params.locale}/partners`}>
+                {PARTNERS_LABEL[params.locale]}
               </Link>
             </div>
 
