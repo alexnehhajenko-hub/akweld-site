@@ -4,20 +4,27 @@ import React from "react";
 import Link from "next/link";
 import { getT, type Locale } from "@/src/i18n";
 
+const PROJECT_SLUGS = [
+  "industrial-platforms",
+  "staircases-railings",
+  "steel-frames",
+  "supports-brackets",
+  "repair-works",
+  "workforce-projects",
+];
+
+const HIRING_LABEL: Record<Locale, string> = {
+  en: "We are hiring workers",
+  sv: "We are hiring workers",
+  fi: "We are hiring workers",
+  no: "We are hiring workers",
+  da: "We are hiring workers",
+  ru: "Ищем работников",
+};
+
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
-
-  // Фон главной — пока используем существующий файл (позже заменишь на hero_bg_01.jpg)
   const HERO_BG = "/work_custom_01.png";
-
-  const PROJECT_SLUGS = [
-    "industrial-platforms",
-    "staircases-railings",
-    "steel-frames",
-    "supports-brackets",
-    "repair-works",
-    "workforce-projects",
-  ];
 
   return (
     <div className="container">
@@ -32,7 +39,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "contrast(1.05) saturate(1.05)",
-            opacity: 0.35,
+            opacity: 0.34,
             pointerEvents: "none",
           }}
         />
@@ -43,7 +50,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
             inset: 0,
             zIndex: 0,
             background:
-              "radial-gradient(1200px 700px at 20% 10%, rgba(255,196,0,0.12), transparent 60%), linear-gradient(180deg, rgba(11,15,20,0.65) 0%, rgba(7,10,14,0.92) 100%)",
+              "radial-gradient(1200px 700px at 20% 10%, rgba(255,196,0,0.12), transparent 60%), linear-gradient(180deg, rgba(11,15,20,0.56) 0%, rgba(7,10,14,0.90) 100%)",
             pointerEvents: "none",
           }}
         />
@@ -53,14 +60,20 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
             <h1 className="heroTitle">
               {t.home.heroTitle1} <span>{t.home.heroTitle2}</span>
             </h1>
+
             <p className="heroText">{t.home.heroText}</p>
 
             <div className="heroActions">
               <Link className="btn" href={`/${params.locale}/contact`}>
                 {t.common.getQuote}
               </Link>
+
               <Link className="btnGhost" href={`/${params.locale}/services`}>
                 {t.common.viewServices}
+              </Link>
+
+              <Link className="btnGhost" href={`/${params.locale}/careers`}>
+                {HIRING_LABEL[params.locale]}
               </Link>
             </div>
 
@@ -110,6 +123,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
 
       <section className="section">
         <h2 className="sectionTitle">{t.home.projectsTitle}</h2>
+
         <div className="cards">
           {t.projects.items.slice(0, 6).map((p, idx) => (
             <Link
@@ -123,6 +137,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
             </Link>
           ))}
         </div>
+
         <div style={{ marginTop: 12 }}>
           <Link className="btnGhost" href={`/${params.locale}/projects`}>
             {t.common.viewProjects}
