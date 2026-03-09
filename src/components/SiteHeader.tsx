@@ -16,6 +16,59 @@ const CTA_LABEL: Record<Locale, string> = {
   da: "Få et tilbud",
 };
 
+const NAV_LABELS: Record<
+  Locale,
+  {
+    services: string;
+    projects: string;
+    careers: string;
+    partners: string;
+  }
+> = {
+  ru: {
+    services: "Услуги",
+    projects: "Проекты",
+    careers: "Работа",
+    partners: "Партнёры",
+  },
+  en: {
+    services: "Services",
+    projects: "Projects",
+    careers: "Careers",
+    partners: "Partners",
+  },
+  et: {
+    services: "Services",
+    projects: "Projects",
+    careers: "Careers",
+    partners: "Partners",
+  },
+  sv: {
+    services: "Services",
+    projects: "Projects",
+    careers: "Careers",
+    partners: "Partners",
+  },
+  fi: {
+    services: "Services",
+    projects: "Projects",
+    careers: "Careers",
+    partners: "Partners",
+  },
+  no: {
+    services: "Services",
+    projects: "Projects",
+    careers: "Careers",
+    partners: "Partners",
+  },
+  da: {
+    services: "Services",
+    projects: "Projects",
+    careers: "Careers",
+    partners: "Partners",
+  },
+};
+
 export default function SiteHeader({ locale }: { locale: Locale }) {
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -33,36 +86,42 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
     }
   }, []);
 
+  const nav = NAV_LABELS[locale] ?? NAV_LABELS.en;
+  const showHiringLinks = locale === "ru" || locale === "en";
+
   return (
-    <header
-      className="header"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 12,
-      }}
-    >
-      {/* СЛЕВА: пусто (держим место, чтобы справа не прыгало) */}
-      <div style={{ minWidth: 90 }} />
+    <header className="headerRow">
+      <Link
+        href={`/${locale}`}
+        className="brand"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <div className="brandText">
+          <span className="brandName">AKWELD</span>
+          <span className="brandTag">Steel fabrication · Installation · Workforce</span>
+        </div>
+      </Link>
 
-      {/* ЦЕНТР: пусто */}
-      {isDesktop ? <div style={{ flex: 1 }} /> : <div style={{ flex: 1 }} />}
+      {isDesktop ? (
+        <nav className="nav" aria-label="Main navigation">
+          <Link href={`/${locale}/services`}>{nav.services}</Link>
+          <Link href={`/${locale}/projects`}>{nav.projects}</Link>
+          {showHiringLinks && <Link href={`/${locale}/careers`}>{nav.careers}</Link>}
+          {showHiringLinks && <Link href={`/${locale}/partners`}>{nav.partners}</Link>}
+        </nav>
+      ) : (
+        <div style={{ flex: 1 }} />
+      )}
 
-      {/* СПРАВА: язык + кнопка */}
       <div
-        className="actions"
+        className="headerRight"
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          justifyContent: "flex-end",
-          minWidth: 200,
+          marginLeft: "auto",
         }}
       >
         <LanguageSwitcher currentLocale={locale} />
 
-        <Link href={`/${locale}/quote`} className="cta">
+        <Link href={`/${locale}/quote`} className="btn">
           {CTA_LABEL[locale]}
         </Link>
       </div>
