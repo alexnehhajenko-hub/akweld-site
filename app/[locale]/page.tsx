@@ -13,18 +13,9 @@ const PROJECT_SLUGS = [
   "workforce-projects",
 ];
 
-const HIRING_LABEL: Record<Locale, string> = {
-  en: "We are hiring workers",
-  sv: "We are hiring workers",
-  fi: "We are hiring workers",
-  no: "We are hiring workers",
-  da: "We are hiring workers",
-  ru: "Ищем работников",
-};
-
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
-  const HERO_BG = "/work_custom_01.png";
+  const HERO_BG = "/service_fabrication_01.png";
 
   return (
     <div className="container">
@@ -38,8 +29,8 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
             backgroundImage: `url(${HERO_BG})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "contrast(1.05) saturate(1.05)",
-            opacity: 0.34,
+            filter: "contrast(1.02) saturate(1.02)",
+            opacity: 0.28,
             pointerEvents: "none",
           }}
         />
@@ -50,7 +41,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
             inset: 0,
             zIndex: 0,
             background:
-              "radial-gradient(1200px 700px at 20% 10%, rgba(255,196,0,0.12), transparent 60%), linear-gradient(180deg, rgba(11,15,20,0.56) 0%, rgba(7,10,14,0.90) 100%)",
+              "radial-gradient(1200px 700px at 20% 10%, rgba(255,196,0,0.12), transparent 60%), linear-gradient(180deg, rgba(11,15,20,0.58) 0%, rgba(7,10,14,0.92) 100%)",
             pointerEvents: "none",
           }}
         />
@@ -70,10 +61,6 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
 
               <Link className="btnGhost" href={`/${params.locale}/services`}>
                 {t.common.viewServices}
-              </Link>
-
-              <Link className="btnGhost" href={`/${params.locale}/careers`}>
-                {HIRING_LABEL[params.locale]}
               </Link>
             </div>
 
@@ -114,7 +101,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
               ))}
             </div>
 
-            <p className="small" style={{ marginTop: 12, position: "relative" }}>
+            <p className="small" style={{ marginTop: 14, position: "relative" }}>
               {t.home.complianceNote}
             </p>
           </div>
@@ -138,7 +125,7 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
           ))}
         </div>
 
-        <div style={{ marginTop: 12 }}>
+        <div style={{ marginTop: 14 }}>
           <Link className="btnGhost" href={`/${params.locale}/projects`}>
             {t.common.viewProjects}
           </Link>
