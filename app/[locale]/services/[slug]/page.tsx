@@ -6,15 +6,15 @@ import { getT, type Locale } from "@/src/i18n";
 const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = "Akwelder87@gmail.com";
 
-const HERO_BG = "/work_custom_01.png";
+const HERO_BG = "/hero-bg.png";
 
 const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
   fabrication: "/service_fabrication_01.png",
-  installation: "/work_custom_01.png",
+  installation: "/work_platform_site_01.png",
   workforce: "/workforce_dino_team_01.png",
   repairs: "/work_repairs_01.png",
-  capacity: "/work_custom_01.png",
-  custom: "/work_custom_01.png",
+  capacity: "/work_capacity_01.png",
+  custom: "/work_platform_walkway_01.jpg",
 };
 
 function isRu(locale: Locale) {
@@ -156,24 +156,36 @@ export default function ServicePage({
           style={{
             position: "relative",
             width: "100%",
-            height: 360,
+            minHeight: 420,
+            background: "#090d12",
             borderBottom: "1px solid rgba(255,255,255,0.14)",
           }}
         >
-          <Image
-            src={img}
-            alt={card.title}
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-            priority
-          />
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              minHeight: 420,
+            }}
+          >
+            <Image
+              src={img}
+              alt={card.title}
+              fill
+              sizes="100vw"
+              style={{ objectFit: "contain", objectPosition: "center" }}
+              priority
+            />
+          </div>
+
           <div
             style={{
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.72) 85%)",
+                "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.42) 100%)",
+              pointerEvents: "none",
             }}
           />
         </div>
@@ -281,7 +293,7 @@ export default function ServicePage({
           <p className="heroText" style={{ maxWidth: "none" }}>
             {isRu(params.locale)
               ? "Отправьте запрос, описание задачи или чертежи. Мы посмотрим объём, уточним детали и предложим следующий шаг."
-              : "Send us your request, task description or drawings. We will review the scope, уточним детали and suggest the next step."}
+              : "Send us your request, task description or drawings. We will review the scope, clarify details and suggest the next step."}
           </p>
 
           <div className="heroActions">
