@@ -119,80 +119,79 @@ const FORM_LEAD: Record<CareersLocale, string> = {
   en: "If you want to apply right away, fill in the form below. After that we will contact you and discuss the details.",
 };
 
-const NAME_LABEL: Record<CareersLocale, string> = {
-  ru: "Имя и фамилия",
-  en: "Full name",
+const LABELS: Record<
+  CareersLocale,
+  {
+    name: string;
+    age: string;
+    phone: string;
+    email: string;
+    city: string;
+    passport: string;
+    job: string;
+    experience: string;
+    skills: string;
+    drawings: string;
+    work: string;
+    about: string;
+    send: string;
+    note: string;
+  }
+> = {
+  ru: {
+    name: "Имя и фамилия",
+    age: "Возраст",
+    phone: "Телефон / WhatsApp",
+    email: "Email",
+    city: "Страна / город",
+    passport: "Гражданство / паспорт / право на работу в ЕС",
+    job: "На какую должность вы откликаетесь?",
+    experience: "Сколько у вас лет опыта работы?",
+    skills: "Какие виды сварки / сборки / слесарных работ вы умеете?",
+    drawings: "Умеете ли читать чертежи?",
+    work: "Готовы ли работать в Эстонии / Швеции?",
+    about: "Кратко расскажите о себе",
+    send: "Отправить анкету",
+    note: "Пока это временный вариант: форма открывает почтовое приложение. Потом подключим полноценную отправку на email или сервер.",
+  },
+  en: {
+    name: "Full name",
+    age: "Age",
+    phone: "Phone / WhatsApp",
+    email: "Email",
+    city: "Country / city",
+    passport: "Citizenship / passport / right to work in the EU",
+    job: "Which position are you applying for?",
+    experience: "How many years of experience do you have?",
+    skills: "What welding / fitting / assembly skills do you have?",
+    drawings: "Can you read drawings?",
+    work: "Are you ready to work in Estonia / Sweden?",
+    about: "Tell us about yourself",
+    send: "Send application",
+    note: "This is a temporary version: the form opens your email app. Later we can connect full sending to email or server.",
+  },
 };
 
-const AGE_LABEL: Record<CareersLocale, string> = {
-  ru: "Возраст",
-  en: "Age",
-};
-
-const PHONE_LABEL: Record<CareersLocale, string> = {
-  ru: "Телефон / WhatsApp",
-  en: "Phone / WhatsApp",
-};
-
-const EMAIL_LABEL: Record<CareersLocale, string> = {
-  ru: "Email",
-  en: "Email",
-};
-
-const CITY_LABEL: Record<CareersLocale, string> = {
-  ru: "Страна / город",
-  en: "Country / city",
-};
-
-const PASSPORT_LABEL: Record<CareersLocale, string> = {
-  ru: "Гражданство / паспорт / право на работу в ЕС",
-  en: "Citizenship / passport / right to work in the EU",
-};
-
-const JOB_LABEL: Record<CareersLocale, string> = {
-  ru: "На какую должность вы откликаетесь?",
-  en: "Which position are you applying for?",
-};
-
-const EXPERIENCE_LABEL: Record<CareersLocale, string> = {
-  ru: "Сколько у вас лет опыта работы?",
-  en: "How many years of experience do you have?",
-};
-
-const SKILLS_LABEL: Record<CareersLocale, string> = {
-  ru: "Какие виды сварки / сборки / слесарных работ вы умеете?",
-  en: "What welding / fitting / assembly skills do you have?",
-};
-
-const DRAWINGS_LABEL: Record<CareersLocale, string> = {
-  ru: "Умеете ли читать чертежи?",
-  en: "Can you read drawings?",
-};
-
-const WORK_LABEL: Record<CareersLocale, string> = {
-  ru: "Готовы ли работать в Эстонии / Швеции?",
-  en: "Are you ready to work in Estonia / Sweden?",
-};
-
-const ABOUT_LABEL: Record<CareersLocale, string> = {
-  ru: "Кратко расскажите о себе",
-  en: "Tell us about yourself",
-};
-
-const SEND_LABEL: Record<CareersLocale, string> = {
-  ru: "Отправить анкету",
-  en: "Send application",
-};
-
-const NOTE_LABEL: Record<CareersLocale, string> = {
-  ru: "Пока это временный вариант: форма открывает почтовое приложение. Потом подключим полноценную отправку на email или сервер.",
-  en: "This is a temporary version: the form opens your email app. Later we can connect full sending to email or server.",
-};
+function fieldLabel(text: string) {
+  return (
+    <div
+      style={{
+        fontSize: 13,
+        fontWeight: 700,
+        marginBottom: 6,
+        color: "rgba(255,255,255,0.92)",
+      }}
+    >
+      {text}
+    </div>
+  );
+}
 
 export default function CareersPage({ params }: { params: { locale: Locale } }) {
   if (!isSupportedLocale(params.locale)) return notFound();
 
   const locale = params.locale;
+  const l = LABELS[locale];
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -245,17 +244,15 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
       </section>
 
       <section className="section">
-        <div className="heroCard">
-          <h2 className="sectionTitle" style={{ fontSize: 24 }}>
-            {WHY_TITLE[locale]}
-          </h2>
+        <div className="card" style={{ minHeight: "unset", padding: 22 }}>
+          <h2 style={{ margin: 0, fontSize: 24 }}>{WHY_TITLE[locale]}</h2>
 
           <ul
             style={{
               margin: "14px 0 0",
               paddingLeft: 18,
-              color: "rgba(255,255,255,0.80)",
-              lineHeight: 1.7,
+              color: "rgba(255,255,255,0.84)",
+              lineHeight: 1.75,
             }}
           >
             {WHY_ITEMS[locale].map((item, i) => (
@@ -266,12 +263,32 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
       </section>
 
       <section className="section">
-        <div className="heroCard">
-          <h2 className="sectionTitle" style={{ fontSize: 24 }}>
+        <div
+          style={{
+            background: "#0d1218",
+            border: "1px solid rgba(255,255,255,0.14)",
+            borderRadius: 18,
+            padding: 22,
+            boxShadow: "0 16px 40px rgba(0,0,0,0.24)",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: 24,
+              color: "rgba(255,255,255,0.96)",
+            }}
+          >
             {FORM_TITLE[locale]}
           </h2>
 
-          <p className="heroText" style={{ maxWidth: "none" }}>
+          <p
+            style={{
+              marginTop: 12,
+              lineHeight: 1.7,
+              color: "rgba(255,255,255,0.82)",
+            }}
+          >
             {FORM_LEAD[locale]}
           </p>
 
@@ -282,22 +299,69 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
             encType="text/plain"
             style={{ marginTop: 18 }}
           >
-            <input className="input" type="text" name="name" placeholder={NAME_LABEL[locale]} required />
-            <input className="input" type="text" name="age" placeholder={AGE_LABEL[locale]} required />
-            <input className="input" type="text" name="phone" placeholder={PHONE_LABEL[locale]} required />
-            <input className="input" type="email" name="email" placeholder={EMAIL_LABEL[locale]} />
-            <input className="input" type="text" name="city" placeholder={CITY_LABEL[locale]} />
-            <textarea className="textarea" name="passport" placeholder={PASSPORT_LABEL[locale]} required />
-            <textarea className="textarea" name="job" placeholder={JOB_LABEL[locale]} required />
-            <input className="input" type="text" name="experience" placeholder={EXPERIENCE_LABEL[locale]} required />
-            <textarea className="textarea" name="skills" placeholder={SKILLS_LABEL[locale]} required />
-            <textarea className="textarea" name="drawings" placeholder={DRAWINGS_LABEL[locale]} />
-            <textarea className="textarea" name="work" placeholder={WORK_LABEL[locale]} required />
-            <textarea className="textarea" name="about" placeholder={ABOUT_LABEL[locale]} />
+            <div>
+              {fieldLabel(l.name)}
+              <input className="input" type="text" name="name" placeholder={l.name} required />
+            </div>
 
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 4 }}>
+            <div>
+              {fieldLabel(l.age)}
+              <input className="input" type="text" name="age" placeholder={l.age} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.phone)}
+              <input className="input" type="text" name="phone" placeholder={l.phone} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.email)}
+              <input className="input" type="email" name="email" placeholder={l.email} />
+            </div>
+
+            <div>
+              {fieldLabel(l.city)}
+              <input className="input" type="text" name="city" placeholder={l.city} />
+            </div>
+
+            <div>
+              {fieldLabel(l.passport)}
+              <textarea className="textarea" name="passport" placeholder={l.passport} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.job)}
+              <textarea className="textarea" name="job" placeholder={l.job} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.experience)}
+              <input className="input" type="text" name="experience" placeholder={l.experience} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.skills)}
+              <textarea className="textarea" name="skills" placeholder={l.skills} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.drawings)}
+              <textarea className="textarea" name="drawings" placeholder={l.drawings} />
+            </div>
+
+            <div>
+              {fieldLabel(l.work)}
+              <textarea className="textarea" name="work" placeholder={l.work} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.about)}
+              <textarea className="textarea" name="about" placeholder={l.about} />
+            </div>
+
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 6 }}>
               <button className="btn" type="submit">
-                {SEND_LABEL[locale]}
+                {l.send}
               </button>
 
               <a className="btnGhost" href="mailto:Akwelder87@gmail.com">
@@ -306,8 +370,15 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
             </div>
           </form>
 
-          <p className="small" style={{ marginTop: 14 }}>
-            {NOTE_LABEL[locale]}
+          <p
+            style={{
+              marginTop: 14,
+              fontSize: 12,
+              lineHeight: 1.6,
+              color: "rgba(255,255,255,0.68)",
+            }}
+          >
+            {l.note}
           </p>
         </div>
       </section>
