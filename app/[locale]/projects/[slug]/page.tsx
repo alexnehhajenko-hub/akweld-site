@@ -6,12 +6,12 @@ import { getT, type Locale } from "@/src/i18n";
 const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = "Akwelder87@gmail.com";
 
-const HERO_BG = "/work_custom_01.png";
+const HERO_BG = "/hero-bg.png";
 
 const PROJECT_IMAGE_BY_SLUG: Record<string, string> = {
-  "industrial-platforms": "/work_custom_01.png",
-  "staircases-railings": "/work_repairs_01.png",
-  "steel-frames": "/workforce_dino_team_01.png",
+  "industrial-platforms": "/work_platform_site_01.png",
+  "staircases-railings": "/work_platform_walkway_01.jpg",
+  "steel-frames": "/service_fabrication_01.png",
   "supports-brackets": "/workforce_dino_electrodes_01.png",
   "repair-works": "/work_repairs_01.png",
   "workforce-projects": "/workforce_dino_team_01.png",
@@ -247,24 +247,36 @@ export default function ProjectPage({
           style={{
             position: "relative",
             width: "100%",
-            height: 360,
+            minHeight: 420,
+            background: "#090d12",
             borderBottom: "1px solid rgba(255,255,255,0.14)",
           }}
         >
-          <Image
-            src={img}
-            alt={safeItem.title}
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-            priority
-          />
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              minHeight: 420,
+            }}
+          >
+            <Image
+              src={img}
+              alt={safeItem.title}
+              fill
+              sizes="100vw"
+              style={{ objectFit: "contain", objectPosition: "center" }}
+              priority
+            />
+          </div>
+
           <div
             style={{
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.72) 85%)",
+                "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.42) 100%)",
+              pointerEvents: "none",
             }}
           />
         </div>
