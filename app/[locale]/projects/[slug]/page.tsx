@@ -9,10 +9,10 @@ const CONTACT_EMAIL = "Akwelder87@gmail.com";
 const HERO_BG = "/hero-bg.png";
 
 const PROJECT_IMAGE_BY_SLUG: Record<string, string> = {
-  "industrial-platforms": "/work_platform_site_01.png",
-  "staircases-railings": "/work_platform_walkway_01.jpg",
-  "steel-frames": "/service_fabrication_01.png",
-  "supports-brackets": "/workforce_dino_electrodes_01.png",
+  "industrial-platforms": "/project_industrial_platforms_01.png",
+  "staircases-railings": "/project_staircases_railings_01.png",
+  "steel-frames": "/project_steel_frames_01.png",
+  "supports-brackets": "/project_supports_brackets_01.png",
   "repair-works": "/work_repairs_01.png",
   "workforce-projects": "/workforce_dino_team_01.png",
 };
