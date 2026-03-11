@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useState } from "react";
 import { type Locale } from "@/src/i18n";
 
 const SUPPORTED = ["ru", "en"] as const;
@@ -119,6 +122,24 @@ const FORM_LEAD: Record<CareersLocale, string> = {
   en: "If you want to apply right away, fill in the form below. After that we will contact you and discuss the details.",
 };
 
+const STATUS_TEXT: Record<
+  CareersLocale,
+  { idle: string; sending: string; success: string; error: string }
+> = {
+  ru: {
+    idle: "",
+    sending: "Отправляем анкету...",
+    success: "Анкета отправлена. Мы свяжемся с вами.",
+    error: "Не удалось отправить анкету. Попробуйте ещё раз.",
+  },
+  en: {
+    idle: "",
+    sending: "Sending application...",
+    success: "Application sent. We will contact you.",
+    error: "Failed to send the application. Please try again.",
+  },
+};
+
 const LABELS: Record<
   CareersLocale,
   {
@@ -152,7 +173,7 @@ const LABELS: Record<
     work: "Готовы ли работать в Эстонии / Швеции?",
     about: "Кратко расскажите о себе",
     send: "Отправить анкету",
-    note: "Пока это временный вариант: форма открывает почтовое приложение. Потом подключим полноценную отправку на email или сервер.",
+    note: "Анкета отправляется напрямую компании.",
   },
   en: {
     name: "Full name",
@@ -168,7 +189,7 @@ const LABELS: Record<
     work: "Are you ready to work in Estonia / Sweden?",
     about: "Tell us about yourself",
     send: "Send application",
-    note: "This is a temporary version: the form opens your email app. Later we can connect full sending to email or server.",
+    note: "The application is sent directly to the company.",
   },
 };
 
@@ -192,6 +213,60 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
 
   const locale = params.locale;
   const l = LABELS[locale];
+  const s = STATUS_TEXT[locale];
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      locale,
+      name: String(formData.get("name") || ""),
+      age: String(formData.get("age") || ""),
+      phone: String(formData.get("phone") || ""),
+      email: String(formData.get("email") || ""),
+      city: String(formData.get("city") || ""),
+      passport: String(formData.get("passport") || ""),
+      job: String(formData.get("job") || ""),
+      experience: String(formData.get("experience") || ""),
+      skills: String(formData.get("skills") || ""),
+      drawings: String(formData.get("drawings") || ""),
+      work: String(formData.get("work") || ""),
+      about: String(formData.get("about") || ""),
+    };
+
+    try {
+      setIsSubmitting(true);
+      setStatus("sending");
+
+      const response = await fetch("/api/careers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data?.ok) {
+        throw new Error(data?.error || "Failed to send");
+      }
+
+      setStatus("success");
+      form.reset();
+    } catch (error) {
+      console.error("CAREERS_FORM_SUBMIT_ERROR", error);
+      setStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -292,13 +367,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
             {FORM_LEAD[locale]}
           </p>
 
-          <form
-            className="form"
-            action="mailto:Akwelder87@gmail.com"
-            method="post"
-            encType="text/plain"
-            style={{ marginTop: 18 }}
-          >
+          <form className="form" onSubmit={handleSubmit} style={{ marginTop: 18 }}>
             <div>
               {fieldLabel(l.name)}
               <input className="input" type="text" name="name" placeholder={l.name} required />
@@ -360,8 +429,8 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
             </div>
 
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 6 }}>
-              <button className="btn" type="submit">
-                {l.send}
+              <button className="btn" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? s.sending : l.send}
               </button>
 
               <a className="btnGhost" href="mailto:Akwelder87@gmail.com">
@@ -369,6 +438,28 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
               </a>
             </div>
           </form>
+
+          {status !== "idle" ? (
+            <p
+              style={{
+                marginTop: 14,
+                fontSize: 14,
+                lineHeight: 1.6,
+                color:
+                  status === "success"
+                    ? "#8ee28e"
+                    : status === "error"
+                    ? "#ff8d8d"
+                    : "rgba(255,255,255,0.72)",
+              }}
+            >
+              {status === "sending"
+                ? s.sending
+                : status === "success"
+                ? s.success
+                : s.error}
+            </p>
+          ) : null}
 
           <p
             style={{
