@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useState } from "react";
-import { type Locale } from "@/src/i18n";
+
+type PageLocale = "ru" | "en";
 
 const SUPPORTED = ["ru", "en"] as const;
 type CareersLocale = (typeof SUPPORTED)[number];
 
-function isSupportedLocale(locale: Locale): locale is CareersLocale {
+function isSupportedLocale(locale: string): locale is CareersLocale {
   return locale === "ru" || locale === "en";
 }
 
@@ -44,50 +45,42 @@ const OPENINGS_TITLE: Record<CareersLocale, string> = {
 
 const OPENINGS: Record<
   CareersLocale,
-  Array<{ title: string; text: string; href: string }>
+  Array<{ title: string; text: string }>
 > = {
   ru: [
     {
       title: "Сварщик",
       text: "Нужны сварщики для работы с металлоконструкциями, сборкой узлов, производством и объектами в Эстонии и Швеции.",
-      href: "/ru/careers/welder",
     },
     {
       title: "Слесарь-сборщик",
       text: "Ищем слесарей для сборки металлоконструкций, подгонки деталей, чтения чертежей и работы в цеху и на объекте.",
-      href: "/ru/careers/fitter",
     },
     {
       title: "Монтажник металлоконструкций",
       text: "Требуются монтажники для установки лестниц, площадок, рам, ограждений и других металлоконструкций.",
-      href: "/ru/careers/metal-erector",
     },
     {
       title: "Монтажник трубопровода",
       text: "Ищем специалистов по трубопроводу: сборка, подгонка, монтаж, работа по схемам и изометрии.",
-      href: "/ru/careers/pipe-installer",
     },
   ],
   en: [
     {
       title: "Welder",
       text: "We are looking for welders for steel structures, assembly work, workshop production and site projects in Estonia and Sweden.",
-      href: "/en/careers/welder",
     },
     {
       title: "Fitter",
       text: "We need fitters for steel assembly, part fitting, drawing-based work and workshop or site tasks.",
-      href: "/en/careers/fitter",
     },
     {
       title: "Metal structure installer",
       text: "We are hiring installers for stairs, platforms, frames, railings and other steel structure installation work.",
-      href: "/en/careers/metal-erector",
     },
     {
       title: "Pipe installer",
       text: "We are looking for pipe installers: fitting, assembly, installation and work by drawings and isometrics.",
-      href: "/en/careers/pipe-installer",
     },
   ],
 };
@@ -208,7 +201,11 @@ function fieldLabel(text: string) {
   );
 }
 
-export default function CareersPage({ params }: { params: { locale: Locale } }) {
+export default function CareersPage({
+  params,
+}: {
+  params: { locale: PageLocale };
+}) {
   if (!isSupportedLocale(params.locale)) return notFound();
 
   const locale = params.locale;
@@ -305,15 +302,10 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
         <h2 className="sectionTitle">{OPENINGS_TITLE[locale]}</h2>
         <div className="cards">
           {OPENINGS[locale].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="card"
-              style={{ display: "block" }}
-            >
+            <div key={item.title} className="card" style={{ display: "block" }}>
               <h3>{item.title}</h3>
               <p>{item.text}</p>
-            </Link>
+            </div>
           ))}
         </div>
       </section>
