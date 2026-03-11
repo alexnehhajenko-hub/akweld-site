@@ -18,16 +18,21 @@ const CAREERS_LABEL: Record<"ru" | "en", string> = {
   en: "We are hiring",
 };
 
-const PARTNERS_LABEL: Record<"ru" | "en", string> = {
+const PARTNERS_LABEL: Record<Locale, string> = {
   ru: "Ищем партнёров",
   en: "Looking for partners",
+  et: "Otsime partnereid",
+  sv: "Söker partner",
+  fi: "Etsimme kumppaneita",
+  no: "Vi søker partnere",
+  da: "Vi søger partnere",
 };
 
 export default function HomePage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
   const HERO_BG = "/hero-bg.png";
 
-  const showHiringLinks = params.locale === "ru" || params.locale === "en";
+  const showHiringLink = params.locale === "ru" || params.locale === "en";
 
   return (
     <div className="container">
@@ -75,17 +80,15 @@ export default function HomePage({ params }: { params: { locale: Locale } }) {
                 {t.common.viewServices}
               </Link>
 
-              {showHiringLinks && (
-                <>
-                  <Link className="btnGhost" href={`/${params.locale}/careers`}>
-                    {CAREERS_LABEL[params.locale as "ru" | "en"]}
-                  </Link>
+              {showHiringLink ? (
+                <Link className="btnGhost" href={`/${params.locale}/careers`}>
+                  {CAREERS_LABEL[params.locale as "ru" | "en"]}
+                </Link>
+              ) : null}
 
-                  <Link className="btnGhost" href={`/${params.locale}/partners`}>
-                    {PARTNERS_LABEL[params.locale as "ru" | "en"]}
-                  </Link>
-                </>
-              )}
+              <Link className="btnGhost" href={`/${params.locale}/partners`}>
+                {PARTNERS_LABEL[params.locale]}
+              </Link>
             </div>
 
             <div className="kpis">
