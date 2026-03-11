@@ -1,15 +1,14 @@
-"use client";
-
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useState } from "react";
-
-type PageLocale = "ru" | "en";
+import { type Locale } from "@/src/i18n";
 
 const SUPPORTED = ["ru", "en"] as const;
 type CareersLocale = (typeof SUPPORTED)[number];
 
-function isSupportedLocale(locale: string): locale is CareersLocale {
+const CONTACT_EMAIL = "info@akweldsteel.com";
+const CONTACT_PHONE = "+372 5561 5108";
+
+function isSupportedLocale(locale: Locale): locale is CareersLocale {
   return locale === "ru" || locale === "en";
 }
 
@@ -45,42 +44,50 @@ const OPENINGS_TITLE: Record<CareersLocale, string> = {
 
 const OPENINGS: Record<
   CareersLocale,
-  Array<{ title: string; text: string }>
+  Array<{ title: string; text: string; href: string }>
 > = {
   ru: [
     {
       title: "Сварщик",
       text: "Нужны сварщики для работы с металлоконструкциями, сборкой узлов, производством и объектами в Эстонии и Швеции.",
+      href: "/ru/careers/welder",
     },
     {
       title: "Слесарь-сборщик",
       text: "Ищем слесарей для сборки металлоконструкций, подгонки деталей, чтения чертежей и работы в цеху и на объекте.",
+      href: "/ru/careers/fitter",
     },
     {
       title: "Монтажник металлоконструкций",
       text: "Требуются монтажники для установки лестниц, площадок, рам, ограждений и других металлоконструкций.",
+      href: "/ru/careers/metal-erector",
     },
     {
       title: "Монтажник трубопровода",
       text: "Ищем специалистов по трубопроводу: сборка, подгонка, монтаж, работа по схемам и изометрии.",
+      href: "/ru/careers/pipe-installer",
     },
   ],
   en: [
     {
       title: "Welder",
       text: "We are looking for welders for steel structures, assembly work, workshop production and site projects in Estonia and Sweden.",
+      href: "/en/careers/welder",
     },
     {
       title: "Fitter",
       text: "We need fitters for steel assembly, part fitting, drawing-based work and workshop or site tasks.",
+      href: "/en/careers/fitter",
     },
     {
       title: "Metal structure installer",
       text: "We are hiring installers for stairs, platforms, frames, railings and other steel structure installation work.",
+      href: "/en/careers/metal-erector",
     },
     {
       title: "Pipe installer",
       text: "We are looking for pipe installers: fitting, assembly, installation and work by drawings and isometrics.",
+      href: "/en/careers/pipe-installer",
     },
   ],
 };
@@ -113,24 +120,6 @@ const FORM_TITLE: Record<CareersLocale, string> = {
 const FORM_LEAD: Record<CareersLocale, string> = {
   ru: "Если вы хотите откликнуться сразу, заполните форму ниже. Потом мы свяжемся с вами и обсудим детали.",
   en: "If you want to apply right away, fill in the form below. After that we will contact you and discuss the details.",
-};
-
-const STATUS_TEXT: Record<
-  CareersLocale,
-  { idle: string; sending: string; success: string; error: string }
-> = {
-  ru: {
-    idle: "",
-    sending: "Отправляем анкету...",
-    success: "Анкета отправлена. Мы свяжемся с вами.",
-    error: "Не удалось отправить анкету. Попробуйте ещё раз.",
-  },
-  en: {
-    idle: "",
-    sending: "Sending application...",
-    success: "Application sent. We will contact you.",
-    error: "Failed to send the application. Please try again.",
-  },
 };
 
 const LABELS: Record<
@@ -166,7 +155,7 @@ const LABELS: Record<
     work: "Готовы ли работать в Эстонии / Швеции?",
     about: "Кратко расскажите о себе",
     send: "Отправить анкету",
-    note: "Анкета отправляется напрямую компании.",
+    note: "Пока это временный вариант: форма открывает почтовое приложение. Потом подключим полноценную отправку на email или сервер.",
   },
   en: {
     name: "Full name",
@@ -182,7 +171,7 @@ const LABELS: Record<
     work: "Are you ready to work in Estonia / Sweden?",
     about: "Tell us about yourself",
     send: "Send application",
-    note: "The application is sent directly to the company.",
+    note: "This is a temporary version: the form opens your email app. Later we can connect full sending to email or server.",
   },
 };
 
@@ -201,69 +190,11 @@ function fieldLabel(text: string) {
   );
 }
 
-export default function CareersPage({
-  params,
-}: {
-  params: { locale: PageLocale };
-}) {
+export default function CareersPage({ params }: { params: { locale: Locale } }) {
   if (!isSupportedLocale(params.locale)) return notFound();
 
   const locale = params.locale;
   const l = LABELS[locale];
-  const s = STATUS_TEXT[locale];
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    const payload = {
-      locale,
-      name: String(formData.get("name") || ""),
-      age: String(formData.get("age") || ""),
-      phone: String(formData.get("phone") || ""),
-      email: String(formData.get("email") || ""),
-      city: String(formData.get("city") || ""),
-      passport: String(formData.get("passport") || ""),
-      job: String(formData.get("job") || ""),
-      experience: String(formData.get("experience") || ""),
-      skills: String(formData.get("skills") || ""),
-      drawings: String(formData.get("drawings") || ""),
-      work: String(formData.get("work") || ""),
-      about: String(formData.get("about") || ""),
-    };
-
-    try {
-      setIsSubmitting(true);
-      setStatus("sending");
-
-      const response = await fetch("/api/careers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data?.ok) {
-        throw new Error(data?.error || "Failed to send");
-      }
-
-      setStatus("success");
-      form.reset();
-    } catch (error) {
-      console.error("CAREERS_FORM_SUBMIT_ERROR", error);
-      setStatus("error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -289,11 +220,11 @@ export default function CareersPage({
         </p>
 
         <div className="heroActions">
-          <a className="btn" href="mailto:Akwelder87@gmail.com">
-            Email: Akwelder87@gmail.com
+          <a className="btn" href={`mailto:${CONTACT_EMAIL}`}>
+            Email: {CONTACT_EMAIL}
           </a>
-          <a className="btnGhost" href="tel:+37255615108">
-            +372 5561 5108
+          <a className="btnGhost" href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>
+            {CONTACT_PHONE}
           </a>
         </div>
       </section>
@@ -302,10 +233,15 @@ export default function CareersPage({
         <h2 className="sectionTitle">{OPENINGS_TITLE[locale]}</h2>
         <div className="cards">
           {OPENINGS[locale].map((item) => (
-            <div key={item.title} className="card" style={{ display: "block" }}>
+            <Link
+              key={item.href}
+              href={item.href}
+              className="card"
+              style={{ display: "block" }}
+            >
               <h3>{item.title}</h3>
               <p>{item.text}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -359,7 +295,13 @@ export default function CareersPage({
             {FORM_LEAD[locale]}
           </p>
 
-          <form className="form" onSubmit={handleSubmit} style={{ marginTop: 18 }}>
+          <form
+            className="form"
+            action={`mailto:${CONTACT_EMAIL}`}
+            method="post"
+            encType="text/plain"
+            style={{ marginTop: 18 }}
+          >
             <div>
               {fieldLabel(l.name)}
               <input className="input" type="text" name="name" placeholder={l.name} required />
@@ -421,37 +363,15 @@ export default function CareersPage({
             </div>
 
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 6 }}>
-              <button className="btn" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? s.sending : l.send}
+              <button className="btn" type="submit">
+                {l.send}
               </button>
 
-              <a className="btnGhost" href="mailto:Akwelder87@gmail.com">
-                Email: Akwelder87@gmail.com
+              <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
+                Email: {CONTACT_EMAIL}
               </a>
             </div>
           </form>
-
-          {status !== "idle" ? (
-            <p
-              style={{
-                marginTop: 14,
-                fontSize: 14,
-                lineHeight: 1.6,
-                color:
-                  status === "success"
-                    ? "#8ee28e"
-                    : status === "error"
-                    ? "#ff8d8d"
-                    : "rgba(255,255,255,0.72)",
-              }}
-            >
-              {status === "sending"
-                ? s.sending
-                : status === "success"
-                ? s.success
-                : s.error}
-            </p>
-          ) : null}
 
           <p
             style={{
