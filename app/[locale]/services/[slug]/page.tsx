@@ -3,8 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
-const CONTACT_PHONE = "+372 5561 5108";
-const CONTACT_EMAIL = "Akwelder87@gmail.com";
+const CONTACT_EMAIL = "info@akweldsteel.com";
 
 const HERO_BG = "/hero-bg.png";
 
@@ -86,34 +85,34 @@ function getRegions(locale: Locale) {
       ];
 }
 
-function getSeoText(slug: string, locale: Locale) {
+function getServiceOverview(slug: string, locale: Locale) {
   const ru = isRu(locale);
 
   switch (slug) {
     case "fabrication":
       return ru
-        ? "Услуга изготовления металлоконструкций подходит для заказчиков, которым нужен понятный производственный процесс, аккуратная сборка и готовность работать по чертежам. Мы изготавливаем элементы для объектов, производственных площадок, лестниц, рам, опор и нестандартных изделий. Для SEO и для реальных клиентов важно, чтобы страница сразу показывала: чем именно мы занимаемся, в каких странах работаем и как с нами связаться."
-        : "Our steel fabrication service is for clients who need a clear production process, clean assembly and work by drawings. We fabricate elements for industrial sites, stairs, frames, supports and custom steel products. For both SEO and real clients, the page should clearly show what we do, where we work and how to contact us.";
+        ? "Изготовление металлоконструкций подходит для заказчиков, которым нужен понятный производственный процесс, аккуратная сборка и работа по чертежам. Мы делаем элементы для объектов, производственных площадок, лестниц, рам, опор и нестандартных изделий."
+        : "Our steel fabrication service is for clients who need a clear production process, clean assembly and reliable work by drawings. We fabricate elements for industrial sites, stairs, frames, supports and custom steel products.";
     case "installation":
       return ru
-        ? "Монтаж металлоконструкций включает сборку, подгонку, выверку и финальные работы на объекте. Такая страница должна быть полезной и для клиента, и для поиска: человек сразу должен понять, что мы можем отправить бригаду на объект, работать по площадке и соблюдать требования по срокам и безопасности."
-        : "Steel installation includes assembly, fitting, alignment and finishing work on site. This page should help both real clients and search engines: it must clearly show that we can send crews to site, work under project requirements and keep timelines and safety in mind.";
+        ? "Монтаж металлоконструкций включает сборку, подгонку, выверку и финальные работы на объекте. Важно, чтобы заказчик сразу понимал: мы можем отправить бригаду на объект, работать по площадке и соблюдать требования по срокам и безопасности."
+        : "Steel installation includes assembly, fitting, alignment and finishing work on site. The client should immediately see that we can send crews to site, work under project requirements and keep timelines and safety in mind.";
     case "workforce":
       return ru
-        ? "Аренда квалифицированного персонала — это отдельное направление: сварщики, слесари, монтажники и специалисты по металлоконструкциям. Для SEO важно, чтобы эта страница содержала понятные ключевые смыслы: рабочие в Эстонии, рабочие в Швеции, монтажные бригады, сварщики на проект и слесари-сборщики на производство."
-        : "Qualified workforce rental is a separate service: welders, fitters, installers and steel structure specialists. For SEO this page should clearly cover topics like workers in Estonia, workers in Sweden, installation crews, project welders and workshop fitters.";
+        ? "Предоставление квалифицированного персонала — это отдельное направление: сварщики, слесари, монтажники и специалисты по металлоконструкциям. Такой формат подходит компаниям, которым нужно быстро усилить проект рабочими руками и опытом."
+        : "Qualified workforce rental is a separate service: welders, fitters, installers and steel structure specialists. This format is useful for companies that need to strengthen a project quickly with skilled people.";
     case "repairs":
       return ru
-        ? "Ремонт и доработки металлоконструкций нужны там, где важно быстро усилить, исправить или адаптировать уже существующее решение. На практике это может быть переделка узлов, усиление конструкции, исправление геометрии или доработка под новые требования."
-        : "Repairs and steel structure modifications are needed when an existing solution must be reinforced, corrected or adapted. In practice this can mean joint rework, structural reinforcement, geometry correction or adjustment for new requirements.";
+        ? "Ремонт и доработки металлоконструкций нужны там, где важно быстро усилить, исправить или адаптировать уже существующее решение. Это может быть переделка узлов, усиление конструкции, исправление геометрии или доработка под новые требования."
+        : "Repairs and steel structure modifications are needed when an existing solution must be reinforced, corrected or adapted quickly. In practice this can mean joint rework, structural reinforcement, geometry correction or adjustment for new requirements.";
     case "capacity":
       return ru
-        ? "Производственные мощности важны для заказчиков, которым нужен не один разовый элемент, а регулярная поддержка по изготовлению деталей и серийных партий. Здесь важно показать стабильность, прогнозируемость и возможность брать повторяемые заказы."
-        : "Workshop capacity matters for clients who need not only one-off elements, but stable support for repeat parts and serial production. This page should communicate stability, predictability and the ability to handle recurring orders.";
+        ? "Производственные мощности важны для заказчиков, которым нужен не один разовый элемент, а регулярная поддержка по изготовлению деталей и серийных партий. Здесь важны стабильность, прогнозируемость и возможность брать повторяемые заказы."
+        : "Workshop capacity matters for clients who need not only one-off elements, but stable support for repeat parts and serial production. This service is about stability, predictability and the ability to handle recurring orders.";
     case "custom":
       return ru
-        ? "Нестандартные задачи — это то, что часто ищут по запросам, связанным с индивидуальным изготовлением, сложными деталями и работой по месту. Поэтому на такой странице важно показать, что мы умеем обсуждать нестандарт, быстро считать объём и предлагать понятное решение."
-        : "Custom steel work is often searched through queries about individual fabrication, difficult parts and special projects. This page should show that we can discuss custom work, estimate scope quickly and offer a clear solution.";
+        ? "Нестандартные задачи подходят для проектов, где требуется индивидуальный подход, сложные детали и понятное согласование объёма работ. Мы обсуждаем нестандартные решения, быстро считаем объём и предлагаем рабочий формат исполнения."
+        : "Custom steel work is suitable for projects that require an individual approach, difficult parts and a clear scope of work. We discuss custom solutions, estimate the scope quickly and offer a practical execution format.";
     default:
       return ru
         ? "Мы работаем с проектами по металлоконструкциям, монтажу и производству."
@@ -135,7 +134,7 @@ export default function ServicePage({
   const process = getProcess(params.locale);
   const regions = getRegions(params.locale);
   const lead = getLeadBySlug(card.slug, params.locale);
-  const seoText = getSeoText(card.slug, params.locale);
+  const serviceOverview = getServiceOverview(card.slug, params.locale);
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -200,13 +199,10 @@ export default function ServicePage({
           </p>
 
           <div className="heroActions">
-            <a className="btn" href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>
-              {isRu(params.locale) ? "Позвонить" : "Call"}: {CONTACT_PHONE}
-            </a>
             <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
               Email: {CONTACT_EMAIL}
             </a>
-            <Link className="btnGhost" href={`/${params.locale}/contact`}>
+            <Link className="btn" href={`/${params.locale}/contact`}>
               {isRu(params.locale) ? "Запросить цену" : "Get a quote"}
             </Link>
           </div>
@@ -277,7 +273,7 @@ export default function ServicePage({
             <h2 style={{ margin: 0, fontSize: 20 }}>
               {isRu(params.locale) ? "Описание услуги" : "Service overview"}
             </h2>
-            <p style={{ marginTop: 14 }}>{seoText}</p>
+            <p style={{ marginTop: 14 }}>{serviceOverview}</p>
           </div>
         </div>
       </section>
