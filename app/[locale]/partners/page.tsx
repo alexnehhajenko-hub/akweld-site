@@ -3,7 +3,6 @@ import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
 const PARTNER_NAME = "SK Licenssvets Frölunda AB";
-const PARTNER_SITE = "https://www.sklicenssvets.se/en/";
 
 function isRu(locale: Locale) {
   return locale === "ru";
@@ -20,7 +19,6 @@ function getUi(locale: Locale) {
         whoWeWorkWith: "С кем хотим работать",
         whatWeCanHandle: "Что мы можем взять на себя",
         partnerInSweden: "Наш партнёр в Швеции",
-        partnerSite: "Сайт партнёра",
         openToCoop: "Открыты к сотрудничеству",
         sendRequest: "Отправить запрос",
       };
@@ -33,7 +31,6 @@ function getUi(locale: Locale) {
         whoWeWorkWith: "Vilka vi vill arbeta med",
         whatWeCanHandle: "Vad vi kan ta ansvar för",
         partnerInSweden: "Vår partner i Sverige",
-        partnerSite: "Partnerns webbplats",
         openToCoop: "Öppna för samarbete",
         sendRequest: "Skicka förfrågan",
       };
@@ -46,7 +43,6 @@ function getUi(locale: Locale) {
         whoWeWorkWith: "Hvem vi ønsker å jobbe med",
         whatWeCanHandle: "Hva vi kan ta ansvar for",
         partnerInSweden: "Vår partner i Sverige",
-        partnerSite: "Partnerens nettside",
         openToCoop: "Åpne for samarbeid",
         sendRequest: "Send forespørsel",
       };
@@ -59,7 +55,6 @@ function getUi(locale: Locale) {
         whoWeWorkWith: "Hvem vi ønsker at arbejde med",
         whatWeCanHandle: "Hvad vi kan tage ansvar for",
         partnerInSweden: "Vores partner i Sverige",
-        partnerSite: "Partnerens website",
         openToCoop: "Åbne for samarbejde",
         sendRequest: "Send forespørgsel",
       };
@@ -72,7 +67,6 @@ function getUi(locale: Locale) {
         whoWeWorkWith: "Keiden kanssa haluamme työskennellä",
         whatWeCanHandle: "Mitä voimme ottaa vastuullemme",
         partnerInSweden: "Yhteistyökumppanimme Ruotsissa",
-        partnerSite: "Kumppanin sivusto",
         openToCoop: "Avoinna yhteistyölle",
         sendRequest: "Lähetä pyyntö",
       };
@@ -86,7 +80,6 @@ function getUi(locale: Locale) {
         whoWeWorkWith: "Who we want to work with",
         whatWeCanHandle: "What we can take responsibility for",
         partnerInSweden: "Our partner in Sweden",
-        partnerSite: "Partner website",
         openToCoop: "Open to cooperation",
         sendRequest: "Send request",
       };
@@ -298,17 +291,6 @@ export default function PartnersPage({
             >
               {partner.body}
             </p>
-
-            <div className="heroActions" style={{ marginTop: 16 }}>
-              <a
-                className="btnGhost"
-                href={PARTNER_SITE}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {ui.partnerSite}
-              </a>
-            </div>
           </div>
         </div>
       </section>
