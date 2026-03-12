@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getT, type Locale } from "@/src/i18n";
 
 const PROJECT_SLUGS = [
@@ -10,24 +11,48 @@ const PROJECT_SLUGS = [
   "workforce-projects",
 ];
 
+const PROJECT_GALLERY = [
+  {
+    src: "/work_platform_site_01.png",
+    altRu: "Промышленная площадка",
+    altEn: "Industrial platform",
+  },
+  {
+    src: "/work_platform_walkway_01.jpg",
+    altRu: "Лестницы и ограждения",
+    altEn: "Stairs and railings",
+  },
+  {
+    src: "/service_fabrication_01.png",
+    altRu: "Металлокаркас",
+    altEn: "Steel frame",
+  },
+  {
+    src: "/work_repairs_01.png",
+    altRu: "Ремонтные работы",
+    altEn: "Repair works",
+  },
+];
+
 function isRu(locale: Locale) {
   return locale === "ru";
 }
 
 export default function ProjectsPage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
+  const ru = isRu(params.locale);
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
       <div style={{ marginBottom: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
         <Link className="btnGhost" href={`/${params.locale}`}>
-          ← {isRu(params.locale) ? "На главную" : "Home"}
+          ← {ru ? "На главную" : "Home"}
         </Link>
         <Link className="btnGhost" href={`/${params.locale}/services`}>
-          {isRu(params.locale) ? "Услуги" : "Services"}
+          {ru ? "Услуги" : "Services"}
         </Link>
         <Link className="btnGhost" href={`/${params.locale}/contact`}>
-          {isRu(params.locale) ? "Контакты" : "Contact"}
+          {ru ? "Контакты" : "Contact"}
         </Link>
       </div>
 
@@ -42,10 +67,10 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
 
         <div className="heroActions">
           <Link className="btn" href={`/${params.locale}/contact`}>
-            {isRu(params.locale) ? "Запросить цену" : "Get a quote"}
+            {ru ? "Запросить цену" : "Get a quote"}
           </Link>
           <Link className="btnGhost" href={`/${params.locale}/services`}>
-            {isRu(params.locale) ? "Посмотреть услуги" : "View services"}
+            {ru ? "Посмотреть услуги" : "View services"}
           </Link>
         </div>
       </section>
@@ -69,19 +94,65 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
       <section className="section">
         <div className="heroCard">
           <h2 className="sectionTitle" style={{ fontSize: 24 }}>
-            {isRu(params.locale) ? "Проекты по металлоконструкциям" : "Steel structure projects"}
+            {ru ? "Фотографии работ" : "Work photos"}
           </h2>
 
           <p className="heroText" style={{ maxWidth: "none" }}>
-            {isRu(params.locale)
-              ? "На этой странице собраны проекты по изготовлению, сборке, ремонту и монтажу металлоконструкций. Здесь будут примеры промышленных площадок, лестниц и перил, каркасов, опор, ремонтных работ и проектов с привлечением сварщиков, слесарей и монтажников."
-              : "This page collects projects related to fabrication, assembly, repair and installation of steel structures. Here you will find examples of industrial platforms, stairs and railings, steel frames, supports, repair works and projects completed with welders, fitters and installation crews."}
+            {ru
+              ? "Ниже показаны примеры работ по металлоконструкциям, монтажу, изготовлению и ремонту. Позже здесь можно добавить больше фотографий по каждому направлению отдельно."
+              : "Below are examples of steelwork, installation, fabrication and repair projects. Later, more photos can be added for each direction separately."}
+          </p>
+
+          <div
+            style={{
+              marginTop: 18,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 14,
+            }}
+          >
+            {PROJECT_GALLERY.map((item) => (
+              <div
+                key={item.src}
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  aspectRatio: "4 / 3",
+                  borderRadius: 18,
+                  overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  background: "#0a1017",
+                }}
+              >
+                <Image
+                  src={item.src}
+                  alt={ru ? item.altRu : item.altEn}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="heroCard">
+          <h2 className="sectionTitle" style={{ fontSize: 24 }}>
+            {ru ? "Описание проектов" : "Project overview"}
+          </h2>
+
+          <p className="heroText" style={{ maxWidth: "none" }}>
+            {ru
+              ? "На этой странице собраны проекты по изготовлению, сборке, ремонту и монтажу металлоконструкций. Здесь можно посмотреть примеры промышленных площадок, лестниц и ограждений, каркасов, опор, ремонтных работ и проектов с подключением сварщиков, слесарей и монтажных бригад."
+              : "This page brings together projects related to steel fabrication, assembly, repair and installation. Here you can review examples of industrial platforms, stairs and railings, frames, supports, repair works and projects completed with welders, fitters and installation crews."}
           </p>
 
           <p style={{ marginTop: 16, lineHeight: 1.7, color: "rgba(255,255,255,0.80)" }}>
-            {isRu(params.locale)
-              ? "Для SEO и для клиента важно, чтобы список проектов был отдельной страницей с понятными переходами на каждую работу. Так пользователь может перейти в нужный проект, посмотреть описание, фото, объём работ и сразу связаться с нами по похожей задаче."
-              : "For SEO and for real clients, it is important that the project list exists as a separate page with clear links to each case. This allows a visitor to open the relevant project, review photos and scope, and contact us about similar work."}
+            {ru
+              ? "Если вам нужен похожий объём работ, вы можете открыть нужный проект, посмотреть краткое описание и затем отправить нам запрос по своей задаче. Постепенно эта страница будет дополняться новыми примерами и фотографиями выполненных работ."
+              : "If you need similar work, you can open the relevant project, review the short description and then send us your request. Over time, this page can be expanded with more examples and photos of completed work."}
           </p>
         </div>
       </section>
