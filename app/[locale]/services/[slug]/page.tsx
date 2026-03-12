@@ -156,35 +156,25 @@ export default function ServicePage({
           style={{
             position: "relative",
             width: "100%",
-            minHeight: 420,
+            minHeight: 520,
             background: "#090d12",
-            borderBottom: "1px solid rgba(255,255,255,0.14)",
           }}
         >
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "100%",
-              minHeight: 420,
-            }}
-          >
-            <Image
-              src={img}
-              alt={card.title}
-              fill
-              sizes="100vw"
-              style={{ objectFit: "contain", objectPosition: "center" }}
-              priority
-            />
-          </div>
+          <Image
+            src={img}
+            alt={card.title}
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover", objectPosition: "center" }}
+            priority
+          />
 
           <div
             style={{
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.42) 100%)",
+                "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.26) 48%, rgba(8,11,15,0.88) 100%)",
               pointerEvents: "none",
             }}
           />
