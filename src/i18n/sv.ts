@@ -123,6 +123,19 @@ const sv = {
     note:
       "Med 10–20 riktiga projektbilder blir detta er starkaste säljsida.",
   },
+  partners: {
+    title: "Vi söker partners för projekt inom stålkonstruktioner",
+    lead:
+      "AKWELD är intresserat av samarbete med företag som behöver en pålitlig partner för tillverkning, montage och projektstöd inom stålkonstruktioner.",
+    text1:
+      "Vi tar både enskilda uppdrag och långsiktiga samarbeten i Estland, Sverige och övriga regionen.",
+    text2:
+      "Vi vill arbeta med byggföretag, industriföretag, montageföretag och produktionspartners som behöver en stabil entreprenör för delar av arbetet eller för hela projektet.",
+    text3:
+      "Vi kan ta ansvar för tillverkning enligt ritningar, montage på plats, reparation och förstärkning av befintliga konstruktioner samt tillhandahålla svetsare, montörer och verkstadsarbetare för specifika uppgifter.",
+    closing:
+      "Om ni söker en entreprenör eller vill diskutera ett långsiktigt samarbete, skriv till oss på info@akweldsteel.com.",
+  },
   contact: {
     title: "Kontakt",
     lead:
