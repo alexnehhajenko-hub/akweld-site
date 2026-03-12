@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { getT, type Locale } from "@/src/i18n";
 
 const PROJECT_SLUGS = [
@@ -46,6 +49,10 @@ function isRu(locale: Locale) {
 export default function ProjectsPage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
   const ru = isRu(params.locale);
+  const [openedImage, setOpenedImage] = useState<null | {
+    src: string;
+    alt: string;
+  }>(null);
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -116,28 +123,37 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
               gap: 14,
             }}
           >
-            {PROJECT_GALLERY.map((item) => (
-              <div
-                key={item.src}
-                style={{
-                  position: "relative",
-                  width: "100%",
-                  aspectRatio: "4 / 3",
-                  borderRadius: 18,
-                  overflow: "hidden",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  background: "#0a1017",
-                }}
-              >
-                <Image
-                  src={item.src}
-                  alt={ru ? item.altRu : item.altEn}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-            ))}
+            {PROJECT_GALLERY.map((item) => {
+              const alt = ru ? item.altRu : item.altEn;
+
+              return (
+                <button
+                  key={item.src}
+                  type="button"
+                  onClick={() => setOpenedImage({ src: item.src, alt })}
+                  aria-label={alt}
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "4 / 3",
+                    borderRadius: 18,
+                    overflow: "hidden",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    background: "#0a1017",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  <Image
+                    src={item.src}
+                    alt={alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -161,6 +177,74 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
           </p>
         </div>
       </section>
+
+      {openedImage ? (
+        <div
+          onClick={() => setOpenedImage(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            background: "rgba(0,0,0,0.82)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: 1200,
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenedImage(null)}
+              aria-label={ru ? "Закрыть" : "Close"}
+              style={{
+                position: "absolute",
+                top: -8,
+                right: -8,
+                zIndex: 2,
+                width: 44,
+                height: 44,
+                borderRadius: 999,
+                border: "1px solid rgba(255,255,255,0.18)",
+                background: "rgba(9,13,18,0.95)",
+                color: "#fff",
+                fontSize: 22,
+                cursor: "pointer",
+              }}
+            >
+              ×
+            </button>
+
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                aspectRatio: "16 / 10",
+                borderRadius: 18,
+                overflow: "hidden",
+                background: "#0a1017",
+                border: "1px solid rgba(255,255,255,0.12)",
+              }}
+            >
+              <Image
+                src={openedImage.src}
+                alt={openedImage.alt}
+                fill
+                sizes="100vw"
+                style={{ objectFit: "contain" }}
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
