@@ -3,7 +3,6 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
-const 
 const CONTACT_EMAIL = "info@akweldsteel.com";
 
 const HERO_BG = "/hero-bg.png";
@@ -263,12 +262,10 @@ export default function ServicePage({
           </p>
 
           <div className="heroActions">
-            <a className="btn" href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>
-              {isRu(params.locale) ? "Позвонить" : "Call"}: {CONTACT_PHONE}
+            <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
+              Email: {CONTACT_EMAIL}
             </a>
-            
-            
-      
+
             <Link className="btnGhost" href={`/${params.locale}/contact`}>
               {isRu(params.locale) ? "Запросить цену" : "Get a quote"}
             </Link>
