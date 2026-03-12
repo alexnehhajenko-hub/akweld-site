@@ -1,21 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
-const CONTACT_PHONE = "+372 5561 5108";
 const CONTACT_EMAIL = "info@akweldsteel.com";
-
-const HERO_BG = "/hero-bg.png";
-
-const PROJECT_IMAGE_BY_SLUG: Record<string, string> = {
-  "industrial-platforms": "/work_platform_site_01.png",
-  "staircases-railings": "/work_platform_walkway_01.jpg",
-  "steel-frames": "/service_fabrication_01.png",
-  "supports-brackets": "/workforce_dino_electrodes_01.png",
-  "repair-works": "/work_repairs_01.png",
-  "workforce-projects": "/workforce_dino_team_01.png",
-};
 
 const SLUG_ORDER = [
   "industrial-platforms",
@@ -182,24 +169,24 @@ function getSeoText(slug: string, locale: Locale) {
   switch (slug) {
     case "industrial-platforms":
       return ru
-        ? "Этот проектный тип подходит для заказчиков, которым нужны промышленные площадки, металлоконструкции и рабочие зоны под конкретные размеры и условия эксплуатации. Для SEO важно, чтобы страница проекта показывала не только фото, но и понятное описание работ: что изготовили, где применяли, какой был объём и как организован процесс."
-        : "This project type is suitable for clients who need industrial platforms, steel structures and working zones built to real dimensions and site conditions. For SEO, a project page should show not only photos, but also a clear description of the work scope, use case and project process.";
+        ? "Этот проектный тип подходит для заказчиков, которым нужны промышленные площадки, металлоконструкции и рабочие зоны под конкретные размеры и условия эксплуатации. Для SEO важно, чтобы страница проекта показывала понятное описание работ: что изготовили, где применяли, какой был объём и как организован процесс."
+        : "This project type is suitable for clients who need industrial platforms, steel structures and working zones built to real dimensions and site conditions. For SEO, a project page should show a clear description of the work scope, use case and project process.";
     case "staircases-railings":
       return ru
-        ? "Проекты лестниц и перил часто ищут по конкретным запросам, связанным с изготовлением металлоконструкций, ограждений и монтажом под объект. Поэтому страница должна показывать и визуальную часть, и объяснение: какие элементы делались, как проходила сборка и что получил заказчик."
-        : "Stair and railing projects are often searched through specific fabrication and installation queries. That is why the page should show both visual material and a clear explanation of what was built, how it was assembled and what the client received.";
+        ? "Проекты лестниц и перил часто ищут по конкретным запросам, связанным с изготовлением металлоконструкций, ограждений и монтажом под объект. Поэтому страница должна объяснять: какие элементы делались, как проходила сборка и что получил заказчик."
+        : "Stair and railing projects are often searched through specific fabrication and installation queries. That is why the page should clearly explain what was built, how it was assembled and what the client received.";
     case "steel-frames":
       return ru
         ? "Каркасы и рамы — это базовая часть многих строительных и производственных решений. Для продвижения важно, чтобы такая страница показывала уверенность в работе по чертежам, точность сборки и понимание несущих элементов."
         : "Steel frames are a core part of many industrial and construction solutions. For promotion, this page should communicate confidence in working by drawings, assembly accuracy and understanding of structural elements.";
     case "supports-brackets":
       return ru
-        ? "Опоры и кронштейны могут выглядеть как небольшая часть проекта, но именно такие задачи часто важны для заказчиков, которым нужны индивидуальные решения под размеры, оборудование или монтажные условия."
-        : "Supports and brackets may look like smaller tasks, but these are often important for clients who need individual solutions for exact dimensions, equipment or installation conditions.";
+        ? "Опоры и кронштейны часто важны для заказчиков, которым нужны индивидуальные решения под размеры, оборудование или монтажные условия. Здесь важно показать точность, повторяемость и аккуратное исполнение."
+        : "Supports and brackets are often important for clients who need individual solutions for exact dimensions, equipment or installation conditions. This page should highlight precision, repeatability and clean execution.";
     case "repair-works":
       return ru
-        ? "Ремонтные проекты по металлоконструкциям важны там, где нельзя менять всё заново, но нужно быстро усилить, исправить или доработать существующую конструкцию. Это отдельный полезный тип страницы и для клиента, и для поиска."
-        : "Repair projects matter when a full replacement is not needed, but an existing steel structure must be reinforced, corrected or adapted quickly. This is a useful page type both for real clients and for search visibility.";
+        ? "Ремонтные проекты по металлоконструкциям важны там, где нельзя менять всё заново, но нужно быстро усилить, исправить или доработать существующую конструкцию."
+        : "Repair projects matter when a full replacement is not needed, but an existing steel structure must be reinforced, corrected or adapted quickly.";
     case "workforce-projects":
       return ru
         ? "Часть проектов решается не только за счёт производства, но и за счёт сильной рабочей команды. Здесь важно показывать, что компания может подключать сварщиков, слесарей и монтажников под конкретный объём работ."
@@ -209,6 +196,38 @@ function getSeoText(slug: string, locale: Locale) {
         ? "Проекты по металлоконструкциям для Эстонии и Швеции."
         : "Steel structure projects for Estonia and Sweden.";
   }
+}
+
+function getProjectBlueprintDataUri() {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+      <rect width="1600" height="900" fill="#09111b"/>
+      <g opacity="0.16" stroke="#9dc7ff" stroke-width="1">
+        <path d="M0 90H1600M0 180H1600M0 270H1600M0 360H1600M0 450H1600M0 540H1600M0 630H1600M0 720H1600M0 810H1600"/>
+        <path d="M160 0V900M320 0V900M480 0V900M640 0V900M800 0V900M960 0V900M1120 0V900M1280 0V900M1440 0V900"/>
+      </g>
+      <g opacity="0.22" stroke="#6ea8ff" stroke-width="2">
+        <path d="M160 650H520V520H790V650H1150" />
+        <path d="M260 650V420H380V650" />
+        <path d="M380 420H570V320H790V420H1010V650" />
+        <path d="M570 320L660 230H900L990 320" />
+        <path d="M790 650V230" />
+        <path d="M1060 260H1460" />
+        <path d="M1060 340H1510" />
+        <path d="M1060 420H1410" />
+        <path d="M210 720H1180" />
+      </g>
+      <g opacity="0.14" stroke="#d8e9ff" stroke-width="1.5">
+        <path d="M120 160H420" />
+        <path d="M120 240H360" />
+        <path d="M120 320H450" />
+        <path d="M1180 520H1470" />
+        <path d="M1180 600H1420" />
+      </g>
+    </svg>
+  `;
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
 export default function ProjectPage({
@@ -222,11 +241,11 @@ export default function ProjectPage({
   if (idx === -1) return notFound();
 
   const safeItem = t.projects.items[idx] ?? t.projects.items[0];
-  const img = PROJECT_IMAGE_BY_SLUG[params.slug] ?? HERO_BG;
   const lead = getLeadBySlug(params.slug, params.locale);
   const scope = getScopeBySlug(params.slug, params.locale);
   const process = getProcess(params.locale);
   const seoText = getSeoText(params.slug, params.locale);
+  const blueprintBg = getProjectBlueprintDataUri();
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -248,34 +267,27 @@ export default function ProjectPage({
             position: "relative",
             width: "100%",
             minHeight: 420,
-            background: "#090d12",
-            borderBottom: "1px solid rgba(255,255,255,0.14)",
+            background: "#08111b",
           }}
         >
           <div
+            aria-hidden="true"
             style={{
-              position: "relative",
-              width: "100%",
-              height: "100%",
-              minHeight: 420,
+              position: "absolute",
+              inset: 0,
+              backgroundImage: `url("${blueprintBg}")`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: 0.92,
             }}
-          >
-            <Image
-              src={img}
-              alt={safeItem.title}
-              fill
-              sizes="100vw"
-              style={{ objectFit: "contain", objectPosition: "center" }}
-              priority
-            />
-          </div>
-
+          />
           <div
+            aria-hidden="true"
             style={{
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.42) 100%)",
+                "radial-gradient(900px 420px at 20% 10%, rgba(255,196,0,0.07), transparent 55%), linear-gradient(180deg, rgba(5,10,16,0.12) 0%, rgba(5,10,16,0.30) 55%, rgba(6,10,16,0.92) 100%)",
               pointerEvents: "none",
             }}
           />
@@ -291,9 +303,6 @@ export default function ProjectPage({
           </p>
 
           <div className="heroActions">
-            <a className="btn" href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>
-              {isRu(params.locale) ? "Позвонить" : "Call"}: {CONTACT_PHONE}
-            </a>
             <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
               Email: {CONTACT_EMAIL}
             </a>
