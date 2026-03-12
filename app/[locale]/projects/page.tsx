@@ -13,19 +13,24 @@ const PROJECT_SLUGS = [
 
 const PROJECT_GALLERY = [
   {
-    src: "/work_platform_site_01.png",
+    src: "/project_industrial_platforms_01.png",
     altRu: "Промышленная площадка",
     altEn: "Industrial platform",
   },
   {
-    src: "/work_platform_walkway_01.jpg",
+    src: "/project_staircases_railings_01.png",
     altRu: "Лестницы и ограждения",
     altEn: "Stairs and railings",
   },
   {
-    src: "/service_fabrication_01.png",
+    src: "/project_steel_frames_01.png",
     altRu: "Металлокаркас",
     altEn: "Steel frame",
+  },
+  {
+    src: "/project_supports_brackets_01.png",
+    altRu: "Опоры и кронштейны",
+    altEn: "Supports and brackets",
   },
   {
     src: "/work_repairs_01.png",
