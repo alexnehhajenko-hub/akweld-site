@@ -198,7 +198,12 @@ export default function ServicePage({
 
   const isFabrication = card.slug === "fabrication";
   const isWorkforce = card.slug === "workforce";
-  const useBlueprintHero = isFabrication || isWorkforce;
+  const isCapacity = card.slug === "capacity";
+  const isCustom = card.slug === "custom";
+  const isRepairs = card.slug === "repairs";
+
+  const useBlueprintHero =
+    isFabrication || isWorkforce || isCapacity || isCustom || isRepairs;
 
   const img = SERVICE_IMAGE_BY_SLUG[card.slug] ?? HERO_BG;
   const process = getProcess(params.locale);
