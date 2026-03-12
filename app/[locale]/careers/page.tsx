@@ -2,11 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { type Locale } from "@/src/i18n";
 
+const CONTACT_EMAIL = "info@akweldsteel.com";
+
 const SUPPORTED = ["ru", "en"] as const;
 type CareersLocale = (typeof SUPPORTED)[number];
-
-const CONTACT_EMAIL = "info@akweldsteel.com";
-const CONTACT_PHONE = "+372 5561 5108";
 
 function isSupportedLocale(locale: Locale): locale is CareersLocale {
   return locale === "ru" || locale === "en";
@@ -220,11 +219,8 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
         </p>
 
         <div className="heroActions">
-          <a className="btn" href={`mailto:${CONTACT_EMAIL}`}>
+          <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
             Email: {CONTACT_EMAIL}
-          </a>
-          <a className="btnGhost" href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>
-            {CONTACT_PHONE}
           </a>
         </div>
       </section>
