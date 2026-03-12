@@ -55,20 +55,115 @@ function getLeadBySlug(slug: string, locale: Locale) {
   }
 }
 
-function getProcess(locale: Locale) {
-  return isRu(locale)
-    ? [
-        "Получаем запрос, чертежи, размеры или фото объекта.",
-        "Уточняем объём, материалы, сроки и требования по монтажу.",
-        "Согласовываем формат работы: изготовление, монтаж, персонал или ремонт.",
-        "Выполняем работу и держим связь по ходу проекта.",
-      ]
-    : [
-        "We receive your request, drawings, dimensions or site photos.",
-        "We clarify scope, materials, timing and site requirements.",
-        "We agree the work format: fabrication, installation, workforce or repairs.",
-        "We complete the job and keep communication clear during the project.",
-      ];
+function getProcessBySlug(slug: string, locale: Locale) {
+  const ru = isRu(locale);
+
+  switch (slug) {
+    case "fabrication":
+      return ru
+        ? [
+            "Получаем чертежи, размеры, спецификацию или описание задачи.",
+            "Уточняем материалы, объём, сроки изготовления и требования к деталям.",
+            "Запускаем изготовление, сборку и контроль по проекту.",
+            "Подготавливаем конструкции к отгрузке, монтажу или следующему этапу работ.",
+          ]
+        : [
+            "We receive drawings, dimensions, specifications or a task description.",
+            "We clarify materials, scope, production timing and detail requirements.",
+            "We start fabrication, assembly and control according to the project.",
+            "We prepare the structures for delivery, installation or the next project stage.",
+          ];
+
+    case "installation":
+      return ru
+        ? [
+            "Получаем информацию по объекту, чертежи и условия площадки.",
+            "Уточняем объём монтажа, доступ, технику, график и требования безопасности.",
+            "Выходим на объект и выполняем сборку, подгонку и выверку конструкций.",
+            "Проводим финальную проверку и сдаём согласованный объём работ.",
+          ]
+        : [
+            "We receive site information, drawings and project conditions.",
+            "We clarify installation scope, access, lifting, schedule and safety requirements.",
+            "We go to site and carry out assembly, fitting and alignment of the structures.",
+            "We complete final checks and hand over the agreed scope of work.",
+          ];
+
+    case "workforce":
+      return ru
+        ? [
+            "Получаем запрос: сколько людей нужно, на какой срок и под какие задачи.",
+            "Подбираем сварщиков, слесарей или монтажников под объект или цех.",
+            "Согласовываем старт, график, объём работ и формат подключения.",
+            "Люди выходят в проект и работают по согласованной задаче.",
+          ]
+        : [
+            "We review how many people are needed, for how long and for which tasks.",
+            "We select welders, fitters or installers for the site or workshop.",
+            "We agree the start date, schedule, work scope and engagement format.",
+            "The team joins the project and works according to the agreed task.",
+          ];
+
+    case "repairs":
+      return ru
+        ? [
+            "Получаем описание проблемы, фото, чертежи или информацию по объекту.",
+            "Оцениваем текущее состояние конструкции и объём необходимых доработок.",
+            "Согласовываем способ ремонта, усиления или переделки и сроки выполнения.",
+            "Выполняем работы на объекте или в цеху и доводим конструкцию до рабочего состояния.",
+          ]
+        : [
+            "We receive a problem description, photos, drawings or site information.",
+            "We assess the current condition of the structure and the required modifications.",
+            "We agree the repair, reinforcement or rework method and the timing.",
+            "We carry out the work on site or in workshop and bring the structure back into working condition.",
+          ];
+
+    case "capacity":
+      return ru
+        ? [
+            "Получаем информацию по регулярной загрузке, партиям и срокам поставки.",
+            "Уточняем объём, повторяемость изделий, материалы и требования к производству.",
+            "Планируем изготовление под нужный ритм заказчика и согласованный график.",
+            "Выпускаем партии, держим сроки и поддерживаем стабильную загрузку по заказам.",
+          ]
+        : [
+            "We receive information about recurring workload, batches and delivery timing.",
+            "We clarify scope, repeatability of parts, materials and production requirements.",
+            "We plan fabrication according to the client’s rhythm and agreed schedule.",
+            "We produce the batches, keep timelines and support stable order flow.",
+          ];
+
+    case "custom":
+      return ru
+        ? [
+            "Получаем описание нестандартной задачи, размеры, фото или чертежи.",
+            "Уточняем, что именно нужно изготовить, изменить или решить на объекте.",
+            "Считаем объём работ, предлагаем практичное решение и согласовываем сроки.",
+            "Выполняем задачу и доводим проект до понятного результата.",
+          ]
+        : [
+            "We receive a description of the non-standard task, dimensions, photos or drawings.",
+            "We clarify what exactly needs to be fabricated, changed or solved on site.",
+            "We estimate the work scope, propose a practical solution and agree the timing.",
+            "We complete the task and bring the project to a clear result.",
+          ];
+
+    default:
+      return ru
+        ? [
+            "Получаем запрос и основную информацию по задаче.",
+            "Уточняем объём, сроки и формат работы.",
+            "Согласовываем решение и порядок выполнения.",
+            "Выполняем работу и держим связь по проекту.",
+          ]
+        : [
+            "We receive the request and the basic project information.",
+            "We clarify scope, timing and work format.",
+            "We agree the solution and execution order.",
+            "We complete the work and keep communication clear during the project.",
+          ];
+  }
 }
 
 function getRegions(locale: Locale) {
@@ -206,7 +301,7 @@ export default function ServicePage({
     isFabrication || isWorkforce || isCapacity || isCustom || isRepairs;
 
   const img = SERVICE_IMAGE_BY_SLUG[card.slug] ?? HERO_BG;
-  const process = getProcess(params.locale);
+  const process = getProcessBySlug(card.slug, params.locale);
   const regions = getRegions(params.locale);
   const lead = getLeadBySlug(card.slug, params.locale);
   const seoText = getSeoText(card.slug, params.locale);
