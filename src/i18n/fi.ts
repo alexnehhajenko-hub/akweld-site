@@ -123,6 +123,19 @@ const fi = {
     note:
       "Kun lisäätte 10–20 oikeaa projektikuvaa, tästä tulee tärkein myyntisivunne.",
   },
+  partners: {
+    title: "Etsimme kumppaneita teräsrakennusprojekteihin",
+    lead:
+      "AKWELD on kiinnostunut yhteistyöstä yritysten kanssa, jotka tarvitsevat luotettavan toteuttajan teräsrakenteiden valmistukseen, asennukseen ja projektitukeen.",
+    text1:
+      "Otamme vastaan sekä yksittäisiä toimeksiantoja että pitkäaikaista yhteistyötä Virossa, Ruotsissa ja muualla alueella.",
+    text2:
+      "Haluamme tehdä yhteistyötä rakennusyritysten, teollisuusyritysten, asennusurakoitsijoiden ja tuotantokumppaneiden kanssa, jotka tarvitsevat vakaata kumppania osaan työtä tai koko projektiin.",
+    text3:
+      "Voimme vastata teräsrakenteiden valmistuksesta piirustusten mukaan, asennuksesta työmaalla, olemassa olevien rakenteiden korjauksesta ja vahvistamisesta sekä tarjota hitsaajia, asentajia ja kokoonpanijoita tiettyihin tehtäviin.",
+    closing:
+      "Jos etsitte toteuttajaa tai haluatte keskustella pitkäaikaisesta yhteistyöstä, ottakaa yhteyttä osoitteeseen info@akweldsteel.com.",
+  },
   contact: {
     title: "Yhteys",
     lead:
