@@ -121,6 +121,49 @@ function getSeoText(slug: string, locale: Locale) {
   }
 }
 
+function getFabricationBlueprintDataUri() {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+      <rect width="1600" height="900" fill="#09111b"/>
+      <g opacity="0.16" stroke="#9dc7ff" stroke-width="1">
+        <path d="M0 90H1600M0 180H1600M0 270H1600M0 360H1600M0 450H1600M0 540H1600M0 630H1600M0 720H1600M0 810H1600"/>
+        <path d="M160 0V900M320 0V900M480 0V900M640 0V900M800 0V900M960 0V900M1120 0V900M1280 0V900M1440 0V900"/>
+      </g>
+      <g opacity="0.24" stroke="#6ea8ff" stroke-width="2">
+        <path d="M170 640H510V520H760V640H1120" />
+        <path d="M250 640V400H370V640" />
+        <path d="M370 400H560V300H760V400H980V640" />
+        <path d="M560 300L640 220H860L940 300" />
+        <path d="M980 640V420H1120V640" />
+        <path d="M760 640V220" />
+        <path d="M760 220L890 140H1090V220" />
+        <path d="M620 520H900" />
+        <path d="M220 700H1180" />
+        <path d="M230 690V710M340 690V710M450 690V710M560 690V710M670 690V710M780 690V710M890 690V710M1000 690V710M1110 690V710" />
+      </g>
+      <g opacity="0.18" stroke="#d8e9ff" stroke-width="1.5">
+        <path d="M1180 220H1450" />
+        <path d="M1180 300H1510" />
+        <path d="M1180 380H1410" />
+        <path d="M1180 460H1490" />
+        <path d="M120 160H420" />
+        <path d="M120 240H360" />
+        <path d="M120 320H450" />
+      </g>
+      <g opacity="0.08" fill="#9dc7ff">
+        <circle cx="250" cy="400" r="6"/>
+        <circle cx="370" cy="400" r="6"/>
+        <circle cx="560" cy="300" r="6"/>
+        <circle cx="760" cy="220" r="6"/>
+        <circle cx="940" cy="300" r="6"/>
+        <circle cx="980" cy="420" r="6"/>
+      </g>
+    </svg>
+  `;
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
 export default function ServicePage({
   params,
 }: {
@@ -131,11 +174,13 @@ export default function ServicePage({
 
   if (!card) return notFound();
 
+  const isFabrication = card.slug === "fabrication";
   const img = SERVICE_IMAGE_BY_SLUG[card.slug] ?? HERO_BG;
   const process = getProcess(params.locale);
   const regions = getRegions(params.locale);
   const lead = getLeadBySlug(card.slug, params.locale);
   const seoText = getSeoText(card.slug, params.locale);
+  const blueprintBg = getFabricationBlueprintDataUri();
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -156,28 +201,56 @@ export default function ServicePage({
           style={{
             position: "relative",
             width: "100%",
-            minHeight: 520,
-            background: "#090d12",
+            minHeight: isFabrication ? 420 : 520,
+            background: isFabrication ? "#08111b" : "#090d12",
           }}
         >
-          <Image
-            src={img}
-            alt={card.title}
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover", objectPosition: "center" }}
-            priority
-          />
-
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.26) 48%, rgba(8,11,15,0.88) 100%)",
-              pointerEvents: "none",
-            }}
-          />
+          {isFabrication ? (
+            <>
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage: `url("${blueprintBg}")`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  opacity: 0.92,
+                }}
+              />
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "radial-gradient(900px 420px at 20% 10%, rgba(255,196,0,0.07), transparent 55%), linear-gradient(180deg, rgba(5,10,16,0.12) 0%, rgba(5,10,16,0.30) 55%, rgba(6,10,16,0.92) 100%)",
+                  pointerEvents: "none",
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <Image
+                src={img}
+                alt={card.title}
+                fill
+                sizes="100vw"
+                style={{ objectFit: "cover", objectPosition: "center" }}
+                priority
+              />
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.26) 48%, rgba(8,11,15,0.88) 100%)",
+                  pointerEvents: "none",
+                }}
+              />
+            </>
+          )}
         </div>
 
         <div style={{ padding: 24 }}>
