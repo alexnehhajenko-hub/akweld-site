@@ -91,28 +91,28 @@ function getSeoText(slug: string, locale: Locale) {
   switch (slug) {
     case "fabrication":
       return ru
-        ? "Услуга изготовления металлоконструкций подходит для заказчиков, которым нужен понятный производственный процесс, аккуратная сборка и готовность работать по чертежам. Мы изготавливаем элементы для объектов, производственных площадок, лестниц, рам, опор и нестандартных изделий. Для SEO и для реальных клиентов важно, чтобы страница сразу показывала: чем именно мы занимаемся, в каких странах работаем и как с нами связаться."
-        : "Our steel fabrication service is for clients who need a clear production process, clean assembly and work by drawings. We fabricate elements for industrial sites, stairs, frames, supports and custom steel products. For both SEO and real clients, the page should clearly show what we do, where we work and how to contact us.";
+        ? "Изготовление металлоконструкций подходит для заказчиков, которым нужен понятный производственный процесс и работа по чертежам. Мы изготавливаем элементы для объектов, производственных площадок, лестниц, рам, опор и нестандартных изделий."
+        : "Steel fabrication is suitable for clients who need a clear production process and work based on drawings. We fabricate elements for industrial sites, stairs, frames, supports and custom steel products.";
     case "installation":
       return ru
-        ? "Монтаж металлоконструкций включает сборку, подгонку, выверку и финальные работы на объекте. Такая страница должна быть полезной и для клиента, и для поиска: человек сразу должен понять, что мы можем отправить бригаду на объект, работать по площадке и соблюдать требования по срокам и безопасности."
-        : "Steel installation includes assembly, fitting, alignment and finishing work on site. This page should help both real clients and search engines: it must clearly show that we can send crews to site, work under project requirements and keep timelines and safety in mind.";
+        ? "Монтаж металлоконструкций включает сборку, подгонку, выверку и финальные работы на объекте. Мы можем отправить бригаду на площадку, работать по требованиям проекта и соблюдать согласованные сроки."
+        : "Steel installation includes assembly, fitting, alignment and finishing work on site. We can send a crew to the project, work according to site requirements and keep agreed timelines.";
     case "workforce":
       return ru
-        ? "Аренда квалифицированного персонала — это отдельное направление: сварщики, слесари, монтажники и специалисты по металлоконструкциям. Для SEO важно, чтобы эта страница содержала понятные ключевые смыслы: рабочие в Эстонии, рабочие в Швеции, монтажные бригады, сварщики на проект и слесари-сборщики на производство."
-        : "Qualified workforce rental is a separate service: welders, fitters, installers and steel structure specialists. For SEO this page should clearly cover topics like workers in Estonia, workers in Sweden, installation crews, project welders and workshop fitters.";
+        ? "Аренда квалифицированного персонала — это отдельное направление: сварщики, слесари, монтажники и специалисты по металлоконструкциям. Такой формат подходит, когда нужно быстро усилить бригаду на объекте или в производстве."
+        : "Qualified workforce rental is a separate service: welders, fitters, installers and steel structure specialists. This format works well when a client needs to strengthen a site team or workshop capacity quickly.";
     case "repairs":
       return ru
-        ? "Ремонт и доработки металлоконструкций нужны там, где важно быстро усилить, исправить или адаптировать уже существующее решение. На практике это может быть переделка узлов, усиление конструкции, исправление геометрии или доработка под новые требования."
-        : "Repairs and steel structure modifications are needed when an existing solution must be reinforced, corrected or adapted. In practice this can mean joint rework, structural reinforcement, geometry correction or adjustment for new requirements.";
+        ? "Ремонт и доработки металлоконструкций нужны там, где важно быстро усилить, исправить или адаптировать уже существующее решение. Это может быть переделка узлов, усиление конструкции, исправление геометрии или доработка под новые требования."
+        : "Repairs and steel structure modifications are needed when an existing solution must be reinforced, corrected or adapted quickly. This can include joint rework, structural reinforcement, geometry correction or adjustment for new requirements.";
     case "capacity":
       return ru
-        ? "Производственные мощности важны для заказчиков, которым нужен не один разовый элемент, а регулярная поддержка по изготовлению деталей и серийных партий. Здесь важно показать стабильность, прогнозируемость и возможность брать повторяемые заказы."
-        : "Workshop capacity matters for clients who need not only one-off elements, but stable support for repeat parts and serial production. This page should communicate stability, predictability and the ability to handle recurring orders.";
+        ? "Производственные мощности важны для заказчиков, которым нужна не разовая деталь, а регулярная поддержка по изготовлению. Мы можем работать с повторяемыми заказами, серийными партиями и стабильной загрузкой по производству."
+        : "Workshop capacity matters for clients who need more than a one-off part and require regular production support. We can work with repeat orders, serial batches and stable fabrication workload.";
     case "custom":
       return ru
-        ? "Нестандартные задачи — это то, что часто ищут по запросам, связанным с индивидуальным изготовлением, сложными деталями и работой по месту. Поэтому на такой странице важно показать, что мы умеем обсуждать нестандарт, быстро считать объём и предлагать понятное решение."
-        : "Custom steel work is often searched through queries about individual fabrication, difficult parts and special projects. This page should show that we can discuss custom work, estimate scope quickly and offer a clear solution.";
+        ? "Нестандартные задачи подходят для проектов, где нужен индивидуальный подход, сложные детали или работа по месту. Мы обсуждаем объём, быстро считаем задачу и предлагаем понятное решение под конкретный проект."
+        : "Custom steel work is suitable for projects that require an individual approach, complex parts or site-specific solutions. We review the scope, estimate the task quickly and offer a clear solution for the project.";
     default:
       return ru
         ? "Мы работаем с проектами по металлоконструкциям, монтажу и производству."
