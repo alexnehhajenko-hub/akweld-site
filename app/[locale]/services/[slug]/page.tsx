@@ -99,8 +99,8 @@ function getSeoText(slug: string, locale: Locale) {
         : "Steel installation includes assembly, fitting, alignment and finishing work on site. We can send a crew to the project, work according to site requirements and keep agreed timelines.";
     case "workforce":
       return ru
-        ? "Аренда квалифицированного персонала — это отдельное направление: сварщики, слесари, монтажники и специалисты по металлоконструкциям. Такой формат подходит, когда нужно быстро усилить бригаду на объекте или в производстве."
-        : "Qualified workforce rental is a separate service: welders, fitters, installers and steel structure specialists. This format works well when a client needs to strengthen a site team or workshop capacity quickly.";
+        ? "Аренда квалифицированного персонала подходит для проектов, где нужно быстро усилить бригаду на объекте или в цеху. Мы подключаем сварщиков, слесарей и монтажников под конкретный объём работ, согласованные сроки и реальные задачи заказчика."
+        : "Qualified workforce rental is suitable for projects where a client needs to strengthen a site team or workshop quickly. We provide welders, fitters and installers for a defined scope of work, agreed timelines and real project needs.";
     case "repairs":
       return ru
         ? "Ремонт и доработки металлоконструкций нужны там, где важно быстро усилить, исправить или адаптировать уже существующее решение. Это может быть переделка узлов, усиление конструкции, исправление геометрии или доработка под новые требования."
