@@ -120,7 +120,9 @@ function getSeoText(slug: string, locale: Locale) {
   }
 }
 
-function getFabricationBlueprintDataUri() {
+function getBlueprintDataUri(kind: "fabrication" | "workforce") {
+  const accent = kind === "workforce" ? "#7fb7ff" : "#6ea8ff";
+
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
       <rect width="1600" height="900" fill="#09111b"/>
@@ -128,7 +130,10 @@ function getFabricationBlueprintDataUri() {
         <path d="M0 90H1600M0 180H1600M0 270H1600M0 360H1600M0 450H1600M0 540H1600M0 630H1600M0 720H1600M0 810H1600"/>
         <path d="M160 0V900M320 0V900M480 0V900M640 0V900M800 0V900M960 0V900M1120 0V900M1280 0V900M1440 0V900"/>
       </g>
-      <g opacity="0.24" stroke="#6ea8ff" stroke-width="2">
+      ${
+        kind === "fabrication"
+          ? `
+      <g opacity="0.24" stroke="${accent}" stroke-width="2">
         <path d="M170 640H510V520H760V640H1120" />
         <path d="M250 640V400H370V640" />
         <path d="M370 400H560V300H760V400H980V640" />
@@ -138,13 +143,31 @@ function getFabricationBlueprintDataUri() {
         <path d="M760 220L890 140H1090V220" />
         <path d="M620 520H900" />
         <path d="M220 700H1180" />
-        <path d="M230 690V710M340 690V710M450 690V710M560 690V710M670 690V710M780 690V710M890 690V710M1000 690V710M1110 690V710" />
       </g>
+      `
+          : `
+      <g opacity="0.24" stroke="${accent}" stroke-width="2">
+        <path d="M180 650H500V520H760V650H1080" />
+        <path d="M260 650V380H380V650" />
+        <path d="M380 380H560V290H760V380H980V650" />
+        <path d="M290 520L430 430L540 520" />
+        <path d="M620 520L760 420L900 520" />
+        <path d="M980 650V430H1120V650" />
+        <path d="M1180 250H1460" />
+        <path d="M1180 330H1510" />
+        <path d="M1180 410H1410" />
+      </g>
+      <g opacity="0.14" stroke="#d8e9ff" stroke-width="1.5">
+        <circle cx="430" cy="430" r="44"/>
+        <circle cx="760" cy="420" r="44"/>
+        <path d="M430 474V565" />
+        <path d="M760 464V565" />
+        <path d="M386 565H474" />
+        <path d="M716 565H804" />
+      </g>
+      `
+      }
       <g opacity="0.18" stroke="#d8e9ff" stroke-width="1.5">
-        <path d="M1180 220H1450" />
-        <path d="M1180 300H1510" />
-        <path d="M1180 380H1410" />
-        <path d="M1180 460H1490" />
         <path d="M120 160H420" />
         <path d="M120 240H360" />
         <path d="M120 320H450" />
@@ -174,12 +197,15 @@ export default function ServicePage({
   if (!card) return notFound();
 
   const isFabrication = card.slug === "fabrication";
+  const isWorkforce = card.slug === "workforce";
+  const useBlueprintHero = isFabrication || isWorkforce;
+
   const img = SERVICE_IMAGE_BY_SLUG[card.slug] ?? HERO_BG;
   const process = getProcess(params.locale);
   const regions = getRegions(params.locale);
   const lead = getLeadBySlug(card.slug, params.locale);
   const seoText = getSeoText(card.slug, params.locale);
-  const blueprintBg = getFabricationBlueprintDataUri();
+  const blueprintBg = getBlueprintDataUri(isWorkforce ? "workforce" : "fabrication");
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -200,11 +226,11 @@ export default function ServicePage({
           style={{
             position: "relative",
             width: "100%",
-            minHeight: isFabrication ? 420 : 520,
-            background: isFabrication ? "#08111b" : "#090d12",
+            minHeight: useBlueprintHero ? 420 : 520,
+            background: useBlueprintHero ? "#08111b" : "#090d12",
           }}
         >
-          {isFabrication ? (
+          {useBlueprintHero ? (
             <>
               <div
                 aria-hidden="true"
