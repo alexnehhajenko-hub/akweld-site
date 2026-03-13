@@ -199,9 +199,9 @@ button, select, input, textarea { font: inherit; }
 
 .heroTitle {
   margin: 0;
-  font-size: 34px;
-  line-height: 1.04;
-  letter-spacing: -0.6px;
+  font-size: 30px;
+  line-height: 1.06;
+  letter-spacing: -0.5px;
   position: relative;
   max-width: 12ch;
 }
@@ -367,7 +367,7 @@ button, select, input, textarea { font: inherit; }
   }
 
   .heroTitle {
-    font-size: 64px;
+    font-size: 48px;
   }
 
   .heroText {
@@ -396,12 +396,16 @@ button, select, input, textarea { font: inherit; }
   }
 
   .heroTitle {
-    font-size: 72px;
+    font-size: 58px;
   }
 }
 
 @media (min-width: 1400px) {
   .heroGrid {
     grid-template-columns: minmax(700px, 1.08fr) minmax(600px, 0.92fr);
+  }
+
+  .heroTitle {
+    font-size: 62px;
   }
 }
