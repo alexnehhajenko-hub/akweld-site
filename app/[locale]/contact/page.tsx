@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { upload, type PutBlobResult } from "@vercel/blob/client";
+import { upload } from "@vercel/blob/client";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
@@ -54,7 +54,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
     const uploaded: UploadedFile[] = [];
 
     for (const file of selectedFiles) {
-      const blob: PutBlobResult = await upload(file.name, file, {
+      const blob = await upload(file.name, file, {
         access: "private" as any,
         handleUploadUrl: "/api/contact/upload",
       });
