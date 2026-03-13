@@ -199,11 +199,11 @@ button, select, input, textarea { font: inherit; }
 
 .heroTitle {
   margin: 0;
-  font-size: 30px;
-  line-height: 1.06;
-  letter-spacing: -0.5px;
+  font-size: 28px;
+  line-height: 1.08;
+  letter-spacing: -0.4px;
   position: relative;
-  max-width: 12ch;
+  max-width: 14ch;
 }
 
 .heroTitle span {
@@ -263,7 +263,7 @@ button, select, input, textarea { font: inherit; }
 
 .sectionTitle {
   margin: 0 0 14px;
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: -0.2px;
 }
 
@@ -290,7 +290,7 @@ button, select, input, textarea { font: inherit; }
 
 .card h3 {
   margin: 0;
-  font-size: 17px;
+  font-size: 20px;
   line-height: 1.3;
 }
 
@@ -367,7 +367,7 @@ button, select, input, textarea { font: inherit; }
   }
 
   .heroTitle {
-    font-size: 48px;
+    font-size: 40px;
   }
 
   .heroText {
@@ -396,7 +396,7 @@ button, select, input, textarea { font: inherit; }
   }
 
   .heroTitle {
-    font-size: 58px;
+    font-size: 48px;
   }
 }
 
@@ -406,6 +406,6 @@ button, select, input, textarea { font: inherit; }
   }
 
   .heroTitle {
-    font-size: 62px;
+    font-size: 52px;
   }
 }
