@@ -125,8 +125,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
       setForm(initialForm);
       setFiles([]);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Request failed";
+      const message = error instanceof Error ? error.message : "Request failed";
 
       setStatus({
         ok: false,
@@ -222,8 +221,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <label className="small" style={{ marginTop: 4 }}>
                 {ru
-                  ? "Прикрепите чертежи, PDF-файлы, фотографии."
-                  : "Attach drawings, PDF files, photos."}
+                  ? "Прикрепите чертежи, PDF-файлы, фотографии"
+                  : "Attach drawings, PDF files, photos"}
               </label>
 
               <input
@@ -253,7 +252,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <div className="small">
                 {ru
-                  ? "Эта форма отправляет запрос на адрес info@akweldsteel.com. Файлы будут доступны по прямой ссылке."
+                  ? "Форма отправляет заявку на email info@akweldsteel.com. Файлы будут доступны по прямой ссылке."
                   : "This form sends the request to info@akweldsteel.com. Files will be available by direct link."}
               </div>
 
