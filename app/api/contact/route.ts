@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     for (const file of files) {
       const safeFileName = file.name.replace(/\s+/g, "-");
       const blob = await put(`contact/${Date.now()}-${safeFileName}`, file, {
-        access: "private",
+        access: "private" as any,
         addRandomSuffix: true,
       });
 
