@@ -55,7 +55,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
     for (const file of selectedFiles) {
       const blob = await upload(file.name, file, {
-        access: "private" as any,
+        access: "public",
         handleUploadUrl: "/api/contact/upload",
       });
 
@@ -222,8 +222,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <label className="small" style={{ marginTop: 4 }}>
                 {ru
-                  ? "Прикрепить чертежи, PDF, фото"
-                  : "Attach drawings, PDFs, photos"}
+                  ? "Прикрепите чертежи, PDF-файлы, фотографии."
+                  : "Attach drawings, PDF files, photos."}
               </label>
 
               <input
@@ -253,8 +253,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <div className="small">
                 {ru
-                  ? "Форма отправляет заявку на email info@akweldsteel.com. Большие файлы грузятся напрямую в Blob."
-                  : "This form sends the request to info@akweldsteel.com. Large files are uploaded directly to Blob."}
+                  ? "Эта форма отправляет запрос на адрес info@akweldsteel.com. Файлы будут доступны по прямой ссылке."
+                  : "This form sends the request to info@akweldsteel.com. Files will be available by direct link."}
               </div>
 
               {status ? (
