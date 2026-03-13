@@ -135,6 +135,10 @@ const LABELS: Record<
     skills: string;
     drawings: string;
     work: string;
+    languages: string;
+    englishLevel: string;
+    germanLevel: string;
+    driverLicense: string;
     about: string;
     send: string;
     note: string;
@@ -152,6 +156,10 @@ const LABELS: Record<
     skills: "Какие виды сварки / сборки / слесарных работ вы умеете?",
     drawings: "Умеете ли читать чертежи?",
     work: "Готовы ли работать в Эстонии / Швеции?",
+    languages: "Какими языками вы владеете?",
+    englishLevel: "Какой у вас уровень английского?",
+    germanLevel: "Какой у вас уровень немецкого?",
+    driverLicense: "Какая у вас категория прав?",
     about: "Кратко расскажите о себе",
     send: "Отправить анкету",
     note: "Пока это временный вариант: форма открывает почтовое приложение. Потом подключим полноценную отправку на email или сервер.",
@@ -168,6 +176,10 @@ const LABELS: Record<
     skills: "What welding / fitting / assembly skills do you have?",
     drawings: "Can you read drawings?",
     work: "Are you ready to work in Estonia / Sweden?",
+    languages: "Which languages do you speak?",
+    englishLevel: "What is your English level?",
+    germanLevel: "What is your German level?",
+    driverLicense: "Which driver’s license category do you have?",
     about: "Tell us about yourself",
     send: "Send application",
     note: "This is a temporary version: the form opens your email app. Later we can connect full sending to email or server.",
@@ -351,6 +363,26 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
             <div>
               {fieldLabel(l.work)}
               <textarea className="textarea" name="work" placeholder={l.work} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.languages)}
+              <textarea className="textarea" name="languages" placeholder={l.languages} required />
+            </div>
+
+            <div>
+              {fieldLabel(l.englishLevel)}
+              <input className="input" type="text" name="englishLevel" placeholder={l.englishLevel} />
+            </div>
+
+            <div>
+              {fieldLabel(l.germanLevel)}
+              <input className="input" type="text" name="germanLevel" placeholder={l.germanLevel} />
+            </div>
+
+            <div>
+              {fieldLabel(l.driverLicense)}
+              <input className="input" type="text" name="driverLicense" placeholder={l.driverLicense} />
             </div>
 
             <div>
