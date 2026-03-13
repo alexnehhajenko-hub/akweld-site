@@ -1,11 +1,58 @@
+"use client";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useMemo, useState } from "react";
+import { upload } from "@vercel/blob/client";
 import { type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
 
 const SUPPORTED = ["ru", "en"] as const;
 type CareersLocale = (typeof SUPPORTED)[number];
+
+type UploadedFile = {
+  name: string;
+  url: string;
+};
+
+type FormState = {
+  name: string;
+  age: string;
+  phone: string;
+  email: string;
+  city: string;
+  passport: string;
+  job: string;
+  experience: string;
+  skills: string;
+  drawings: string;
+  work: string;
+  languages: string;
+  englishLevel: string;
+  germanLevel: string;
+  driverLicense: string;
+  about: string;
+};
+
+const initialForm: FormState = {
+  name: "",
+  age: "",
+  phone: "",
+  email: "",
+  city: "",
+  passport: "",
+  job: "",
+  experience: "",
+  skills: "",
+  drawings: "",
+  work: "",
+  languages: "",
+  englishLevel: "",
+  germanLevel: "",
+  driverLicense: "",
+  about: "",
+};
 
 function isSupportedLocale(locale: Locale): locale is CareersLocale {
   return locale === "ru" || locale === "en";
@@ -112,13 +159,13 @@ const WHY_ITEMS: Record<CareersLocale, string[]> = {
 };
 
 const FORM_TITLE: Record<CareersLocale, string> = {
-  ru: "Короткая анкета",
-  en: "Quick application form",
+  ru: "Анкета кандидата",
+  en: "Candidate application form",
 };
 
 const FORM_LEAD: Record<CareersLocale, string> = {
-  ru: "Если вы хотите откликнуться сразу, заполните форму ниже. Потом мы свяжемся с вами и обсудим детали.",
-  en: "If you want to apply right away, fill in the form below. After that we will contact you and discuss the details.",
+  ru: "Заполните анкету и прикрепите CV, сертификаты, допуски, разрешения на работу или другие документы.",
+  en: "Fill in the application form and attach your CV, certificates, permits or other documents.",
 };
 
 const LABELS: Record<
@@ -140,8 +187,12 @@ const LABELS: Record<
     germanLevel: string;
     driverLicense: string;
     about: string;
+    files: string;
     send: string;
     note: string;
+    success: string;
+    error: string;
+    required: string;
   }
 > = {
   ru: {
@@ -161,8 +212,12 @@ const LABELS: Record<
     germanLevel: "Какой у вас уровень немецкого?",
     driverLicense: "Какая у вас категория прав?",
     about: "Кратко расскажите о себе",
+    files: "Прикрепить CV, сертификаты, разрешения, фото документов",
     send: "Отправить анкету",
-    note: "Пока это временный вариант: форма открывает почтовое приложение. Потом подключим полноценную отправку на email или сервер.",
+    note: "Документы загружаются отдельно, а в письмо приходят ссылки на файлы.",
+    success: "Анкета отправлена. Ссылки на файлы добавлены в письмо.",
+    error: "Не удалось отправить анкету.",
+    required: "Заполните имя, телефон, должность и опыт.",
   },
   en: {
     name: "Full name",
@@ -181,8 +236,12 @@ const LABELS: Record<
     germanLevel: "What is your German level?",
     driverLicense: "Which driver’s license category do you have?",
     about: "Tell us about yourself",
+    files: "Attach CV, certificates, permits, document photos",
     send: "Send application",
-    note: "This is a temporary version: the form opens your email app. Later we can connect full sending to email or server.",
+    note: "Documents are uploaded separately and the email contains file links.",
+    success: "Application sent. File links were added to the email.",
+    error: "Could not send the application.",
+    required: "Please fill in name, phone, position and experience.",
   },
 };
 
@@ -206,6 +265,96 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
 
   const locale = params.locale;
   const l = LABELS[locale];
+
+  const [form, setForm] = useState<FormState>(initialForm);
+  const [files, setFiles] = useState<File[]>([]);
+  const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState<null | { ok: boolean; text: string }>(null);
+
+  function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  const fileListText = useMemo(() => {
+    if (!files.length) return "";
+    return files.map((file) => `${file.name} (${Math.round(file.size / 1024)} KB)`).join("\n");
+  }, [files]);
+
+  async function uploadFilesToBlob(selectedFiles: File[]): Promise<UploadedFile[]> {
+    const uploaded: UploadedFile[] = [];
+
+    for (const file of selectedFiles) {
+      const blob = await upload(file.name, file, {
+        access: "private" as any,
+        handleUploadUrl: "/api/careers/upload",
+      });
+
+      uploaded.push({
+        name: file.name,
+        url: blob.url,
+      });
+    }
+
+    return uploaded;
+  }
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus(null);
+
+    if (!form.name.trim() || !form.phone.trim() || !form.job.trim() || !form.experience.trim()) {
+      setStatus({
+        ok: false,
+        text: l.required,
+      });
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      let uploadedFiles: UploadedFile[] = [];
+
+      if (files.length > 0) {
+        uploadedFiles = await uploadFilesToBlob(files);
+      }
+
+      const res = await fetch("/api/careers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          locale,
+          ...form,
+          uploadedFiles,
+        }),
+      });
+
+      const data = (await res.json().catch(() => null)) as
+        | { ok?: boolean; error?: string }
+        | null;
+
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || "Request failed");
+      }
+
+      setStatus({
+        ok: true,
+        text: l.success,
+      });
+      setForm(initialForm);
+      setFiles([]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : l.error;
+      setStatus({
+        ok: false,
+        text: `${l.error} ${message}`,
+      });
+    } finally {
+      setIsSending(false);
+    }
+  }
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -303,102 +452,238 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
             {FORM_LEAD[locale]}
           </p>
 
-          <form
-            className="form"
-            action={`mailto:${CONTACT_EMAIL}`}
-            method="post"
-            encType="text/plain"
-            style={{ marginTop: 18 }}
-          >
+          <form className="form" onSubmit={onSubmit} style={{ marginTop: 18 }}>
             <div>
               {fieldLabel(l.name)}
-              <input className="input" type="text" name="name" placeholder={l.name} required />
+              <input
+                className="input"
+                type="text"
+                name="name"
+                placeholder={l.name}
+                value={form.name}
+                onChange={(e) => updateField("name", e.target.value)}
+                required
+              />
             </div>
 
             <div>
               {fieldLabel(l.age)}
-              <input className="input" type="text" name="age" placeholder={l.age} required />
+              <input
+                className="input"
+                type="text"
+                name="age"
+                placeholder={l.age}
+                value={form.age}
+                onChange={(e) => updateField("age", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.phone)}
-              <input className="input" type="text" name="phone" placeholder={l.phone} required />
+              <input
+                className="input"
+                type="text"
+                name="phone"
+                placeholder={l.phone}
+                value={form.phone}
+                onChange={(e) => updateField("phone", e.target.value)}
+                required
+              />
             </div>
 
             <div>
               {fieldLabel(l.email)}
-              <input className="input" type="email" name="email" placeholder={l.email} />
+              <input
+                className="input"
+                type="email"
+                name="email"
+                placeholder={l.email}
+                value={form.email}
+                onChange={(e) => updateField("email", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.city)}
-              <input className="input" type="text" name="city" placeholder={l.city} />
+              <input
+                className="input"
+                type="text"
+                name="city"
+                placeholder={l.city}
+                value={form.city}
+                onChange={(e) => updateField("city", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.passport)}
-              <textarea className="textarea" name="passport" placeholder={l.passport} required />
+              <textarea
+                className="textarea"
+                name="passport"
+                placeholder={l.passport}
+                value={form.passport}
+                onChange={(e) => updateField("passport", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.job)}
-              <textarea className="textarea" name="job" placeholder={l.job} required />
+              <textarea
+                className="textarea"
+                name="job"
+                placeholder={l.job}
+                value={form.job}
+                onChange={(e) => updateField("job", e.target.value)}
+                required
+              />
             </div>
 
             <div>
               {fieldLabel(l.experience)}
-              <input className="input" type="text" name="experience" placeholder={l.experience} required />
+              <input
+                className="input"
+                type="text"
+                name="experience"
+                placeholder={l.experience}
+                value={form.experience}
+                onChange={(e) => updateField("experience", e.target.value)}
+                required
+              />
             </div>
 
             <div>
               {fieldLabel(l.skills)}
-              <textarea className="textarea" name="skills" placeholder={l.skills} required />
+              <textarea
+                className="textarea"
+                name="skills"
+                placeholder={l.skills}
+                value={form.skills}
+                onChange={(e) => updateField("skills", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.drawings)}
-              <textarea className="textarea" name="drawings" placeholder={l.drawings} />
+              <textarea
+                className="textarea"
+                name="drawings"
+                placeholder={l.drawings}
+                value={form.drawings}
+                onChange={(e) => updateField("drawings", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.work)}
-              <textarea className="textarea" name="work" placeholder={l.work} required />
+              <textarea
+                className="textarea"
+                name="work"
+                placeholder={l.work}
+                value={form.work}
+                onChange={(e) => updateField("work", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.languages)}
-              <textarea className="textarea" name="languages" placeholder={l.languages} required />
+              <textarea
+                className="textarea"
+                name="languages"
+                placeholder={l.languages}
+                value={form.languages}
+                onChange={(e) => updateField("languages", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.englishLevel)}
-              <input className="input" type="text" name="englishLevel" placeholder={l.englishLevel} />
+              <input
+                className="input"
+                type="text"
+                name="englishLevel"
+                placeholder={l.englishLevel}
+                value={form.englishLevel}
+                onChange={(e) => updateField("englishLevel", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.germanLevel)}
-              <input className="input" type="text" name="germanLevel" placeholder={l.germanLevel} />
+              <input
+                className="input"
+                type="text"
+                name="germanLevel"
+                placeholder={l.germanLevel}
+                value={form.germanLevel}
+                onChange={(e) => updateField("germanLevel", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.driverLicense)}
-              <input className="input" type="text" name="driverLicense" placeholder={l.driverLicense} />
+              <input
+                className="input"
+                type="text"
+                name="driverLicense"
+                placeholder={l.driverLicense}
+                value={form.driverLicense}
+                onChange={(e) => updateField("driverLicense", e.target.value)}
+              />
             </div>
 
             <div>
               {fieldLabel(l.about)}
-              <textarea className="textarea" name="about" placeholder={l.about} />
+              <textarea
+                className="textarea"
+                name="about"
+                placeholder={l.about}
+                value={form.about}
+                onChange={(e) => updateField("about", e.target.value)}
+              />
             </div>
 
+            <div>
+              {fieldLabel(l.files)}
+              <input
+                className="input"
+                type="file"
+                multiple
+                accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
+                onChange={(e) => setFiles(Array.from(e.target.files || []))}
+              />
+            </div>
+
+            {files.length > 0 ? (
+              <textarea
+                className="textarea"
+                readOnly
+                value={fileListText}
+                style={{ minHeight: 100 }}
+              />
+            ) : null}
+
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 6 }}>
-              <button className="btn" type="submit">
-                {l.send}
+              <button className="btn" type="submit" disabled={isSending}>
+                {isSending ? (locale === "ru" ? "Отправляем..." : "Sending...") : l.send}
               </button>
 
               <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
                 Email: {CONTACT_EMAIL}
               </a>
             </div>
+
+            {status ? (
+              <p
+                style={{
+                  marginTop: 14,
+                  fontSize: 12,
+                  lineHeight: 1.6,
+                  color: status.ok ? "rgba(255,255,255,0.82)" : "#ffb4b4",
+                }}
+              >
+                {status.text}
+              </p>
+            ) : null}
           </form>
 
           <p
