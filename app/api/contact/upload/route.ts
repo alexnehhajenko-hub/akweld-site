@@ -12,6 +12,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       request,
       onBeforeGenerateToken: async () => {
         return {
+          access: "public",
           allowedContentTypes: [
             "application/pdf",
             "image/jpeg",
