@@ -19,7 +19,6 @@ export async function POST(request: Request): Promise<NextResponse> {
             "image/webp",
           ],
           addRandomSuffix: true,
-          tokenPayload: JSON.stringify({ folder: "contact" }),
         };
       },
       onUploadCompleted: async ({ blob }) => {
