@@ -32,6 +32,23 @@ const initialForm: FormState = {
   message: "",
 };
 
+function getSafeUploadPath(file: File, index: number) {
+  const parts = file.name.split(".");
+  const ext = parts.length > 1 ? `.${parts.pop()!.toLowerCase()}` : "";
+  const rawBase = parts.join(".").trim();
+
+  const safeBase =
+    rawBase
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 40) || "file";
+
+  return `contact/${Date.now()}-${index + 1}-${safeBase}${ext}`;
+}
+
 export default function ContactPage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
   const ru = isRu(params.locale);
@@ -53,8 +70,15 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
   async function uploadFilesToBlob(selectedFiles: File[]): Promise<UploadedFile[]> {
     const uploaded: UploadedFile[] = [];
 
-    for (const file of selectedFiles) {
-      const blob = await upload(file.name, file, {
+    for (const [index, file] of selectedFiles.entries()) {
+      setStatus({
+        ok: true,
+        text: ru
+          ? `Загружаем файл ${index + 1} из ${selectedFiles.length}...`
+          : `Uploading file ${index + 1} of ${selectedFiles.length}...`,
+      });
+
+      const blob = await upload(getSafeUploadPath(file, index), file, {
         access: "public",
         handleUploadUrl: "/api/contact/upload",
       });
@@ -90,6 +114,11 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
       if (files.length > 0) {
         uploadedFiles = await uploadFilesToBlob(files);
       }
+
+      setStatus({
+        ok: true,
+        text: ru ? "Отправляем заявку..." : "Sending request...",
+      });
 
       const res = await fetch("/api/contact", {
         method: "POST",
