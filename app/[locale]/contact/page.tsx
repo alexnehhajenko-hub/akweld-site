@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { upload, type PutBlobResult } from "@vercel/blob/client";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
@@ -9,6 +10,11 @@ const CONTACT_EMAIL = "info@akweldsteel.com";
 function isRu(locale: Locale) {
   return locale === "ru";
 }
+
+type UploadedFile = {
+  name: string;
+  url: string;
+};
 
 type FormState = {
   name: string;
@@ -44,6 +50,24 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
     return files.map((file) => `${file.name} (${Math.round(file.size / 1024)} KB)`).join("\n");
   }, [files]);
 
+  async function uploadFilesToBlob(selectedFiles: File[]): Promise<UploadedFile[]> {
+    const uploaded: UploadedFile[] = [];
+
+    for (const file of selectedFiles) {
+      const blob: PutBlobResult = await upload(file.name, file, {
+        access: "private" as any,
+        handleUploadUrl: "/api/contact/upload",
+      });
+
+      uploaded.push({
+        name: file.name,
+        url: blob.url,
+      });
+    }
+
+    return uploaded;
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus(null);
@@ -61,21 +85,26 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
     setIsSending(true);
 
     try {
-      const formData = new FormData();
-      formData.append("locale", params.locale);
-      formData.append("name", form.name.trim());
-      formData.append("phone", form.phone.trim());
-      formData.append("email", form.email.trim());
-      formData.append("location", form.location.trim());
-      formData.append("message", form.message.trim());
+      let uploadedFiles: UploadedFile[] = [];
 
-      for (const file of files) {
-        formData.append("files", file);
+      if (files.length > 0) {
+        uploadedFiles = await uploadFilesToBlob(files);
       }
 
       const res = await fetch("/api/contact", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          locale: params.locale,
+          name: form.name.trim(),
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          location: form.location.trim(),
+          message: form.message.trim(),
+          uploadedFiles,
+        }),
       });
 
       const data = (await res.json().catch(() => null)) as
@@ -89,18 +118,21 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
       setStatus({
         ok: true,
         text: ru
-          ? "Запрос отправлен. Файлы приложены к заявке ссылками."
-          : "Request sent. Files were attached to the request as links.",
+          ? "Запрос отправлен. Ссылки на файлы добавлены в письмо."
+          : "Request sent. File links were added to the email.",
       });
 
       setForm(initialForm);
       setFiles([]);
-    } catch {
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Request failed";
+
       setStatus({
         ok: false,
         text: ru
-          ? "Не удалось отправить запрос. Следующим шагом нужно обновить серверный файл /api/contact."
-          : "Could not send the request. The next step is to update the server file /api/contact.",
+          ? `Не удалось отправить запрос: ${message}`
+          : `Could not send the request: ${message}`,
       });
     } finally {
       setIsSending(false);
@@ -221,8 +253,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <div className="small">
                 {ru
-                  ? "Форма отправляет заявку на email info@akweldsteel.com. Файлы будут добавлены к заявке."
-                  : "This form sends the request to info@akweldsteel.com. Files will be added to the request."}
+                  ? "Форма отправляет заявку на email info@akweldsteel.com. Большие файлы грузятся напрямую в Blob."
+                  : "This form sends the request to info@akweldsteel.com. Large files are uploaded directly to Blob."}
               </div>
 
               {status ? (
