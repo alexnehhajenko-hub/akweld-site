@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
@@ -14,6 +14,7 @@ type FormState = {
   name: string;
   phone: string;
   email: string;
+  location: string;
   message: string;
 };
 
@@ -21,6 +22,7 @@ const initialForm: FormState = {
   name: "",
   phone: "",
   email: "",
+  location: "",
   message: "",
 };
 
@@ -29,12 +31,18 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
   const ru = isRu(params.locale);
 
   const [form, setForm] = useState<FormState>(initialForm);
+  const [files, setFiles] = useState<File[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState<null | { ok: boolean; text: string }>(null);
 
   function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
+
+  const fileListText = useMemo(() => {
+    if (!files.length) return "";
+    return files.map((file) => `${file.name} (${Math.round(file.size / 1024)} KB)`).join("\n");
+  }, [files]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -53,18 +61,21 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
     setIsSending(true);
 
     try {
+      const formData = new FormData();
+      formData.append("locale", params.locale);
+      formData.append("name", form.name.trim());
+      formData.append("phone", form.phone.trim());
+      formData.append("email", form.email.trim());
+      formData.append("location", form.location.trim());
+      formData.append("message", form.message.trim());
+
+      for (const file of files) {
+        formData.append("files", file);
+      }
+
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          locale: params.locale,
-          name: form.name.trim(),
-          phone: form.phone.trim(),
-          email: form.email.trim(),
-          message: form.message.trim(),
-        }),
+        body: formData,
       });
 
       const data = (await res.json().catch(() => null)) as
@@ -78,16 +89,18 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
       setStatus({
         ok: true,
         text: ru
-          ? "Запрос отправлен. Мы свяжемся с вами по email."
-          : "Request sent. We will contact you by email.",
+          ? "Запрос отправлен. Файлы приложены к заявке ссылками."
+          : "Request sent. Files were attached to the request as links.",
       });
+
       setForm(initialForm);
+      setFiles([]);
     } catch {
       setStatus({
         ok: false,
         text: ru
-          ? "Не удалось отправить запрос. Проверьте настройки почты на сервере."
-          : "Could not send the request. Please check the server email settings.",
+          ? "Не удалось отправить запрос. Следующим шагом нужно обновить серверный файл /api/contact."
+          : "Could not send the request. The next step is to update the server file /api/contact.",
       });
     } finally {
       setIsSending(false);
@@ -159,6 +172,14 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                 autoComplete="email"
               />
 
+              <input
+                className="input"
+                name="location"
+                value={form.location}
+                onChange={(e) => updateField("location", e.target.value)}
+                placeholder={ru ? "Где находится проект / страна / город" : "Project location / country / city"}
+              />
+
               <textarea
                 className="textarea"
                 name="message"
@@ -166,6 +187,29 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                 onChange={(e) => updateField("message", e.target.value)}
                 placeholder={t.contact.formMessage}
               />
+
+              <label className="small" style={{ marginTop: 4 }}>
+                {ru
+                  ? "Прикрепить чертежи, PDF, фото"
+                  : "Attach drawings, PDFs, photos"}
+              </label>
+
+              <input
+                className="input"
+                type="file"
+                multiple
+                accept=".pdf,.jpg,.jpeg,.png,.webp"
+                onChange={(e) => setFiles(Array.from(e.target.files || []))}
+              />
+
+              {files.length > 0 ? (
+                <textarea
+                  className="textarea"
+                  readOnly
+                  value={fileListText}
+                  style={{ minHeight: 100 }}
+                />
+              ) : null}
 
               <button className="btn" type="submit" disabled={isSending}>
                 {isSending
@@ -177,8 +221,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <div className="small">
                 {ru
-                  ? "Форма отправляет заявку на email info@akweldsteel.com."
-                  : "This form sends the request to info@akweldsteel.com."}
+                  ? "Форма отправляет заявку на email info@akweldsteel.com. Файлы будут добавлены к заявке."
+                  : "This form sends the request to info@akweldsteel.com. Files will be added to the request."}
               </div>
 
               {status ? (
