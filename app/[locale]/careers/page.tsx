@@ -214,7 +214,7 @@ const LABELS: Record<
     about: "Кратко расскажите о себе",
     files: "Прикрепить CV, сертификаты, разрешения, фото документов",
     send: "Отправить анкету",
-    note: "Документы загружаются отдельно, а в письмо приходят ссылки на файлы.",
+    note: "Документы загружаются отдельно, а в письмо приходят прямые ссылки на файлы.",
     success: "Анкета отправлена. Ссылки на файлы добавлены в письмо.",
     error: "Не удалось отправить анкету.",
     required: "Заполните имя, телефон, должность и опыт.",
@@ -238,7 +238,7 @@ const LABELS: Record<
     about: "Tell us about yourself",
     files: "Attach CV, certificates, permits, document photos",
     send: "Send application",
-    note: "Documents are uploaded separately and the email contains file links.",
+    note: "Documents are uploaded separately and the email contains direct file links.",
     success: "Application sent. File links were added to the email.",
     error: "Could not send the application.",
     required: "Please fill in name, phone, position and experience.",
@@ -285,7 +285,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
 
     for (const file of selectedFiles) {
       const blob = await upload(file.name, file, {
-        access: "private" as any,
+        access: "public",
         handleUploadUrl: "/api/careers/upload",
       });
 
