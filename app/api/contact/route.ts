@@ -110,7 +110,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         from: resendFromEmail,
         to: ["info@akweldsteel.com"],
-        reply_to: email,
+        reply_to: email || "info@akweldsteel.com",
         subject,
         html,
       }),
