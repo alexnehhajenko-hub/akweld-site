@@ -4,7 +4,16 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody;
+  let body: HandleUploadBody;
+
+  try {
+    body = (await request.json()) as HandleUploadBody;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid or empty JSON body" },
+      { status: 400 }
+    );
+  }
 
   try {
     const jsonResponse = await handleUpload({
