@@ -6,6 +6,7 @@ import { upload } from "@vercel/blob/client";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
+const UPLOAD_TIMEOUT_MS = 45000;
 
 function isRu(locale: Locale) {
   return locale === "ru";
@@ -31,6 +32,15 @@ const initialForm: FormState = {
   location: "",
   message: "",
 };
+
+function withTimeout<T>(promise: Promise<T>, ms: number, errorText: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => {
+      setTimeout(() => reject(new Error(errorText)), ms);
+    }),
+  ]);
+}
 
 function getSafeUploadPath(file: File, index: number) {
   const parts = file.name.split(".");
@@ -78,10 +88,16 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
           : `Uploading file ${index + 1} of ${selectedFiles.length}...`,
       });
 
-      const blob = await upload(getSafeUploadPath(file, index), file, {
-        access: "public",
-        handleUploadUrl: "/api/contact/upload",
-      });
+      const blob = await withTimeout(
+        upload(getSafeUploadPath(file, index), file, {
+          access: "public",
+          handleUploadUrl: "/api/contact/upload",
+        }),
+        UPLOAD_TIMEOUT_MS,
+        ru
+          ? `Таймаут загрузки файла: ${file.name}`
+          : `Upload timeout for file: ${file.name}`
+      );
 
       uploaded.push({
         name: file.name,
@@ -117,24 +133,28 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
       setStatus({
         ok: true,
-        text: ru ? "Отправляем заявку..." : "Sending request...",
+        text: ru ? "Файлы загружены. Отправляем заявку..." : "Files uploaded. Sending request...",
       });
 
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          locale: params.locale,
-          name: form.name.trim(),
-          phone: form.phone.trim(),
-          email: form.email.trim(),
-          location: form.location.trim(),
-          message: form.message.trim(),
-          uploadedFiles,
+      const res = await withTimeout(
+        fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            locale: params.locale,
+            name: form.name.trim(),
+            phone: form.phone.trim(),
+            email: form.email.trim(),
+            location: form.location.trim(),
+            message: form.message.trim(),
+            uploadedFiles,
+          }),
         }),
-      });
+        20000,
+        ru ? "Таймаут отправки заявки" : "Request timeout"
+      );
 
       const data = (await res.json().catch(() => null)) as
         | { ok?: boolean; error?: string }
