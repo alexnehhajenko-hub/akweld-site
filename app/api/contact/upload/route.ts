@@ -29,6 +29,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             "image/webp",
           ],
           addRandomSuffix: true,
+          callbackUrl: "https://akweldsteel.com/api/contact/upload",
         };
       },
       onUploadCompleted: async ({ blob }) => {
