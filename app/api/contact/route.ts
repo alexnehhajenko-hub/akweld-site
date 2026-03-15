@@ -1,21 +1,11 @@
+import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-type UploadedFile = {
-  name?: string;
-  url?: string;
-};
-
-type ContactBody = {
-  locale?: string;
-  name?: string;
-  phone?: string;
-  email?: string;
-  location?: string;
-  message?: string;
-  uploadedFiles?: UploadedFile[];
-};
+function safe(value: FormDataEntryValue | null) {
+  return typeof value === "string" ? value.trim() : "";
+}
 
 function escapeHtml(value: string) {
   return value
@@ -26,17 +16,33 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
+function getSafeFileName(file: File, index: number) {
+  const parts = file.name.split(".");
+  const ext = parts.length > 1 ? `.${parts.pop()!.toLowerCase()}` : "";
+  const rawBase = parts.join(".").trim();
+
+  const safeBase =
+    rawBase
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 40) || "file";
+
+  return `contact/${Date.now()}-${index + 1}-${safeBase}${ext}`;
+}
+
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as ContactBody;
+    const formData = await req.formData();
 
-    const locale = String(body.locale || "en");
-    const name = String(body.name || "").trim();
-    const phone = String(body.phone || "").trim();
-    const email = String(body.email || "").trim();
-    const location = String(body.location || "").trim();
-    const message = String(body.message || "").trim();
-    const uploadedFiles = Array.isArray(body.uploadedFiles) ? body.uploadedFiles : [];
+    const locale = safe(formData.get("locale")) || "en";
+    const name = safe(formData.get("name"));
+    const phone = safe(formData.get("phone"));
+    const email = safe(formData.get("email"));
+    const location = safe(formData.get("location"));
+    const message = safe(formData.get("message"));
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -55,6 +61,24 @@ export async function POST(req: Request) {
       );
     }
 
+    const files = formData
+      .getAll("files")
+      .filter((entry): entry is File => entry instanceof File && entry.size > 0);
+
+    const uploadedFiles: Array<{ name: string; url: string }> = [];
+
+    for (const [index, file] of files.entries()) {
+      const blob = await put(getSafeFileName(file, index), file, {
+        access: "public",
+        addRandomSuffix: true,
+      });
+
+      uploadedFiles.push({
+        name: file.name,
+        url: blob.url,
+      });
+    }
+
     const safeName = escapeHtml(name);
     const safePhone = escapeHtml(phone || "—");
     const safeEmail = escapeHtml(email);
@@ -67,12 +91,10 @@ export async function POST(req: Request) {
           <p><strong>${locale === "ru" ? "Файлы" : "Files"}:</strong></p>
           <ul>
             ${uploadedFiles
-              .map((file) => {
-                const fileName = escapeHtml(String(file.name || "file"));
-                const fileUrl = String(file.url || "").trim();
-                if (!fileUrl) return "";
-                return `<li><a href="${fileUrl}" target="_blank" rel="noreferrer">${fileName}</a></li>`;
-              })
+              .map(
+                (file) =>
+                  `<li><a href="${file.url}" target="_blank" rel="noreferrer">${escapeHtml(file.name)}</a></li>`
+              )
               .join("")}
           </ul>
         `
@@ -128,7 +150,10 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({
+      ok: true,
+      uploadedFiles: uploadedFiles.length,
+    });
   } catch (error) {
     return NextResponse.json(
       {
