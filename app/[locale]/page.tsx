@@ -21,6 +21,7 @@ const CAREERS_LABEL: Record<"ru" | "en", string> = {
 const PARTNERS_LABEL: Record<Locale, string> = {
   ru: "Ищем партнёров",
   en: "Looking for partners",
+  et: "Otsime partnereid",
   sv: "Söker partner",
   fi: "Etsimme kumppaneita",
   no: "Vi søker partnere",
