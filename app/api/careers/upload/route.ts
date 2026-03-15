@@ -4,10 +4,22 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody;
-
   try {
+    const body = (await request.json()) as HandleUploadBody;
+
+    const token =
+      process.env.FILES_BLOB_READ_WRITE_TOKEN ||
+      process.env.BLOB_READ_WRITE_TOKEN;
+
+    if (!token) {
+      return NextResponse.json(
+        { error: "Missing FILES_BLOB_READ_WRITE_TOKEN or BLOB_READ_WRITE_TOKEN" },
+        { status: 500 }
+      );
+    }
+
     const jsonResponse = await handleUpload({
+      token,
       body,
       request,
       onBeforeGenerateToken: async () => {
