@@ -2,20 +2,13 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { upload } from "@vercel/blob/client";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
-const UPLOAD_TIMEOUT_MS = 45000;
 
 function isRu(locale: Locale) {
   return locale === "ru";
 }
-
-type UploadedFile = {
-  name: string;
-  url: string;
-};
 
 type FormState = {
   name: string;
@@ -32,32 +25,6 @@ const initialForm: FormState = {
   location: "",
   message: "",
 };
-
-function withTimeout<T>(promise: Promise<T>, ms: number, errorText: string): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) => {
-      setTimeout(() => reject(new Error(errorText)), ms);
-    }),
-  ]);
-}
-
-function getSafeUploadPath(file: File, index: number) {
-  const parts = file.name.split(".");
-  const ext = parts.length > 1 ? `.${parts.pop()!.toLowerCase()}` : "";
-  const rawBase = parts.join(".").trim();
-
-  const safeBase =
-    rawBase
-      .toLowerCase()
-      .normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9_-]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 40) || "file";
-
-  return `contact/${Date.now()}-${index + 1}-${safeBase}${ext}`;
-}
 
 export default function ContactPage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
@@ -77,37 +44,6 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
     return files.map((file) => `${file.name} (${Math.round(file.size / 1024)} KB)`).join("\n");
   }, [files]);
 
-  async function uploadFilesToBlob(selectedFiles: File[]): Promise<UploadedFile[]> {
-    const uploaded: UploadedFile[] = [];
-
-    for (const [index, file] of selectedFiles.entries()) {
-      setStatus({
-        ok: true,
-        text: ru
-          ? `Загружаем файл ${index + 1} из ${selectedFiles.length}...`
-          : `Uploading file ${index + 1} of ${selectedFiles.length}...`,
-      });
-
-      const blob = await withTimeout(
-        upload(getSafeUploadPath(file, index), file, {
-          access: "public",
-          handleUploadUrl: "/api/contact/upload",
-        }),
-        UPLOAD_TIMEOUT_MS,
-        ru
-          ? `Таймаут загрузки файла: ${file.name}`
-          : `Upload timeout for file: ${file.name}`
-      );
-
-      uploaded.push({
-        name: file.name,
-        url: blob.url,
-      });
-    }
-
-    return uploaded;
-  }
-
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus(null);
@@ -125,36 +61,22 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
     setIsSending(true);
 
     try {
-      let uploadedFiles: UploadedFile[] = [];
+      const body = new FormData();
+      body.append("locale", params.locale);
+      body.append("name", form.name.trim());
+      body.append("phone", form.phone.trim());
+      body.append("email", form.email.trim());
+      body.append("location", form.location.trim());
+      body.append("message", form.message.trim());
 
-      if (files.length > 0) {
-        uploadedFiles = await uploadFilesToBlob(files);
+      for (const file of files) {
+        body.append("files", file, file.name);
       }
 
-      setStatus({
-        ok: true,
-        text: ru ? "Файлы загружены. Отправляем заявку..." : "Files uploaded. Sending request...",
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body,
       });
-
-      const res = await withTimeout(
-        fetch("/api/contact", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            locale: params.locale,
-            name: form.name.trim(),
-            phone: form.phone.trim(),
-            email: form.email.trim(),
-            location: form.location.trim(),
-            message: form.message.trim(),
-            uploadedFiles,
-          }),
-        }),
-        20000,
-        ru ? "Таймаут отправки заявки" : "Request timeout"
-      );
 
       const data = (await res.json().catch(() => null)) as
         | { ok?: boolean; error?: string }
@@ -301,8 +223,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <div className="small">
                 {ru
-                  ? "Форма отправляет заявку на email info@akweldsteel.com. Файлы будут доступны по прямой ссылке."
-                  : "This form sends the request to info@akweldsteel.com. Files will be available by direct link."}
+                  ? "Форма отправляет заявку на email info@akweldsteel.com вместе с файлами."
+                  : "This form sends the request to info@akweldsteel.com together with files."}
               </div>
 
               {status ? (
