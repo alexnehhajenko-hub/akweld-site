@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
+const CONTACT_EMAIL = "info@akweldsteel.com";
+
 type ProjectContent = {
   title: string;
   lead: string;
@@ -348,4 +350,3 @@ export default function ProjectDetailsPage({
     </div>
   );
 }
-aleksandrnehhajenko@MacBook-Air-Aleksandr akweld-site %
