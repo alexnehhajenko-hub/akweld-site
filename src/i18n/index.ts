@@ -4,18 +4,19 @@ import sv from "./sv";
 import fi from "./fi";
 import da from "./da";
 import no from "./no";
+import et from "./et";
 
-export const PRIMARY_LOCALES = ["en", "sv", "fi", "da", "no"] as const;
+export const PRIMARY_LOCALES = ["en", "sv", "fi", "da", "no", "et"] as const;
 export const RU_LOCALE = "ru" as const;
 
-export const LOCALES = ["en", "sv", "fi", "da", "no", "ru"] as const;
+export const LOCALES = ["en", "sv", "fi", "da", "no", "et", "ru"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export function isLocale(v: string): v is Locale {
   return (LOCALES as readonly string[]).includes(v);
 }
 
-const dict = { en, ru, sv, fi, da, no } as const;
+const dict = { en, ru, sv, fi, da, no, et } as const;
 
 export type T = typeof en;
 
@@ -35,6 +36,5 @@ export function normalizePathToLocale(pathname: string, nextLocale: Locale): str
     return "/" + parts.join("/");
   }
 
-  // if no locale prefix, add
   return `/${nextLocale}${pathname.startsWith("/") ? "" : "/"}${pathname}`;
 }
