@@ -1,12 +1,44 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
 const PARTNER_NAME = "SK Licenssvets Frölunda AB";
+const MAX_FILES = 5;
+const MAX_FILE_SIZE_MB = 10;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const ALLOWED_TYPES = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
 
-function isRu(locale: Locale) {
-  return locale === "ru";
-}
+type FormState = {
+  companyName: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  location: string;
+  partnershipType: string;
+  services: string;
+  message: string;
+};
+
+const initialForm: FormState = {
+  companyName: "",
+  contactName: "",
+  email: "",
+  phone: "",
+  location: "",
+  partnershipType: "",
+  services: "",
+  message: "",
+};
 
 function getUi(locale: Locale) {
   switch (locale) {
@@ -20,7 +52,28 @@ function getUi(locale: Locale) {
         whatWeCanHandle: "Что мы можем взять на себя",
         partnerInSweden: "Наш партнёр в Швеции",
         openToCoop: "Открыты к сотрудничеству",
-        sendRequest: "Отправить запрос",
+        formTitle: "Заявка на партнёрство",
+        formLead:
+          "Если вы хотите сотрудничать с AKWELD, заполните форму ниже и при необходимости прикрепите презентацию, сертификаты, примеры работ или документы.",
+        companyName: "Название компании",
+        contactName: "Контактное лицо",
+        email: "Email",
+        phone: "Телефон / WhatsApp",
+        location: "Страна / город",
+        partnershipType: "Тип сотрудничества",
+        servicesOffered: "Что вы предлагаете / чем занимаетесь",
+        message: "Комментарий / сообщение",
+        files: `Прикрепите PDF, фото, документы (до ${MAX_FILES} файлов, до ${MAX_FILE_SIZE_MB} MB каждый)`,
+        sendRequest: "Отправить заявку",
+        required: "Заполните название компании, контактное лицо, email и сообщение.",
+        success:
+          "Заявка отправлена. Если были прикреплены файлы, ссылки на них добавлены в письмо.",
+        note:
+          "Форма отправляет заявку на email info@akweldsteel.com. Если есть файлы, в письмо добавляются ссылки на них.",
+        badType:
+          "Недопустимый тип файла. Разрешены PDF, JPG, PNG, WEBP, DOC, DOCX.",
+        tooManyFiles: `Можно прикрепить максимум ${MAX_FILES} файлов.`,
+        tooBig: `Файл слишком большой. Максимум ${MAX_FILE_SIZE_MB} MB на файл.`,
       };
     case "sv":
       return {
@@ -32,7 +85,28 @@ function getUi(locale: Locale) {
         whatWeCanHandle: "Vad vi kan ta ansvar för",
         partnerInSweden: "Vår partner i Sverige",
         openToCoop: "Öppna för samarbete",
+        formTitle: "Partnerskapsförfrågan",
+        formLead:
+          "Om du vill samarbeta med AKWELD, fyll i formuläret nedan och bifoga vid behov presentation, certifikat, referenser eller dokument.",
+        companyName: "Företagsnamn",
+        contactName: "Kontaktperson",
+        email: "Email",
+        phone: "Telefon / WhatsApp",
+        location: "Land / stad",
+        partnershipType: "Typ av samarbete",
+        servicesOffered: "Vad erbjuder ni / vad arbetar ni med",
+        message: "Kommentar / meddelande",
+        files: `Bifoga PDF, bilder, dokument (upp till ${MAX_FILES} filer, upp till ${MAX_FILE_SIZE_MB} MB per fil)`,
         sendRequest: "Skicka förfrågan",
+        required: "Fyll i företagsnamn, kontaktperson, email och meddelande.",
+        success:
+          "Förfrågan skickad. Om filer bifogades lades länkar till dem i mailet.",
+        note:
+          "Formuläret skickar förfrågan till info@akweldsteel.com. Om filer bifogas läggs länkar till dem i mailet.",
+        badType:
+          "Ogiltig filtyp. Tillåtna format: PDF, JPG, PNG, WEBP, DOC, DOCX.",
+        tooManyFiles: `Du kan bifoga högst ${MAX_FILES} filer.`,
+        tooBig: `Filen är för stor. Max ${MAX_FILE_SIZE_MB} MB per fil.`,
       };
     case "no":
       return {
@@ -44,7 +118,28 @@ function getUi(locale: Locale) {
         whatWeCanHandle: "Hva vi kan ta ansvar for",
         partnerInSweden: "Vår partner i Sverige",
         openToCoop: "Åpne for samarbeid",
+        formTitle: "Partnerskapsforespørsel",
+        formLead:
+          "Hvis du ønsker samarbeid med AKWELD, fyll ut skjemaet nedenfor og legg ved presentasjon, sertifikater, referanser eller dokumenter ved behov.",
+        companyName: "Firmanavn",
+        contactName: "Kontaktperson",
+        email: "Email",
+        phone: "Telefon / WhatsApp",
+        location: "Land / by",
+        partnershipType: "Type samarbeid",
+        servicesOffered: "Hva tilbyr dere / hva jobber dere med",
+        message: "Kommentar / melding",
+        files: `Legg ved PDF, bilder, dokumenter (opptil ${MAX_FILES} filer, opptil ${MAX_FILE_SIZE_MB} MB per fil)`,
         sendRequest: "Send forespørsel",
+        required: "Fyll inn firmanavn, kontaktperson, email og melding.",
+        success:
+          "Forespørselen er sendt. Hvis filer var vedlagt, ble lenker lagt til i e-posten.",
+        note:
+          "Skjemaet sender forespørselen til info@akweldsteel.com. Hvis filer er vedlagt, legges lenker til dem i e-posten.",
+        badType:
+          "Ugyldig filtype. Tillatt: PDF, JPG, PNG, WEBP, DOC, DOCX.",
+        tooManyFiles: `Du kan legge ved maks ${MAX_FILES} filer.`,
+        tooBig: `Filen er for stor. Maks ${MAX_FILE_SIZE_MB} MB per fil.`,
       };
     case "da":
       return {
@@ -56,7 +151,28 @@ function getUi(locale: Locale) {
         whatWeCanHandle: "Hvad vi kan tage ansvar for",
         partnerInSweden: "Vores partner i Sverige",
         openToCoop: "Åbne for samarbejde",
+        formTitle: "Partnerskabsanmodning",
+        formLead:
+          "Hvis du vil samarbejde med AKWELD, udfyld formularen nedenfor og vedhæft om nødvendigt præsentation, certifikater, referencer eller dokumenter.",
+        companyName: "Firmanavn",
+        contactName: "Kontaktperson",
+        email: "Email",
+        phone: "Telefon / WhatsApp",
+        location: "Land / by",
+        partnershipType: "Type samarbejde",
+        servicesOffered: "Hvad tilbyder I / hvad arbejder I med",
+        message: "Kommentar / besked",
+        files: `Vedhæft PDF, billeder, dokumenter (op til ${MAX_FILES} filer, op til ${MAX_FILE_SIZE_MB} MB hver)`,
         sendRequest: "Send forespørgsel",
+        required: "Udfyld firmanavn, kontaktperson, email og besked.",
+        success:
+          "Forespørgslen er sendt. Hvis filer var vedhæftet, blev links til dem tilføjet i emailen.",
+        note:
+          "Formularen sender forespørgslen til info@akweldsteel.com. Hvis filer vedhæftes, tilføjes links til dem i emailen.",
+        badType:
+          "Ugyldig filtype. Tilladt: PDF, JPG, PNG, WEBP, DOC, DOCX.",
+        tooManyFiles: `Du kan vedhæfte højst ${MAX_FILES} filer.`,
+        tooBig: `Filen er for stor. Maks ${MAX_FILE_SIZE_MB} MB pr. fil.`,
       };
     case "fi":
       return {
@@ -68,7 +184,28 @@ function getUi(locale: Locale) {
         whatWeCanHandle: "Mitä voimme ottaa vastuullemme",
         partnerInSweden: "Yhteistyökumppanimme Ruotsissa",
         openToCoop: "Avoinna yhteistyölle",
+        formTitle: "Yhteistyöpyyntö",
+        formLead:
+          "Jos haluat tehdä yhteistyötä AKWELDin kanssa, täytä alla oleva lomake ja liitä tarvittaessa esittely, sertifikaatit, referenssit tai muut dokumentit.",
+        companyName: "Yrityksen nimi",
+        contactName: "Yhteyshenkilö",
+        email: "Email",
+        phone: "Puhelin / WhatsApp",
+        location: "Maa / kaupunki",
+        partnershipType: "Yhteistyön tyyppi",
+        servicesOffered: "Mitä tarjoatte / mitä teette",
+        message: "Kommentti / viesti",
+        files: `Liitä PDF, kuvat, dokumentit (enintään ${MAX_FILES} tiedostoa, enintään ${MAX_FILE_SIZE_MB} MB per tiedosto)`,
         sendRequest: "Lähetä pyyntö",
+        required: "Täytä yrityksen nimi, yhteyshenkilö, email ja viesti.",
+        success:
+          "Pyyntö lähetetty. Jos tiedostoja liitettiin, linkit niihin lisättiin sähköpostiin.",
+        note:
+          "Lomake lähettää pyynnön osoitteeseen info@akweldsteel.com. Jos tiedostoja liitetään, niiden linkit lisätään sähköpostiin.",
+        badType:
+          "Virheellinen tiedostotyyppi. Sallitut: PDF, JPG, PNG, WEBP, DOC, DOCX.",
+        tooManyFiles: `Voit liittää enintään ${MAX_FILES} tiedostoa.`,
+        tooBig: `Tiedosto on liian suuri. Enintään ${MAX_FILE_SIZE_MB} MB per tiedosto.`,
       };
     case "en":
     default:
@@ -81,7 +218,28 @@ function getUi(locale: Locale) {
         whatWeCanHandle: "What we can take responsibility for",
         partnerInSweden: "Our partner in Sweden",
         openToCoop: "Open to cooperation",
+        formTitle: "Partnership request",
+        formLead:
+          "If you want to cooperate with AKWELD, fill in the form below and attach your presentation, certificates, references or documents if needed.",
+        companyName: "Company name",
+        contactName: "Contact person",
+        email: "Email",
+        phone: "Phone / WhatsApp",
+        location: "Country / city",
+        partnershipType: "Type of partnership",
+        servicesOffered: "What you offer / what you do",
+        message: "Comment / message",
+        files: `Attach PDF, images, documents (up to ${MAX_FILES} files, up to ${MAX_FILE_SIZE_MB} MB each)`,
         sendRequest: "Send request",
+        required: "Please fill in company name, contact person, email and message.",
+        success:
+          "Request sent. If files were attached, links to them were added to the email.",
+        note:
+          "This form sends the request to info@akweldsteel.com. If files are attached, links to them are added to the email.",
+        badType:
+          "Unsupported file type. Allowed: PDF, JPG, PNG, WEBP, DOC, DOCX.",
+        tooManyFiles: `You can attach up to ${MAX_FILES} files.`,
+        tooBig: `File is too large. Maximum ${MAX_FILE_SIZE_MB} MB per file.`,
       };
   }
 }
@@ -134,6 +292,12 @@ function getPartnerText(locale: Locale) {
   }
 }
 
+function formatFileSize(size: number) {
+  if (size < 1024) return `${size} B`;
+  if (size < 1024 * 1024) return `${Math.round(size / 1024)} KB`;
+  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export default function PartnersPage({
   params,
 }: {
@@ -142,6 +306,131 @@ export default function PartnersPage({
   const t = getT(params.locale);
   const ui = getUi(params.locale);
   const partner = getPartnerText(params.locale);
+
+  const [form, setForm] = useState<FormState>(initialForm);
+  const [files, setFiles] = useState<File[]>([]);
+  const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState<null | { ok: boolean; text: string }>(null);
+
+  function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  const fileListText = useMemo(() => {
+    if (!files.length) return "";
+    return files.map((file) => `${file.name} (${formatFileSize(file.size)})`).join("\n");
+  }, [files]);
+
+  function validateFiles(selectedFiles: File[]) {
+    if (selectedFiles.length > MAX_FILES) {
+      return ui.tooManyFiles;
+    }
+
+    for (const file of selectedFiles) {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        return ui.badType;
+      }
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        return ui.tooBig;
+      }
+    }
+
+    return null;
+  }
+
+  function handleFilesChange(nextFiles: File[]) {
+    const error = validateFiles(nextFiles);
+
+    if (error) {
+      setFiles([]);
+      setStatus({
+        ok: false,
+        text: error,
+      });
+      return;
+    }
+
+    setFiles(nextFiles);
+    setStatus(null);
+  }
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (isSending) return;
+
+    setStatus(null);
+
+    if (
+      !form.companyName.trim() ||
+      !form.contactName.trim() ||
+      !form.email.trim() ||
+      !form.message.trim()
+    ) {
+      setStatus({
+        ok: false,
+        text: ui.required,
+      });
+      return;
+    }
+
+    const filesError = validateFiles(files);
+    if (filesError) {
+      setStatus({
+        ok: false,
+        text: filesError,
+      });
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      const body = new FormData();
+      body.append("locale", params.locale);
+      body.append("companyName", form.companyName.trim());
+      body.append("contactName", form.contactName.trim());
+      body.append("email", form.email.trim());
+      body.append("phone", form.phone.trim());
+      body.append("location", form.location.trim());
+      body.append("partnershipType", form.partnershipType.trim());
+      body.append("services", form.services.trim());
+      body.append("message", form.message.trim());
+
+      for (const file of files) {
+        body.append("files", file, file.name);
+      }
+
+      const res = await fetch("/api/partners", {
+        method: "POST",
+        body,
+      });
+
+      const data = (await res.json().catch(() => null)) as
+        | { ok?: boolean; error?: string }
+        | null;
+
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || "Request failed");
+      }
+
+      setStatus({
+        ok: true,
+        text: ui.success,
+      });
+
+      setForm(initialForm);
+      setFiles([]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Request failed";
+      setStatus({
+        ok: false,
+        text: `${ui.contactUs}: ${message}`,
+      });
+    } finally {
+      setIsSending(false);
+    }
+  }
 
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
@@ -219,9 +508,9 @@ export default function PartnersPage({
               <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
                 Email: {CONTACT_EMAIL}
               </a>
-              <Link className="btn" href={`/${params.locale}/contact`}>
-                {ui.contactUs}
-              </Link>
+              <a className="btn" href="#partner-request-form">
+                {ui.sendRequest}
+              </a>
             </div>
           </div>
         </div>
@@ -295,6 +584,119 @@ export default function PartnersPage({
         </div>
       </section>
 
+      <section className="section" id="partner-request-form">
+        <div className="heroCard">
+          <h2 className="sectionTitle" style={{ fontSize: 24 }}>
+            {ui.formTitle}
+          </h2>
+
+          <p className="heroText" style={{ maxWidth: "none" }}>
+            {ui.formLead}
+          </p>
+
+          <form className="form" onSubmit={onSubmit} style={{ marginTop: 16 }}>
+            <input
+              className="input"
+              value={form.companyName}
+              onChange={(e) => updateField("companyName", e.target.value)}
+              placeholder={ui.companyName}
+            />
+
+            <input
+              className="input"
+              value={form.contactName}
+              onChange={(e) => updateField("contactName", e.target.value)}
+              placeholder={ui.contactName}
+            />
+
+            <input
+              className="input"
+              type="email"
+              value={form.email}
+              onChange={(e) => updateField("email", e.target.value)}
+              placeholder={ui.email}
+              autoComplete="email"
+            />
+
+            <input
+              className="input"
+              value={form.phone}
+              onChange={(e) => updateField("phone", e.target.value)}
+              placeholder={ui.phone}
+              autoComplete="tel"
+            />
+
+            <input
+              className="input"
+              value={form.location}
+              onChange={(e) => updateField("location", e.target.value)}
+              placeholder={ui.location}
+            />
+
+            <input
+              className="input"
+              value={form.partnershipType}
+              onChange={(e) => updateField("partnershipType", e.target.value)}
+              placeholder={ui.partnershipType}
+            />
+
+            <textarea
+              className="textarea"
+              value={form.services}
+              onChange={(e) => updateField("services", e.target.value)}
+              placeholder={ui.servicesOffered}
+            />
+
+            <textarea
+              className="textarea"
+              value={form.message}
+              onChange={(e) => updateField("message", e.target.value)}
+              placeholder={ui.message}
+            />
+
+            <label className="small" style={{ marginTop: 4 }}>
+              {ui.files}
+            </label>
+
+            <input
+              className="input"
+              type="file"
+              multiple
+              accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
+              onChange={(e) => handleFilesChange(Array.from(e.target.files || []))}
+            />
+
+            {files.length > 0 ? (
+              <textarea
+                className="textarea"
+                readOnly
+                value={fileListText}
+                style={{ minHeight: 110 }}
+              />
+            ) : null}
+
+            <button className="btn" type="submit" disabled={isSending}>
+              {isSending ? "Sending..." : ui.sendRequest}
+            </button>
+
+            <div className="small">{ui.note}</div>
+
+            {status ? (
+              <div
+                className="small"
+                style={{
+                  color: status.ok ? "rgba(255,255,255,0.92)" : "#ffb4b4",
+                  marginTop: 4,
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                {status.text}
+              </div>
+            ) : null}
+          </form>
+        </div>
+      </section>
+
       <section className="section">
         <div
           className="heroCard"
@@ -329,9 +731,9 @@ export default function PartnersPage({
               <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
                 Email: {CONTACT_EMAIL}
               </a>
-              <Link className="btn" href={`/${params.locale}/contact`}>
+              <a className="btn" href="#partner-request-form">
                 {ui.sendRequest}
-              </Link>
+              </a>
             </div>
           </div>
         </div>
