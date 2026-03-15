@@ -53,10 +53,20 @@ export async function POST(req: Request) {
 
     const resendApiKey = process.env.RESEND_API_KEY;
     const resendFromEmail = process.env.RESEND_FROM_EMAIL;
+    const blobToken =
+      process.env.FILES_BLOB_READ_WRITE_TOKEN ||
+      process.env.BLOB_READ_WRITE_TOKEN;
 
     if (!resendApiKey || !resendFromEmail) {
       return NextResponse.json(
         { ok: false, error: "Missing RESEND_API_KEY or RESEND_FROM_EMAIL" },
+        { status: 500 }
+      );
+    }
+
+    if (!blobToken) {
+      return NextResponse.json(
+        { ok: false, error: "Missing FILES_BLOB_READ_WRITE_TOKEN or BLOB_READ_WRITE_TOKEN" },
         { status: 500 }
       );
     }
@@ -69,6 +79,7 @@ export async function POST(req: Request) {
 
     for (const [index, file] of files.entries()) {
       const blob = await put(getSafeFileName(file, index), file, {
+        token: blobToken,
         access: "public",
         addRandomSuffix: true,
       });
