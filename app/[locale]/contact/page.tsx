@@ -5,6 +5,15 @@ import { useMemo, useState } from "react";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
+const MAX_FILES = 5;
+const MAX_FILE_SIZE_MB = 10;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const ALLOWED_TYPES = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
 
 function isRu(locale: Locale) {
   return locale === "ru";
@@ -26,6 +35,12 @@ const initialForm: FormState = {
   message: "",
 };
 
+function formatFileSize(size: number) {
+  if (size < 1024) return `${size} B`;
+  if (size < 1024 * 1024) return `${Math.round(size / 1024)} KB`;
+  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export default function ContactPage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
   const ru = isRu(params.locale);
@@ -41,11 +56,54 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
   const fileListText = useMemo(() => {
     if (!files.length) return "";
-    return files.map((file) => `${file.name} (${Math.round(file.size / 1024)} KB)`).join("\n");
+    return files.map((file) => `${file.name} (${formatFileSize(file.size)})`).join("\n");
   }, [files]);
+
+  function validateFiles(selectedFiles: File[]) {
+    if (selectedFiles.length > MAX_FILES) {
+      return ru
+        ? `Можно прикрепить максимум ${MAX_FILES} файлов.`
+        : `You can attach up to ${MAX_FILES} files.`;
+    }
+
+    for (const file of selectedFiles) {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        return ru
+          ? `Недопустимый тип файла: ${file.name}. Разрешены PDF, JPG, PNG, WEBP.`
+          : `Unsupported file type: ${file.name}. Allowed: PDF, JPG, PNG, WEBP.`;
+      }
+
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        return ru
+          ? `Файл слишком большой: ${file.name}. Максимум ${MAX_FILE_SIZE_MB} MB на файл.`
+          : `File is too large: ${file.name}. Maximum ${MAX_FILE_SIZE_MB} MB per file.`;
+      }
+    }
+
+    return null;
+  }
+
+  function handleFilesChange(nextFiles: File[]) {
+    const validationError = validateFiles(nextFiles);
+
+    if (validationError) {
+      setFiles([]);
+      setStatus({
+        ok: false,
+        text: validationError,
+      });
+      return;
+    }
+
+    setFiles(nextFiles);
+    setStatus(null);
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (isSending) return;
+
     setStatus(null);
 
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
@@ -54,6 +112,15 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
         text: ru
           ? "Заполните имя, email и сообщение."
           : "Please fill in name, email and message.",
+      });
+      return;
+    }
+
+    const validationError = validateFiles(files);
+    if (validationError) {
+      setStatus({
+        ok: false,
+        text: validationError,
       });
       return;
     }
@@ -79,7 +146,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
       });
 
       const data = (await res.json().catch(() => null)) as
-        | { ok?: boolean; error?: string }
+        | { ok?: boolean; error?: string; uploadedFiles?: number }
         | null;
 
       if (!res.ok || !data?.ok) {
@@ -89,8 +156,12 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
       setStatus({
         ok: true,
         text: ru
-          ? "Запрос отправлен. Ссылки на файлы добавлены в письмо."
-          : "Request sent. File links were added to the email.",
+          ? files.length > 0
+            ? "Запрос отправлен. Файлы загружены, ссылки добавлены в письмо."
+            : "Запрос отправлен."
+          : files.length > 0
+            ? "Request sent. Files were uploaded and links were added to the email."
+            : "Request sent.",
       });
 
       setForm(initialForm);
@@ -192,8 +263,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <label className="small" style={{ marginTop: 4 }}>
                 {ru
-                  ? "Прикрепите чертежи, PDF-файлы, фотографии"
-                  : "Attach drawings, PDF files, photos"}
+                  ? `Прикрепите чертежи, PDF-файлы, фотографии (до ${MAX_FILES} файлов, до ${MAX_FILE_SIZE_MB} MB каждый)`
+                  : `Attach drawings, PDF files, photos (up to ${MAX_FILES} files, up to ${MAX_FILE_SIZE_MB} MB each)`}
               </label>
 
               <input
@@ -201,7 +272,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                 type="file"
                 multiple
                 accept=".pdf,.jpg,.jpeg,.png,.webp"
-                onChange={(e) => setFiles(Array.from(e.target.files || []))}
+                onChange={(e) => handleFilesChange(Array.from(e.target.files || []))}
               />
 
               {files.length > 0 ? (
@@ -209,7 +280,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                   className="textarea"
                   readOnly
                   value={fileListText}
-                  style={{ minHeight: 100 }}
+                  style={{ minHeight: 110 }}
                 />
               ) : null}
 
@@ -223,8 +294,8 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
               <div className="small">
                 {ru
-                  ? "Форма отправляет заявку на email info@akweldsteel.com вместе с файлами."
-                  : "This form sends the request to info@akweldsteel.com together with files."}
+                  ? "Форма отправляет заявку на email info@akweldsteel.com. Если прикреплены файлы, в письмо добавляются ссылки на них."
+                  : "This form sends the request to info@akweldsteel.com. If files are attached, links to them are added to the email."}
               </div>
 
               {status ? (
@@ -233,6 +304,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                   style={{
                     color: status.ok ? "rgba(255,255,255,0.92)" : "#ffb4b4",
                     marginTop: 4,
+                    whiteSpace: "pre-wrap",
                   }}
                 >
                   {status.text}
