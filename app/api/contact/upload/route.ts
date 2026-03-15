@@ -4,24 +4,26 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 export async function POST(request: Request): Promise<NextResponse> {
-  let body: HandleUploadBody;
-
   try {
-    body = (await request.json()) as HandleUploadBody;
-  } catch {
-    return NextResponse.json(
-      { error: "Invalid or empty JSON body" },
-      { status: 400 }
-    );
-  }
+    const body = (await request.json()) as HandleUploadBody;
 
-  try {
+    const token =
+      process.env.FILES_BLOB_READ_WRITE_TOKEN ||
+      process.env.BLOB_READ_WRITE_TOKEN;
+
+    if (!token) {
+      return NextResponse.json(
+        { error: "Missing FILES_BLOB_READ_WRITE_TOKEN or BLOB_READ_WRITE_TOKEN" },
+        { status: 500 }
+      );
+    }
+
     const jsonResponse = await handleUpload({
+      token,
       body,
       request,
       onBeforeGenerateToken: async () => {
         return {
-          access: "public",
           allowedContentTypes: [
             "application/pdf",
             "image/jpeg",
@@ -29,7 +31,6 @@ export async function POST(request: Request): Promise<NextResponse> {
             "image/webp",
           ],
           addRandomSuffix: true,
-          callbackUrl: "https://akweldsteel.com/api/contact/upload",
         };
       },
       onUploadCompleted: async ({ blob }) => {
