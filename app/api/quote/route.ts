@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const RESEND_API_URL = "https://api.resend.com/emails";
-const TO_EMAIL = "Akwelder87@gmail.com";
+const TO_EMAILS = ["info@akweldsteel.com", "aleksandr@akweldsteel.com"];
 
 function safe(v: unknown) {
   return typeof v === "string" ? v.trim() : "";
@@ -71,8 +71,8 @@ ${requestText || "-"}
       },
       body: JSON.stringify({
         from: `AKWELD <${resendFromEmail}>`,
-        to: [TO_EMAIL],
-        reply_to: email || TO_EMAIL,
+        to: TO_EMAILS,
+        reply_to: email || "info@akweldsteel.com",
         subject,
         html,
       }),
