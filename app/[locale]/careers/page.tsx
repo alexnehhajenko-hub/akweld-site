@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
 import { type Locale } from "@/src/i18n";
 
@@ -265,6 +265,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
 
   const locale = params.locale;
   const l = LABELS[locale];
+  const formSectionRef = useRef<HTMLElement | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm);
   const [files, setFiles] = useState<File[]>([]);
@@ -273,6 +274,14 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
 
   function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function selectOpening(title: string) {
+    setForm((prev) => ({ ...prev, job: title }));
+    setStatus(null);
+    requestAnimationFrame(() => {
+      formSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   const fileListText = useMemo(() => {
@@ -390,15 +399,24 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
         <h2 className="sectionTitle">{OPENINGS_TITLE[locale]}</h2>
         <div className="cards">
           {OPENINGS[locale].map((item) => (
-            <Link
+            <button
               key={item.href}
-              href={item.href}
+              type="button"
               className="card"
-              style={{ display: "block" }}
+              onClick={() => selectOpening(item.title)}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                background: "transparent",
+                color: "inherit",
+                border: "1px solid rgba(255,255,255,0.14)",
+                cursor: "pointer",
+              }}
             >
               <h3>{item.title}</h3>
               <p>{item.text}</p>
-            </Link>
+            </button>
           ))}
         </div>
       </section>
@@ -422,7 +440,10 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
         </div>
       </section>
 
-      <section className="section">
+      <section
+        ref={formSectionRef}
+        className="section"
+      >
         <div
           style={{
             background: "#0d1218",
