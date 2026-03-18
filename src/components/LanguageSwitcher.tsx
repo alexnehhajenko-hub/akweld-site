@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
 
 type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru" | "et";
 
@@ -23,6 +23,8 @@ export default function LanguageSwitcher({
   currentLocale: Locale;
 }) {
   const pathname = usePathname() || "/";
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
 
   const restPath = useMemo(() => {
     const parts = pathname.split("/").filter(Boolean);
@@ -38,63 +40,151 @@ export default function LanguageSwitcher({
     window.location.href = `/${nextLocale}${restPath}${search}`;
   }
 
+  useEffect(() => {
+    function onDocClick(event: MouseEvent) {
+      if (!wrapRef.current) return;
+      if (!wrapRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function onEsc(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("keydown", onEsc);
+
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, []);
+
   return (
-    <div className="lang" aria-label="Language">
-      <select
-        className="langSelect"
-        value={currentLocale}
-        onChange={(e) => go(e.target.value as Locale)}
+    <div className="lang" aria-label="Language switcher" ref={wrapRef}>
+      <button
+        type="button"
+        className="langButton"
+        aria-haspopup="dialog"
+        aria-expanded={open}
         aria-label="Language"
+        onClick={() => setOpen((v) => !v)}
       >
-        {LOCALES.map((lc) => (
-          <option key={lc} value={lc}>
-            {LABELS[lc]}
-          </option>
-        ))}
-      </select>
+        {LABELS[currentLocale]}
+      </button>
+
+      {open ? (
+        <div className="langModal" role="dialog" aria-label="Choose language">
+          <div className="langModalTitle">Language</div>
+
+          <div className="langList">
+            {LOCALES.map((lc) => (
+              <button
+                key={lc}
+                type="button"
+                className={`langItem ${lc === currentLocale ? "active" : ""}`}
+                onClick={() => go(lc)}
+              >
+                <span>{LABELS[lc]}</span>
+                {lc === currentLocale ? <span className="check">•</span> : null}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       <style jsx>{`
         .lang {
+          position: relative;
           display: inline-flex;
           align-items: center;
         }
 
-        .langSelect {
-          -webkit-appearance: none;
-          appearance: none;
-
+        .langButton {
           height: 40px;
-          min-width: 72px;
-
-          padding: 0 34px 0 12px;
+          min-width: 64px;
+          padding: 0 14px;
           border-radius: 999px;
-
           border: 1px solid rgba(255, 255, 255, 0.18);
           background: rgba(11, 15, 20, 0.92);
-
           color: rgba(255, 255, 255, 0.92);
           font-weight: 800;
           letter-spacing: 0.6px;
-
           outline: none;
           cursor: pointer;
-
-          /* arrow */
-          background-image: linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.8) 50%),
-            linear-gradient(135deg, rgba(255,255,255,0.8) 50%, transparent 50%);
-          background-position: calc(100% - 16px) 16px, calc(100% - 11px) 16px;
-          background-size: 5px 5px, 5px 5px;
-          background-repeat: no-repeat;
         }
 
-        .langSelect:hover {
+        .langButton:hover {
           border-color: rgba(255, 255, 255, 0.28);
-          background-color: rgba(11, 15, 20, 0.96);
+          background: rgba(11, 15, 20, 0.96);
         }
 
-        .langSelect:focus-visible {
+        .langButton:focus-visible {
           box-shadow: 0 0 0 3px rgba(255, 196, 0, 0.22);
           border-color: rgba(255, 196, 0, 0.55);
+        }
+
+        .langModal {
+          position: absolute;
+          top: calc(100% + 10px);
+          right: 0;
+          z-index: 50;
+          width: 220px;
+          border-radius: 18px;
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          background: rgba(11, 15, 20, 0.98);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+          padding: 12px;
+          backdrop-filter: blur(8px);
+        }
+
+        .langModalTitle {
+          padding: 6px 8px 10px;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.58);
+        }
+
+        .langList {
+          display: grid;
+          gap: 6px;
+        }
+
+        .langItem {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.03);
+          color: rgba(255, 255, 255, 0.92);
+          border-radius: 12px;
+          padding: 12px 12px;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          text-align: left;
+        }
+
+        .langItem:hover {
+          border-color: rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.06);
+        }
+
+        .langItem.active {
+          border-color: rgba(255, 196, 0, 0.35);
+          background: rgba(255, 196, 0, 0.08);
+        }
+
+        .check {
+          color: rgba(255, 196, 0, 0.92);
+          font-size: 18px;
+          line-height: 1;
         }
       `}</style>
     </div>
