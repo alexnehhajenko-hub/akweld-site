@@ -1,10 +1,5 @@
 import Link from "next/link";
 
-const LANGS = [
-  { href: "/en", code: "EN", label: "English", note: "Main international version" },
-  { href: "/ru", code: "RU", label: "Русский", note: "Русская версия сайта" },
-];
-
 const SERVICES = [
   "Steel structures",
   "Fabrication",
@@ -32,7 +27,7 @@ export default function Home() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 1.15fr) minmax(320px, 0.85fr)",
+            gridTemplateColumns: "minmax(0, 1fr)",
             gap: 24,
             alignItems: "stretch",
           }}
@@ -48,20 +43,48 @@ export default function Home() {
           >
             <div
               style={{
-                display: "inline-flex",
+                display: "flex",
+                justifyContent: "space-between",
                 alignItems: "center",
-                gap: 10,
-                padding: "8px 12px",
-                borderRadius: 999,
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                fontSize: 12,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: "rgba(243,247,251,0.78)",
+                gap: 12,
+                flexWrap: "wrap",
               }}
             >
-              AKWELD
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  padding: "8px 12px",
+                  borderRadius: 999,
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  fontSize: 12,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "rgba(243,247,251,0.78)",
+                }}
+              >
+                AKWELD
+              </div>
+
+              <Link
+                href="/ru"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "10px 14px",
+                  borderRadius: 12,
+                  textDecoration: "none",
+                  border: "1px solid rgba(255,255,255,0.16)",
+                  color: "#f3f7fb",
+                  fontWeight: 700,
+                  background: "transparent",
+                }}
+              >
+                Русский
+              </Link>
             </div>
 
             <h1
@@ -70,6 +93,7 @@ export default function Home() {
                 fontSize: "clamp(36px, 6vw, 68px)",
                 lineHeight: 1.02,
                 letterSpacing: "-0.03em",
+                maxWidth: 900,
               }}
             >
               Steel fabrication,
@@ -82,7 +106,7 @@ export default function Home() {
             <p
               style={{
                 margin: "20px 0 0",
-                maxWidth: 720,
+                maxWidth: 760,
                 fontSize: 18,
                 lineHeight: 1.75,
                 color: "rgba(243,247,251,0.82)",
@@ -162,145 +186,107 @@ export default function Home() {
               >
                 Our services
               </Link>
-            </div>
-          </div>
 
-          <aside
-            style={{
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 24,
-              padding: 28,
-              background:
-                "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.025) 100%)",
-              boxShadow: "0 24px 60px rgba(0,0,0,0.22)",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: "rgba(243,247,251,0.72)",
-              }}
-            >
-              Choose language
-            </div>
-
-            <h2
-              style={{
-                margin: "10px 0 0",
-                fontSize: 28,
-                lineHeight: 1.15,
-              }}
-            >
-              Select your language
-            </h2>
-
-            <p
-              style={{
-                margin: "12px 0 0",
-                fontSize: 15,
-                lineHeight: 1.7,
-                color: "rgba(243,247,251,0.76)",
-              }}
-            >
-              Open the language version you prefer. Both versions stay available
-              directly from the website.
-            </p>
-
-            <div
-              style={{
-                display: "grid",
-                gap: 12,
-                marginTop: 24,
-              }}
-            >
-              {LANGS.map((lang) => (
-                <Link
-                  key={lang.href}
-                  href={lang.href}
-                  style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                    border: "1px solid rgba(255,255,255,0.14)",
-                    borderRadius: 18,
-                    padding: "18px 18px",
-                    background: "rgba(255,255,255,0.03)",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
-                    }}
-                  >
-                    <div>
-                      <div
-                        style={{
-                          fontSize: 18,
-                          fontWeight: 700,
-                          color: "#f3f7fb",
-                        }}
-                      >
-                        {lang.label}
-                      </div>
-                      <div
-                        style={{
-                          marginTop: 4,
-                          fontSize: 13,
-                          color: "rgba(243,247,251,0.68)",
-                        }}
-                      >
-                        {lang.note}
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        minWidth: 54,
-                        height: 54,
-                        borderRadius: 14,
-                        display: "grid",
-                        placeItems: "center",
-                        border: "1px solid rgba(255,255,255,0.14)",
-                        background: "rgba(255,255,255,0.04)",
-                        fontWeight: 800,
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      {lang.code}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            <div
-              style={{
-                marginTop: 24,
-                paddingTop: 20,
-                borderTop: "1px solid rgba(255,255,255,0.08)",
-                fontSize: 14,
-                lineHeight: 1.7,
-                color: "rgba(243,247,251,0.72)",
-              }}
-            >
-              Main website:
-              <br />
-              <a
-                href="https://akweldsteel.com"
+              <Link
+                href="/en/projects"
                 style={{
-                  color: "#f3f7fb",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minWidth: 170,
+                  padding: "14px 18px",
+                  borderRadius: 14,
                   textDecoration: "none",
+                  border: "1px solid rgba(255,255,255,0.16)",
+                  color: "#f3f7fb",
                   fontWeight: 700,
+                  background: "transparent",
                 }}
               >
-                https://akweldsteel.com
-              </a>
+                Our projects
+              </Link>
             </div>
-          </aside>
+
+            <div
+              style={{
+                marginTop: 34,
+                paddingTop: 24,
+                borderTop: "1px solid rgba(255,255,255,0.08)",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: 16,
+              }}
+            >
+              <div
+                style={{
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 18,
+                  padding: 18,
+                  background: "rgba(255,255,255,0.02)",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 13,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "rgba(243,247,251,0.62)",
+                  }}
+                >
+                  Region
+                </div>
+                <div style={{ marginTop: 8, fontSize: 18, fontWeight: 700 }}>
+                  Estonia & Sweden
+                </div>
+              </div>
+
+              <div
+                style={{
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 18,
+                  padding: 18,
+                  background: "rgba(255,255,255,0.02)",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 13,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "rgba(243,247,251,0.62)",
+                  }}
+                >
+                  Focus
+                </div>
+                <div style={{ marginTop: 8, fontSize: 18, fontWeight: 700 }}>
+                  Steel works & installation
+                </div>
+              </div>
+
+              <div
+                style={{
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 18,
+                  padding: 18,
+                  background: "rgba(255,255,255,0.02)",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 13,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "rgba(243,247,251,0.62)",
+                  }}
+                >
+                  Language
+                </div>
+                <div style={{ marginTop: 8, fontSize: 18, fontWeight: 700 }}>
+                  English by default
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
