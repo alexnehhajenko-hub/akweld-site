@@ -158,26 +158,6 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
         </div>
       </section>
 
-      <section className="section">
-        <div className="heroCard">
-          <h2 className="sectionTitle" style={{ fontSize: 24 }}>
-            {ru ? "Описание проектов" : "Project overview"}
-          </h2>
-
-          <p className="heroText" style={{ maxWidth: "none" }}>
-            {ru
-              ? "На этой странице собраны проекты по изготовлению, сборке, ремонту и монтажу металлоконструкций. Здесь можно посмотреть примеры промышленных площадок, лестниц и ограждений, каркасов, опор, ремонтных работ и проектов с подключением сварщиков, слесарей и монтажных бригад."
-              : "This page brings together projects related to steel fabrication, assembly, repair and installation. Here you can review examples of industrial platforms, stairs and railings, frames, supports, repair works and projects completed with welders, fitters and installation crews."}
-          </p>
-
-          <p style={{ marginTop: 16, lineHeight: 1.7, color: "rgba(255,255,255,0.80)" }}>
-            {ru
-              ? "Если вам нужен похожий объём работ, вы можете открыть нужный проект, посмотреть краткое описание и затем отправить нам запрос по своей задаче. Постепенно эта страница будет дополняться новыми примерами и фотографиями выполненных работ."
-              : "If you need similar work, you can open the relevant project, review the short description and then send us your request. Over time, this page can be expanded with more examples and photos of completed work."}
-          </p>
-        </div>
-      </section>
-
       {openedImage ? (
         <div
           onClick={() => setOpenedImage(null)}
