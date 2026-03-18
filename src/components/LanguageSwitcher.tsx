@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru" | "et";
 
 const LOCALES: Locale[] = ["en", "ru", "et", "sv", "fi", "no", "da"];
+const CAREERS_LOCALES: Locale[] = ["en", "ru"];
 
 const LABELS: Record<Locale, string> = {
   en: "EN",
@@ -26,18 +27,36 @@ export default function LanguageSwitcher({
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
-  const restPath = useMemo(() => {
+  const pathInfo = useMemo(() => {
     const parts = pathname.split("/").filter(Boolean);
+    let currentPathLocale: Locale | null = null;
+
     if (parts.length > 0 && LOCALES.includes(parts[0] as Locale)) {
+      currentPathLocale = parts[0] as Locale;
       parts.shift();
     }
+
     const tail = parts.join("/");
-    return tail ? `/${tail}` : "";
+    const restPath = tail ? `/${tail}` : "";
+    const firstSegment = parts[0] || "";
+
+    return {
+      currentPathLocale,
+      restPath,
+      firstSegment,
+    };
   }, [pathname]);
+
+  const availableLocales = useMemo(() => {
+    if (pathInfo.firstSegment === "careers") {
+      return CAREERS_LOCALES;
+    }
+    return LOCALES;
+  }, [pathInfo.firstSegment]);
 
   function go(nextLocale: Locale) {
     const search = typeof window !== "undefined" ? window.location.search : "";
-    window.location.href = `/${nextLocale}${restPath}${search}`;
+    window.location.href = `/${nextLocale}${pathInfo.restPath}${search}`;
   }
 
   useEffect(() => {
@@ -63,6 +82,10 @@ export default function LanguageSwitcher({
     };
   }, []);
 
+  const safeCurrentLocale = availableLocales.includes(currentLocale)
+    ? currentLocale
+    : availableLocales[0];
+
   return (
     <div className="lang" aria-label="Language switcher" ref={wrapRef}>
       <button
@@ -73,7 +96,7 @@ export default function LanguageSwitcher({
         aria-label="Language"
         onClick={() => setOpen((v) => !v)}
       >
-        {LABELS[currentLocale]}
+        {LABELS[safeCurrentLocale]}
       </button>
 
       {open ? (
@@ -81,15 +104,15 @@ export default function LanguageSwitcher({
           <div className="langModalTitle">Language</div>
 
           <div className="langList">
-            {LOCALES.map((lc) => (
+            {availableLocales.map((lc) => (
               <button
                 key={lc}
                 type="button"
-                className={`langItem ${lc === currentLocale ? "active" : ""}`}
+                className={`langItem ${lc === safeCurrentLocale ? "active" : ""}`}
                 onClick={() => go(lc)}
               >
                 <span>{LABELS[lc]}</span>
-                {lc === currentLocale ? <span className="check">•</span> : null}
+                {lc === safeCurrentLocale ? <span className="check">•</span> : null}
               </button>
             ))}
           </div>
