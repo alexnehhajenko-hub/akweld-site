@@ -88,52 +88,41 @@ const OPENINGS_TITLE: Record<CareersLocale, string> = {
   en: "Open positions",
 };
 
-const OPENINGS: Record<
-  CareersLocale,
-  Array<{ title: string; text: string; href: string }>
-> = {
+const OPENINGS: Record<CareersLocale, Array<{ title: string; text: string }>> = {
   ru: [
     {
       title: "Сварщик",
       text: "Нужны сварщики для работы с металлоконструкциями, сборкой узлов, производством и объектами в Эстонии и Швеции.",
-      href: "/ru/careers/welder",
     },
     {
       title: "Слесарь-сборщик",
       text: "Ищем слесарей для сборки металлоконструкций, подгонки деталей, чтения чертежей и работы в цеху и на объекте.",
-      href: "/ru/careers/fitter",
     },
     {
       title: "Монтажник металлоконструкций",
       text: "Требуются монтажники для установки лестниц, площадок, рам, ограждений и других металлоконструкций.",
-      href: "/ru/careers/metal-erector",
     },
     {
       title: "Монтажник трубопровода",
       text: "Ищем специалистов по трубопроводу: сборка, подгонка, монтаж, работа по схемам и изометрии.",
-      href: "/ru/careers/pipe-installer",
     },
   ],
   en: [
     {
       title: "Welder",
       text: "We are looking for welders for steel structures, assembly work, workshop production and site projects in Estonia and Sweden.",
-      href: "/en/careers/welder",
     },
     {
       title: "Fitter",
       text: "We need fitters for steel assembly, part fitting, drawing-based work and workshop or site tasks.",
-      href: "/en/careers/fitter",
     },
     {
       title: "Metal structure installer",
       text: "We are hiring installers for stairs, platforms, frames, railings and other steel structure installation work.",
-      href: "/en/careers/metal-erector",
     },
     {
       title: "Pipe installer",
       text: "We are looking for pipe installers: fitting, assembly, installation and work by drawings and isometrics.",
-      href: "/en/careers/pipe-installer",
     },
   ],
 };
@@ -400,7 +389,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
         <div className="cards">
           {OPENINGS[locale].map((item) => (
             <button
-              key={item.href}
+              key={item.title}
               type="button"
               className="card"
               onClick={() => selectOpening(item.title)}
@@ -408,7 +397,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
                 display: "block",
                 width: "100%",
                 textAlign: "left",
-                background: "transparent",
+                background: "rgba(255,255,255,0.05)",
                 color: "inherit",
                 border: "1px solid rgba(255,255,255,0.14)",
                 cursor: "pointer",
@@ -440,10 +429,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
         </div>
       </section>
 
-      <section
-        ref={formSectionRef}
-        className="section"
-      >
+      <section ref={formSectionRef} className="section">
         <div
           style={{
             background: "#0d1218",
