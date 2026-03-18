@@ -42,6 +42,29 @@ const PROJECT_GALLERY = [
   },
 ];
 
+function getPhotoUi(locale: Locale) {
+  switch (locale) {
+    case "ru":
+      return {
+        title: "Фотографии работ",
+        text:
+          "Ниже показаны примеры работ по металлоконструкциям, монтажу, изготовлению и ремонту. Позже здесь можно добавить больше фотографий по каждому направлению отдельно.",
+      };
+    case "sv":
+      return {
+        title: "Bilder från arbeten",
+        text:
+          "Nedan visas exempel på stålarbeten, montage, tillverkning och reparationsprojekt. Senare kan fler bilder läggas till för varje område separat.",
+      };
+    default:
+      return {
+        title: "Work photos",
+        text:
+          "Below are examples of steelwork, installation, fabrication and repair projects. Later, more photos can be added for each direction separately.",
+      };
+  }
+}
+
 function isRu(locale: Locale) {
   return locale === "ru";
 }
@@ -49,6 +72,7 @@ function isRu(locale: Locale) {
 export default function ProjectsPage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
   const ru = isRu(params.locale);
+  const photoUi = getPhotoUi(params.locale);
   const [openedImage, setOpenedImage] = useState<null | {
     src: string;
     alt: string;
@@ -106,13 +130,11 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
       <section className="section">
         <div className="heroCard">
           <h2 className="sectionTitle" style={{ fontSize: 24 }}>
-            {ru ? "Фотографии работ" : "Work photos"}
+            {photoUi.title}
           </h2>
 
           <p className="heroText" style={{ maxWidth: "none" }}>
-            {ru
-              ? "Ниже показаны примеры работ по металлоконструкциям, монтажу, изготовлению и ремонту. Позже здесь можно добавить больше фотографий по каждому направлению отдельно."
-              : "Below are examples of steelwork, installation, fabrication and repair projects. Later, more photos can be added for each direction separately."}
+            {photoUi.text}
           </p>
 
           <div
