@@ -9,6 +9,13 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="msvalidate.01"
+          content="D9F147ECFE8E001AEB52E97E3AF328FA"
+        />
+      </head>
+
       <body>{children}</body>
 
       <Script
