@@ -1,13 +1,21 @@
-import { notFound } from "next/navigation";
 import HomePageContent from "@/src/components/HomePageContent";
-import type { Locale } from "@/src/i18n";
+import SiteHeader from "@/src/components/SiteHeader";
+import SiteFooter from "@/src/components/SiteFooter";
 
-const SUPPORTED_LOCALES: Locale[] = ["ru", "en", "et", "sv", "fi", "no", "da"];
+export default function Home() {
+  return (
+    <>
+      <div className="topbar">
+        <div className="container">
+          <SiteHeader locale="en" />
+        </div>
+      </div>
 
-export default function HomePage({ params }: { params: { locale: Locale } }) {
-  if (!SUPPORTED_LOCALES.includes(params.locale)) {
-    notFound();
-  }
+      <main>
+        <HomePageContent locale="en" />
+      </main>
 
-  return <HomePageContent locale={params.locale} />;
+      <SiteFooter locale="en" />
+    </>
+  );
 }
