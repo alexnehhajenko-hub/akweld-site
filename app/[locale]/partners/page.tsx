@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
@@ -66,8 +67,6 @@ function getUi(locale: Locale) {
         files: `Прикрепите PDF, фото, документы (до ${MAX_FILES} файлов, до ${MAX_FILE_SIZE_MB} MB каждый)`,
         sendRequest: "Отправить заявку",
         required: "Заполните название компании, контактное лицо, email и сообщение.",
-        success:
-          "Заявка отправлена. Если были прикреплены файлы, ссылки на них добавлены в письмо.",
         note:
           "Форма отправляет заявку на email info@akweldsteel.com. Если есть файлы, в письмо добавляются ссылки на них.",
         badType:
@@ -99,8 +98,6 @@ function getUi(locale: Locale) {
         files: `Bifoga PDF, bilder, dokument (upp till ${MAX_FILES} filer, upp till ${MAX_FILE_SIZE_MB} MB per fil)`,
         sendRequest: "Skicka förfrågan",
         required: "Fyll i företagsnamn, kontaktperson, email och meddelande.",
-        success:
-          "Förfrågan skickad. Om filer bifogades lades länkar till dem i mailet.",
         note:
           "Formuläret skickar förfrågan till info@akweldsteel.com. Om filer bifogas läggs länkar till dem i mailet.",
         badType:
@@ -132,8 +129,6 @@ function getUi(locale: Locale) {
         files: `Legg ved PDF, bilder, dokumenter (opptil ${MAX_FILES} filer, opptil ${MAX_FILE_SIZE_MB} MB per fil)`,
         sendRequest: "Send forespørsel",
         required: "Fyll inn firmanavn, kontaktperson, email og melding.",
-        success:
-          "Forespørselen er sendt. Hvis filer var vedlagt, ble lenker lagt til i e-posten.",
         note:
           "Skjemaet sender forespørselen til info@akweldsteel.com. Hvis filer er vedlagt, legges lenker til dem i e-posten.",
         badType:
@@ -165,8 +160,6 @@ function getUi(locale: Locale) {
         files: `Vedhæft PDF, billeder, dokumenter (op til ${MAX_FILES} filer, op til ${MAX_FILE_SIZE_MB} MB hver)`,
         sendRequest: "Send forespørgsel",
         required: "Udfyld firmanavn, kontaktperson, email og besked.",
-        success:
-          "Forespørgslen er sendt. Hvis filer var vedhæftet, blev links til dem tilføjet i emailen.",
         note:
           "Formularen sender forespørgslen til info@akweldsteel.com. Hvis filer vedhæftes, tilføjes links til dem i emailen.",
         badType:
@@ -198,14 +191,43 @@ function getUi(locale: Locale) {
         files: `Liitä PDF, kuvat, dokumentit (enintään ${MAX_FILES} tiedostoa, enintään ${MAX_FILE_SIZE_MB} MB per tiedosto)`,
         sendRequest: "Lähetä pyyntö",
         required: "Täytä yrityksen nimi, yhteyshenkilö, email ja viesti.",
-        success:
-          "Pyyntö lähetetty. Jos tiedostoja liitettiin, linkit niihin lisättiin sähköpostiin.",
         note:
           "Lomake lähettää pyynnön osoitteeseen info@akweldsteel.com. Jos tiedostoja liitetään, niiden linkit lisätään sähköpostiin.",
         badType:
           "Virheellinen tiedostotyyppi. Sallitut: PDF, JPG, PNG, WEBP, DOC, DOCX.",
         tooManyFiles: `Voit liittää enintään ${MAX_FILES} tiedostoa.`,
         tooBig: `Tiedosto on liian suuri. Enintään ${MAX_FILE_SIZE_MB} MB per tiedosto.`,
+      };
+    case "et":
+      return {
+        home: "Avaleht",
+        services: "Teenused",
+        projects: "Projektid",
+        contactUs: "Võtke ühendust",
+        whoWeWorkWith: "Kellega tahame koostööd teha",
+        whatWeCanHandle: "Mille eest saame vastutada",
+        partnerInSweden: "Meie partner Rootsis",
+        openToCoop: "Avatud koostööle",
+        formTitle: "Partnerluse päring",
+        formLead:
+          "Kui soovite teha koostööd AKWELDiga, täitke allolev vorm ja lisage vajadusel esitlus, sertifikaadid, referentsid või dokumendid.",
+        companyName: "Ettevõtte nimi",
+        contactName: "Kontaktisik",
+        email: "Email",
+        phone: "Telefon / WhatsApp",
+        location: "Riik / linn",
+        partnershipType: "Koostöö tüüp",
+        servicesOffered: "Mida pakute / millega tegelete",
+        message: "Kommentaar / sõnum",
+        files: `Lisage PDF, pildid, dokumendid (kuni ${MAX_FILES} faili, kuni ${MAX_FILE_SIZE_MB} MB iga fail)`,
+        sendRequest: "Saada päring",
+        required: "Täitke ettevõtte nimi, kontaktisik, email ja sõnum.",
+        note:
+          "Vorm saadab päringu aadressile info@akweldsteel.com. Kui failid on lisatud, lisatakse kirjale nende lingid.",
+        badType:
+          "Lubamatu failitüüp. Lubatud: PDF, JPG, PNG, WEBP, DOC, DOCX.",
+        tooManyFiles: `Saate lisada kuni ${MAX_FILES} faili.`,
+        tooBig: `Fail on liiga suur. Maksimaalselt ${MAX_FILE_SIZE_MB} MB faili kohta.`,
       };
     case "en":
     default:
@@ -232,8 +254,6 @@ function getUi(locale: Locale) {
         files: `Attach PDF, images, documents (up to ${MAX_FILES} files, up to ${MAX_FILE_SIZE_MB} MB each)`,
         sendRequest: "Send request",
         required: "Please fill in company name, contact person, email and message.",
-        success:
-          "Request sent. If files were attached, links to them were added to the email.",
         note:
           "This form sends the request to info@akweldsteel.com. If files are attached, links to them are added to the email.",
         badType:
@@ -281,6 +301,13 @@ function getPartnerText(locale: Locale) {
         body:
           "Heidän osaamisalueisiinsa kuuluvat teollisuusputkistot, energia ja lämpö, jäähdytys, petrokemia, vesi- ja viemärijärjestelmät, valmiit moduulit ja teräsrakenteet.",
       };
+    case "et":
+      return {
+        intro:
+          "Meie partner Rootsis on SK Licenssvets Frölunda AB. Ettevõte tegutseb keevituse, paigalduse, tootmise, remondi ja hoolduse valdkonnas.",
+        body:
+          "Nende tegevus hõlmab tööstuslikke torustikke, energiat ja soojust, jahutust, naftakeemiat, vee- ja kanalisatsioonisüsteeme, valmismooduleid ja teraskonstruktsioone.",
+      };
     case "en":
     default:
       return {
@@ -306,6 +333,7 @@ export default function PartnersPage({
   const t = getT(params.locale);
   const ui = getUi(params.locale);
   const partner = getPartnerText(params.locale);
+  const router = useRouter();
 
   const [form, setForm] = useState<FormState>(initialForm);
   const [files, setFiles] = useState<File[]>([]);
@@ -414,13 +442,9 @@ export default function PartnersPage({
         throw new Error(data?.error || "Request failed");
       }
 
-      setStatus({
-        ok: true,
-        text: ui.success,
-      });
-
       setForm(initialForm);
       setFiles([]);
+      router.push(`/${params.locale}/success`);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Request failed";
       setStatus({
