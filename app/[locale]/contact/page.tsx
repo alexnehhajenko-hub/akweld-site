@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
@@ -44,6 +45,7 @@ function formatFileSize(size: number) {
 export default function ContactPage({ params }: { params: { locale: Locale } }) {
   const t = getT(params.locale);
   const ru = isRu(params.locale);
+  const router = useRouter();
 
   const [form, setForm] = useState<FormState>(initialForm);
   const [files, setFiles] = useState<File[]>([]);
@@ -153,19 +155,9 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
         throw new Error(data?.error || "Request failed");
       }
 
-      setStatus({
-        ok: true,
-        text: ru
-          ? files.length > 0
-            ? "Запрос отправлен. Файлы загружены, ссылки добавлены в письмо."
-            : "Запрос отправлен."
-          : files.length > 0
-            ? "Request sent. Files were uploaded and links were added to the email."
-            : "Request sent.",
-      });
-
       setForm(initialForm);
       setFiles([]);
+      router.push(`/${params.locale}/success`);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Request failed";
 
