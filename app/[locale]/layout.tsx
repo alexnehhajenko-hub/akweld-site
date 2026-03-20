@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import SiteHeader from "@/src/components/SiteHeader";
 import SiteFooter from "@/src/components/SiteFooter";
 
-type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru";
+type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru" | "et";
 
 export default function LocaleLayout({
   children,
@@ -14,18 +14,16 @@ export default function LocaleLayout({
   const locale = params.locale;
 
   return (
-    <html lang={locale}>
-      <body>
-        <div className="topbar">
-          <div className="container">
-            <SiteHeader locale={locale} />
-          </div>
+    <>
+      <div className="topbar">
+        <div className="container">
+          <SiteHeader locale={locale} />
         </div>
+      </div>
 
-        <main>{children}</main>
+      <main>{children}</main>
 
-        <SiteFooter locale={locale} />
-      </body>
-    </html>
+      <SiteFooter locale={locale} />
+    </>
   );
 }
