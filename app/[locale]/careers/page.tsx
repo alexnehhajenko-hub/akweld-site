@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
 import { type Locale } from "@/src/i18n";
@@ -179,7 +179,6 @@ const LABELS: Record<
     files: string;
     send: string;
     note: string;
-    success: string;
     error: string;
     required: string;
   }
@@ -204,7 +203,6 @@ const LABELS: Record<
     files: "Прикрепить CV, сертификаты, разрешения, фото документов",
     send: "Отправить анкету",
     note: "Документы загружаются отдельно, а в письмо приходят прямые ссылки на файлы.",
-    success: "Анкета отправлена. Ссылки на файлы добавлены в письмо.",
     error: "Не удалось отправить анкету.",
     required: "Заполните имя, телефон, должность и опыт.",
   },
@@ -228,7 +226,6 @@ const LABELS: Record<
     files: "Attach CV, certificates, permits, document photos",
     send: "Send application",
     note: "Documents are uploaded separately and the email contains direct file links.",
-    success: "Application sent. File links were added to the email.",
     error: "Could not send the application.",
     required: "Please fill in name, phone, position and experience.",
   },
@@ -255,6 +252,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
   const locale = params.locale;
   const l = LABELS[locale];
   const formSectionRef = useRef<HTMLElement | null>(null);
+  const router = useRouter();
 
   const [form, setForm] = useState<FormState>(initialForm);
   const [files, setFiles] = useState<File[]>([]);
@@ -266,7 +264,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
   }
 
   function selectOpening(title: string) {
-    setForm((prev) => ({ ...prev, job: title }));
+    setForm((prev) => ({ ...prev, [key]: value }));
     setStatus(null);
     requestAnimationFrame(() => {
       formSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -337,12 +335,9 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
         throw new Error(data?.error || "Request failed");
       }
 
-      setStatus({
-        ok: true,
-        text: l.success,
-      });
       setForm(initialForm);
       setFiles([]);
+      router.push(`/${locale}/success`);
     } catch (error) {
       const message = error instanceof Error ? error.message : l.error;
       setStatus({
