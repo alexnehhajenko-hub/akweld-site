@@ -1,21 +1,10 @@
 import HomePageContent from "@/src/components/HomePageContent";
-import SiteHeader from "@/src/components/SiteHeader";
-import SiteFooter from "@/src/components/SiteFooter";
+import { type Locale } from "@/src/i18n";
 
-export default function Home() {
-  return (
-    <>
-      <div className="topbar">
-        <div className="container">
-          <SiteHeader locale="en" />
-        </div>
-      </div>
-
-      <main>
-        <HomePageContent locale="en" />
-      </main>
-
-      <SiteFooter locale="en" />
-    </>
-  );
+export default function LocaleHomePage({
+  params,
+}: {
+  params: { locale: Locale };
+}) {
+  return <HomePageContent locale={params.locale} />;
 }
