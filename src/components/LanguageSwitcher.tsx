@@ -8,14 +8,24 @@ type Locale = "en" | "sv" | "fi" | "no" | "da" | "ru" | "et";
 const LOCALES: Locale[] = ["en", "ru", "et", "sv", "fi", "no", "da"];
 const CAREERS_LOCALES: Locale[] = ["en", "ru"];
 
-const LABELS: Record<Locale, string> = {
-  en: "EN",
-  ru: "RU",
-  et: "ET",
-  sv: "SV",
-  fi: "FI",
-  no: "NO",
-  da: "DA",
+const FLAGS: Record<Locale, string> = {
+  en: "🇬🇧",
+  ru: "🇷🇺",
+  et: "🇪🇪",
+  sv: "🇸🇪",
+  fi: "🇫🇮",
+  no: "🇳🇴",
+  da: "🇩🇰",
+};
+
+const NAMES: Record<Locale, string> = {
+  en: "English",
+  ru: "Русский",
+  et: "Eesti",
+  sv: "Svenska",
+  fi: "Suomi",
+  no: "Norsk",
+  da: "Dansk",
 };
 
 export default function LanguageSwitcher({
@@ -96,7 +106,9 @@ export default function LanguageSwitcher({
         aria-label="Language"
         onClick={() => setOpen((v) => !v)}
       >
-        {LABELS[safeCurrentLocale]}
+        <span className="flag" aria-hidden="true">
+          {FLAGS[safeCurrentLocale]}
+        </span>
       </button>
 
       {open ? (
@@ -110,8 +122,14 @@ export default function LanguageSwitcher({
                 type="button"
                 className={`langItem ${lc === safeCurrentLocale ? "active" : ""}`}
                 onClick={() => go(lc)}
+                aria-label={NAMES[lc]}
               >
-                <span>{LABELS[lc]}</span>
+                <span className="langItemLeft">
+                  <span className="flag" aria-hidden="true">
+                    {FLAGS[lc]}
+                  </span>
+                  <span>{NAMES[lc]}</span>
+                </span>
                 {lc === safeCurrentLocale ? <span className="check">•</span> : null}
               </button>
             ))}
@@ -128,16 +146,17 @@ export default function LanguageSwitcher({
 
         .langButton {
           height: 40px;
-          min-width: 64px;
+          min-width: 56px;
           padding: 0 14px;
           border-radius: 999px;
           border: 1px solid rgba(255, 255, 255, 0.18);
           background: rgba(11, 15, 20, 0.92);
           color: rgba(255, 255, 255, 0.92);
-          font-weight: 800;
-          letter-spacing: 0.6px;
           outline: none;
           cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .langButton:hover {
@@ -202,6 +221,20 @@ export default function LanguageSwitcher({
         .langItem.active {
           border-color: rgba(255, 196, 0, 0.35);
           background: rgba(255, 196, 0, 0.08);
+        }
+
+        .langItemLeft {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .flag {
+          font-size: 18px;
+          line-height: 1;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .check {
