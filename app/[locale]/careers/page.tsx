@@ -264,7 +264,7 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
   }
 
   function selectOpening(title: string) {
-    setForm((prev) => ({ ...prev, [key]: value }));
+    setForm((prev) => ({ ...prev, job: title }));
     setStatus(null);
     requestAnimationFrame(() => {
       formSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
