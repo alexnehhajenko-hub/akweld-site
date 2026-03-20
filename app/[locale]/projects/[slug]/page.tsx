@@ -137,17 +137,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Каркасы, несущие рамы и металлические элементы для строительных, производственных и технических задач.",
           scopeTitle: "Что можем сделать",
           scopeText:
-            "Изготавливаем и собираем металлокаркасы под объект, оборудование, технические помещения, производственные зоны и нестандартные конструкции.",
+            "Изготавливаем и собираем металлокаркасы под объект, оборудование, технические помещения, производственные зоны и нестандартные конструкции. Есть опыт изготовления рам, площадок, опор, контейнеров для мусора, дерева и разных отходов, а также других нестандартных решений по размерам и чертежам заказчика.",
           includesTitle: "Что обычно входит",
           includesItems: [
-            "основные несущие элементы",
-            "узлы крепления и стыковки",
-            "подготовка под дальнейший монтаж",
-            "сборка и корректировка по месту",
+            "основные несущие элементы и силовые рамы",
+            "контейнеры для мусора, дерева и производственных отходов",
+            "узлы крепления, стыковки и нестандартные детали",
+            "подготовка под дальнейший монтаж, сборка и корректировка по месту",
           ],
           resultTitle: "По итогу",
           resultText:
-            "Вы получаете каркас или несущую конструкцию, подготовленную под дальнейшую сборку, обшивку, установку оборудования или эксплуатацию.",
+            "Вы получаете каркас или несущую конструкцию, подготовленную под дальнейшую сборку, обшивку, установку оборудования или эксплуатацию. При необходимости это может быть как типовой металлокаркас, так и индивидуальное решение под конкретную задачу.",
         },
         "supports-brackets": {
           title: "Опоры и кронштейны",
@@ -173,17 +173,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Ремонт, усиление и доработка существующих металлоконструкций на объекте или в производстве.",
           scopeTitle: "Что можем сделать",
           scopeText:
-            "Разбираем текущее состояние конструкции, усиливаем слабые места, меняем повреждённые элементы и подготавливаем металл под дальнейшую работу.",
+            "Разбираем текущее состояние конструкции, усиливаем слабые места, меняем повреждённые элементы и подготавливаем металл под дальнейшую работу. Есть опыт выполнения таких работ без кранов — с использованием талей, такелажа и подъёмных механизмов в труднодоступных местах.",
           includesTitle: "Что обычно входит",
           includesItems: [
-            "ремонт существующих узлов",
-            "усиление металлоконструкций",
-            "замена повреждённых деталей",
-            "доработка под новые требования проекта",
+            "ремонт существующих узлов и металлоконструкций",
+            "усиление, доработка и замена повреждённых деталей",
+            "работы в стеснённых и труднодоступных местах",
+            "выполнение задач без кранов — с талями, такелажем и подъёмными механизмами",
           ],
           resultTitle: "По итогу",
           resultText:
-            "Вы получаете восстановленную или усиленную конструкцию, которую можно дальше безопасно использовать в проекте.",
+            "Вы получаете восстановленную или усиленную конструкцию, которую можно дальше безопасно использовать в проекте. Такой формат особенно подходит там, где важны аккуратный монтаж, ограниченное пространство и практичное решение на месте.",
         },
         "workforce-projects": {
           title: "Проекты с персоналом",
@@ -249,17 +249,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Stålstommar, bärande konstruktioner och stödelement för bygg-, industri- och teknikprojekt.",
           scopeTitle: "Vad vi kan göra",
           scopeText:
-            "Vi tillverkar och sammanställer stålstommar för byggnader, utrustning, tekniska rum, industriområden och specialkonstruktioner.",
+            "Vi tillverkar och sammanställer stålstommar för byggnader, utrustning, tekniska rum, industriområden och specialkonstruktioner. Vi har även erfarenhet av ramar, plattformar, stöd, containrar för avfall, trä och olika restmaterial samt andra kundanpassade lösningar enligt mått och ritningar.",
           includesTitle: "Vad som vanligtvis ingår",
           includesItems: [
-            "huvudsakliga bärande element",
-            "fäst- och anslutningspunkter",
-            "förberedelse för vidare montage",
-            "sammanställning och inpassning på plats",
+            "huvudsakliga bärande element och kraftiga ramar",
+            "containrar för avfall, trä och produktionsrester",
+            "fäst- och anslutningspunkter samt specialdetaljer",
+            "förberedelse för vidare montage, sammanställning och inpassning på plats",
           ],
           resultTitle: "Resultat",
           resultText:
-            "Ni får en stomme eller bärande stålkonstruktion förberedd för vidare montage, beklädnad, utrustning eller drift.",
+            "Ni får en stomme eller bärande stålkonstruktion förberedd för vidare montage, beklädnad, utrustning eller drift. Det kan vara både en standardlösning och en mer specialanpassad konstruktion för den aktuella uppgiften.",
         },
         "supports-brackets": {
           title: "Stöd och konsoler",
@@ -285,17 +285,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Reparation, förstärkning och modifiering av befintliga stålkonstruktioner i produktion eller på plats.",
           scopeTitle: "Vad vi kan göra",
           scopeText:
-            "Vi går igenom konstruktionens nuvarande skick, förstärker svaga områden, byter skadade delar och förbereder stålet för vidare användning.",
+            "Vi går igenom konstruktionens nuvarande skick, förstärker svaga områden, byter skadade delar och förbereder stålet för vidare användning. Vi har även erfarenhet av arbeten utan kranar, med telfrar, riggning och lyfthjälpmedel i trånga och svåråtkomliga utrymmen.",
           includesTitle: "Vad som vanligtvis ingår",
           includesItems: [
-            "reparation av befintliga knutpunkter",
-            "förstärkning av stålkonstruktioner",
-            "utbyte av skadade delar",
-            "modifiering för uppdaterade projektkrav",
+            "reparation av befintliga knutpunkter och stålkonstruktioner",
+            "förstärkning, ombyggnad och utbyte av skadade delar",
+            "arbete i trånga och svåråtkomliga miljöer",
+            "uppgifter utan kranar — med telfrar, riggning och lyfthjälpmedel",
           ],
           resultTitle: "Resultat",
           resultText:
-            "Ni får en reparerad eller förstärkt konstruktion som kan användas vidare på ett säkert sätt i projektet.",
+            "Ni får en reparerad eller förstärkt konstruktion som kan användas vidare på ett säkert sätt i projektet. Den här typen av arbete passar särskilt där platsen är begränsad och där ett praktiskt montageupplägg krävs.",
         },
         "workforce-projects": {
           title: "Bemanningsprojekt",
@@ -361,22 +361,22 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Stålrammer, bærende konstruksjoner og støtteelementer for bygg-, industri- og tekniske prosjekter.",
           scopeTitle: "Hva vi kan gjøre",
           scopeText:
-            "Vi produserer og sammenstiller stålrammer for bygninger, utstyr, tekniske rom, industriområder og spesialkonstruksjoner.",
+            "Vi produserer og sammenstiller stålrammer for bygninger, utstyr, tekniske rom, industriområder og spesialkonstruksjoner. Vi har også erfaring med rammer, plattformer, støtter, containere for avfall, tre og ulike restmaterialer samt andre kundetilpassede løsninger etter mål og tegninger.",
           includesTitle: "Hva som vanligvis inngår",
           includesItems: [
-            "hovedbærende elementer",
-            "tilkoblings- og festepunkter",
-            "forberedelse for videre montering",
-            "sammenstilling og tilpasning på stedet",
+            "hovedbærende elementer og kraftige rammer",
+            "containere for avfall, tre og produksjonsrester",
+            "tilkoblings- og festepunkter samt spesialdetaljer",
+            "forberedelse for videre montering, sammenstilling og tilpasning på stedet",
           ],
           resultTitle: "Resultat",
           resultText:
-            "Dere får en ramme eller bærende stålkonstruksjon forberedt for videre montering, kledning, utstyrsplassering eller drift.",
+            "Dere får en ramme eller bærende stålkonstruksjon forberedt for videre montering, kledning, utstyrsplassering eller drift. Dette kan være både standardiserte og mer spesialtilpassede løsninger.",
         },
         "supports-brackets": {
           title: "Støtter og braketter",
           lead:
-            "Produksjon av støtter, braketter, feste­rammer og ståldetaljer etter prosjektmål og krav.",
+            "Produksjon av støtter, braketter, festerammer og ståldetaljer etter prosjektmål og krav.",
           scopeTitle: "Hva vi kan gjøre",
           scopeText:
             "Vi produserer både standardiserte og spesialtilpassede støtter og braketter for stålkonstruksjoner, utstyr, rørledninger og monteringsoppgaver.",
@@ -397,17 +397,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Reparasjon, forsterkning og modifisering av eksisterende stålkonstruksjoner i produksjon eller på stedet.",
           scopeTitle: "Hva vi kan gjøre",
           scopeText:
-            "Vi vurderer den eksisterende tilstanden til konstruksjonen, forsterker svake områder, bytter skadede deler og forbereder stålet for videre bruk.",
+            "Vi vurderer den eksisterende tilstanden til konstruksjonen, forsterker svake områder, bytter skadede deler og forbereder stålet for videre bruk. Vi har også erfaring med arbeid uten kraner, med taljer, rigging og løfteutstyr i trange og vanskelig tilgjengelige områder.",
           includesTitle: "Hva som vanligvis inngår",
           includesItems: [
-            "reparasjon av eksisterende knutepunkter",
-            "forsterkning av stålkonstruksjoner",
-            "utskifting av skadede deler",
-            "modifisering for oppdaterte prosjektbehov",
+            "reparasjon av eksisterende knutepunkter og stålkonstruksjoner",
+            "forsterkning, ombygging og utskifting av skadede deler",
+            "arbeid i trange og vanskelig tilgjengelige miljøer",
+            "oppgaver uten kraner — med taljer, rigging og løfteutstyr",
           ],
           resultTitle: "Resultat",
           resultText:
-            "Dere får en reparert eller forsterket konstruksjon som kan brukes videre på en trygg måte i prosjektet.",
+            "Dere får en reparert eller forsterket konstruksjon som kan brukes videre på en trygg måte i prosjektet. Dette er særlig aktuelt der plassen er begrenset og det kreves praktiske løfte- og montasjeløsninger.",
         },
         "workforce-projects": {
           title: "Bemanningsprosjekter",
@@ -473,17 +473,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Stålrammer, bærende konstruktioner og støtteelementer til bygge-, industri- og tekniske projekter.",
           scopeTitle: "Hvad vi kan gøre",
           scopeText:
-            "Vi fremstiller og samler stålrammer til bygninger, udstyr, teknikrum, industriområder og specialkonstruktioner.",
+            "Vi fremstiller og samler stålrammer til bygninger, udstyr, teknikrum, industriområder og specialkonstruktioner. Vi har også erfaring med rammer, platforme, støtter, containere til affald, træ og forskellige restmaterialer samt andre kundetilpassede løsninger efter mål og tegninger.",
           includesTitle: "Hvad der typisk indgår",
           includesItems: [
-            "hovedbærende elementer",
-            "forbindelses- og fastgørelsespunkter",
-            "forberedelse til videre montage",
-            "samling og tilpasning på stedet",
+            "hovedbærende elementer og kraftige rammer",
+            "containere til affald, træ og produktionsrester",
+            "forbindelses- og fastgørelsespunkter samt specialdetaljer",
+            "forberedelse til videre montage, samling og tilpasning på stedet",
           ],
           resultTitle: "Resultat",
           resultText:
-            "I får en ramme eller bærende stålkonstruktion forberedt til videre montage, beklædning, udstyr eller drift.",
+            "I får en ramme eller bærende stålkonstruktion forberedt til videre montage, beklædning, udstyr eller drift. Det kan være både standardløsninger og mere specialtilpassede konstruktioner.",
         },
         "supports-brackets": {
           title: "Støtter og beslag",
@@ -509,17 +509,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Reparation, forstærkning og ændring af eksisterende stålkonstruktioner i produktion eller på stedet.",
           scopeTitle: "Hvad vi kan gøre",
           scopeText:
-            "Vi vurderer konstruktionens nuværende tilstand, forstærker svage områder, udskifter beskadigede dele og forbereder stålet til videre brug.",
+            "Vi vurderer konstruktionens nuværende tilstand, forstærker svage områder, udskifter beskadigede dele og forbereder stålet til videre brug. Vi har også erfaring med arbejde uden kraner, med taljer, rigging og løfteudstyr i trange og svært tilgængelige områder.",
           includesTitle: "Hvad der typisk indgår",
           includesItems: [
-            "reparation af eksisterende samlinger",
-            "forstærkning af stålkonstruktioner",
-            "udskiftning af beskadigede dele",
-            "ændringer til opdaterede projektkrav",
+            "reparation af eksisterende samlinger og stålkonstruktioner",
+            "forstærkning, ombygning og udskiftning af beskadigede dele",
+            "arbejde i trange og svært tilgængelige miljøer",
+            "opgaver uden kraner — med taljer, rigging og løfteudstyr",
           ],
           resultTitle: "Resultat",
           resultText:
-            "I får en repareret eller forstærket konstruktion, som sikkert kan bruges videre i projektet.",
+            "I får en repareret eller forstærket konstruktion, som sikkert kan bruges videre i projektet. Denne type arbejde er særligt relevant, hvor pladsen er begrænset og der kræves en praktisk montage- og løfteløsning.",
         },
         "workforce-projects": {
           title: "Mandskabsprojekter",
@@ -585,17 +585,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Teräsrungot, kantavat rakenteet ja tukielementit rakennus-, teollisuus- ja teknisiin projekteihin.",
           scopeTitle: "Mitä voimme tehdä",
           scopeText:
-            "Valmistamme ja kokoamme teräsrunkoja rakennuksiin, laitteisiin, teknisiin tiloihin, teollisuusalueille ja erikoisrakenteisiin.",
+            "Valmistamme ja kokoamme teräsrunkoja rakennuksiin, laitteisiin, teknisiin tiloihin, teollisuusalueille ja erikoisrakenteisiin. Meillä on kokemusta myös rungoista, tasoista, tuista, jäte-, puu- ja muiden materiaalien konteista sekä muista mitta- ja piirustuspohjaisista erikoisratkaisuista.",
           includesTitle: "Mitä yleensä sisältyy",
           includesItems: [
-            "pääkantavat elementit",
-            "liitos- ja kiinnityspisteet",
-            "valmistelu jatkoasennusta varten",
-            "kokoonpano ja sovitus työmaalla",
+            "pääkantavat elementit ja vahvat rungot",
+            "kontit jätteelle, puulle ja tuotannon sivumateriaaleille",
+            "liitos- ja kiinnityspisteet sekä erikoisosat",
+            "valmistelu jatkoasennusta varten, kokoonpano ja sovitus työmaalla",
           ],
           resultTitle: "Tulos",
           resultText:
-            "Saatte rungon tai kantavan teräsrakenteen, joka on valmisteltu jatkoasennusta, verhousta, laitteiden sijoitusta tai käyttöä varten.",
+            "Saatte rungon tai kantavan teräsrakenteen, joka on valmisteltu jatkoasennusta, verhousta, laitteiden sijoitusta tai käyttöä varten. Ratkaisu voi olla joko vakiorakenne tai täysin yksilöllinen toteutus tarpeen mukaan.",
         },
         "supports-brackets": {
           title: "Tuet ja kannakkeet",
@@ -621,17 +621,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Olemassa olevien teräsrakenteiden korjaus, vahvistus ja muokkaus tuotannossa tai työmaalla.",
           scopeTitle: "Mitä voimme tehdä",
           scopeText:
-            "Arvioimme rakenteen nykytilan, vahvistamme heikot kohdat, vaihdamme vaurioituneet osat ja valmistamme teräksen jatkokäyttöä varten.",
+            "Arvioimme rakenteen nykytilan, vahvistamme heikot kohdat, vaihdamme vaurioituneet osat ja valmistamme teräksen jatkokäyttöä varten. Meillä on kokemusta myös töistä ilman nostureita, taljoilla, takeloinnilla ja nostolaitteilla ahtaissa ja vaikeasti saavutettavissa kohteissa.",
           includesTitle: "Mitä yleensä sisältyy",
           includesItems: [
-            "olemassa olevien liitosten korjaus",
-            "teräsrakenteiden vahvistaminen",
-            "vaurioituneiden osien vaihto",
-            "muutokset päivitettyjen projektitarpeiden mukaan",
+            "olemassa olevien liitosten ja teräsrakenteiden korjaus",
+            "vahvistus, muutostyöt ja vaurioituneiden osien vaihto",
+            "työ ahtaissa ja vaikeasti saavutettavissa ympäristöissä",
+            "tehtävät ilman nostureita — taljoilla, takeloinnilla ja nostolaitteilla",
           ],
           resultTitle: "Tulos",
           resultText:
-            "Saatte korjatun tai vahvistetun rakenteen, jota voidaan käyttää turvallisesti edelleen projektissa.",
+            "Saatte korjatun tai vahvistetun rakenteen, jota voidaan käyttää turvallisesti edelleen projektissa. Tämä sopii erityisesti kohteisiin, joissa tila on rajallinen ja tarvitaan käytännöllinen noston ja asennuksen toteutus.",
         },
         "workforce-projects": {
           title: "Työvoimaprojektit",
@@ -697,17 +697,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Terasraamid, kandekonstruktsioonid ja tugielemendid ehitus-, tööstus- ja tehniliste projektide jaoks.",
           scopeTitle: "Mida me saame teha",
           scopeText:
-            "Valmistame ja koostame terasraame hoonetele, seadmetele, tehnoruumidele, tööstusaladele ja erikonstruktsioonidele.",
+            "Valmistame ja koostame terasraame hoonetele, seadmetele, tehnoruumidele, tööstusaladele ja erikonstruktsioonidele. Meil on kogemus ka raamide, platvormide, tugede, prügikonteinerite, puidujäätmete ja muude materjalide konteinerite ning teiste erilahenduste valmistamisel vastavalt mõõtudele ja joonistele.",
           includesTitle: "Mis tavaliselt sisaldub",
           includesItems: [
-            "peamised kandvad elemendid",
-            "ühendus- ja kinnituspunktid",
-            "ettevalmistus edasiseks paigalduseks",
-            "koostamine ja sobitamine objektil",
+            "peamised kandvad elemendid ja tugevad raamid",
+            "konteinerid prügi, puidu ja tootmisjääkide jaoks",
+            "ühendus- ja kinnituspunktid ning eridetailid",
+            "ettevalmistus edasiseks paigalduseks, koostamine ja sobitamine objektil",
           ],
           resultTitle: "Tulemus",
           resultText:
-            "Saate raami või kandva teraskonstruktsiooni, mis on ette valmistatud edasiseks paigalduseks, katmiseks, seadmete paigaldamiseks või kasutuseks.",
+            "Saate raami või kandva teraskonstruktsiooni, mis on ette valmistatud edasiseks paigalduseks, katmiseks, seadmete paigaldamiseks või kasutuseks. See võib olla nii standardlahendus kui ka täielikult konkreetse ülesande jaoks valmistatud konstruktsioon.",
         },
         "supports-brackets": {
           title: "Toed ja kronsteinid",
@@ -733,17 +733,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Olemasolevate teraskonstruktsioonide remont, tugevdamine ja muutmine tootmises või objektil.",
           scopeTitle: "Mida me saame teha",
           scopeText:
-            "Hindame konstruktsiooni olemasolevat seisukorda, tugevdame nõrku kohti, vahetame kahjustatud osi ja valmistame terase ette edasiseks kasutuseks.",
+            "Hindame konstruktsiooni olemasolevat seisukorda, tugevdame nõrku kohti, vahetame kahjustatud osi ja valmistame terase ette edasiseks kasutuseks. Meil on kogemus ka töödega ilma kraanadeta — kasutades talisid, takelaaži ja tõstemehhanisme kitsastes ja raskesti ligipääsetavates kohtades.",
           includesTitle: "Mis tavaliselt sisaldub",
           includesItems: [
-            "olemasolevate sõlmede remont",
-            "teraskonstruktsioonide tugevdamine",
-            "kahjustatud detailide asendamine",
-            "muudatused vastavalt uuendatud projekti vajadustele",
+            "olemasolevate sõlmede ja teraskonstruktsioonide remont",
+            "tugevdamine, ümberehitus ja kahjustatud detailide vahetus",
+            "töö kitsastes ja raskesti ligipääsetavates keskkondades",
+            "ülesanded ilma kraanadeta — talide, takelaaži ja tõstemehhanismidega",
           ],
           resultTitle: "Tulemus",
           resultText:
-            "Saate remonditud või tugevdatud konstruktsiooni, mida saab projektis edasi ohutult kasutada.",
+            "Saate remonditud või tugevdatud konstruktsiooni, mida saab projektis edasi ohutult kasutada. Selline tööformaat sobib eriti kohtadesse, kus ruumi on vähe ja vaja on praktilist tõste- ning paigalduslahendust.",
         },
         "workforce-projects": {
           title: "Tööjõuprojektid",
@@ -810,17 +810,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Steel frames, load-bearing structures and support elements for construction, industrial and technical projects.",
           scopeTitle: "What we can do",
           scopeText:
-            "We fabricate and assemble steel frames for buildings, equipment, technical rooms, industrial zones and non-standard structures.",
+            "We fabricate and assemble steel frames for buildings, equipment, technical rooms, industrial zones and non-standard structures. We also have experience with frames, platforms, supports, containers for waste, wood and different materials, as well as other custom steel solutions based on client dimensions and drawings.",
           includesTitle: "What is typically included",
           includesItems: [
-            "main load-bearing elements",
-            "connection and fixing points",
-            "preparation for further installation",
-            "assembly and fitting on site",
+            "main load-bearing elements and heavy-duty frames",
+            "containers for waste, wood and production leftovers",
+            "connection and fixing points together with custom details",
+            "preparation for further installation, assembly and fitting on site",
           ],
           resultTitle: "Result",
           resultText:
-            "You get a frame or supporting steel structure prepared for further installation, cladding, equipment placement or operation.",
+            "You get a frame or supporting steel structure prepared for further installation, cladding, equipment placement or operation. This can be both a standard frame and a more custom-built solution for a specific task.",
         },
         "supports-brackets": {
           title: "Supports and brackets",
@@ -846,17 +846,17 @@ function getProjectContent(locale: Locale): Record<string, ProjectContent> {
             "Repair, reinforcement and modification of existing steel structures in production or on site.",
           scopeTitle: "What we can do",
           scopeText:
-            "We review the existing condition of the structure, reinforce weak areas, replace damaged parts and prepare the steel for further use.",
+            "We review the existing condition of the structure, reinforce weak areas, replace damaged parts and prepare the steel for further use. We also have experience carrying out such work without cranes, using chain blocks, rigging and lifting equipment in difficult-to-access areas.",
           includesTitle: "What is typically included",
           includesItems: [
-            "repair of existing nodes",
-            "reinforcement of steel structures",
-            "replacement of damaged parts",
-            "modification for updated project needs",
+            "repair of existing nodes and steel structures",
+            "reinforcement, rework and replacement of damaged parts",
+            "work in tight and difficult-to-access locations",
+            "tasks without cranes — with chain blocks, rigging and lifting equipment",
           ],
           resultTitle: "Result",
           resultText:
-            "You get a repaired or reinforced structure that can be safely used further in the project.",
+            "You get a repaired or reinforced structure that can be safely used further in the project. This is especially useful where careful installation, limited space and a practical on-site solution are required.",
         },
         "workforce-projects": {
           title: "Workforce projects",
