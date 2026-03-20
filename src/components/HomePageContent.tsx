@@ -39,12 +39,18 @@ function getTrustUi(locale: Locale) {
           "Работаем вместе с партнёрами по проектам в Швеции и по региону.",
         certTitle: "Сертифицированные сварщики и допуски",
         certText:
-          "У нас работают сертифицированные сварщики. Есть допуски и сертификаты на сварку в разных положениях, а также практический опыт работы по производственным и монтажным задачам.",
+          "У нас работают сертифицированные сварщики. Есть практический опыт производственных и монтажных работ, а также аттестации по европейским требованиям.",
         certItems: [
+          "TIG сварка",
+          "MIG / MAG сварка",
+          "MMA сварка",
           "сертифицированные сварщики",
-          "сварка в разных положениях",
-          "опыт по производству и монтажу",
+          "европейские стандарты аттестации",
         ],
+        heroPartner: "Партнёр в Швеции",
+        heroCerts: "Сертифицированные сварщики",
+        heroWelding: "TIG / MIG / MAG / MMA",
+        heroStandards: "Европейские стандарты",
       };
     case "sv":
       return {
@@ -54,12 +60,18 @@ function getTrustUi(locale: Locale) {
           "Vi arbetar tillsammans med partner för projekt i Sverige och i regionen.",
         certTitle: "Certifierade svetsare och godkännanden",
         certText:
-          "Vi arbetar med certifierade svetsare. Vi har godkännanden och certifikat för svetsning i olika positioner samt praktisk erfarenhet av produktion och montage.",
+          "Vi arbetar med certifierade svetsare. Vi har praktisk erfarenhet av produktion och montage samt certifiering enligt europeiska krav.",
         certItems: [
+          "TIG-svetsning",
+          "MIG / MAG-svetsning",
+          "MMA-svetsning",
           "certifierade svetsare",
-          "svetsning i olika positioner",
-          "erfarenhet från produktion och montage",
+          "europeiska certifieringsstandarder",
         ],
+        heroPartner: "Partner i Sverige",
+        heroCerts: "Certifierade svetsare",
+        heroWelding: "TIG / MIG / MAG / MMA",
+        heroStandards: "Europeiska standarder",
       };
     case "no":
       return {
@@ -69,12 +81,18 @@ function getTrustUi(locale: Locale) {
           "Vi samarbeider med partnere om prosjekter i Sverige og i regionen.",
         certTitle: "Sertifiserte sveisere og godkjenninger",
         certText:
-          "Vi arbeider med sertifiserte sveisere. Vi har godkjenninger og sertifikater for sveising i ulike posisjoner, samt praktisk erfaring fra produksjon og montasje.",
+          "Vi arbeider med sertifiserte sveisere. Vi har praktisk erfaring fra produksjon og montasje samt sertifisering etter europeiske krav.",
         certItems: [
+          "TIG-sveising",
+          "MIG / MAG-sveising",
+          "MMA-sveising",
           "sertifiserte sveisere",
-          "sveising i ulike posisjoner",
-          "erfaring fra produksjon og montasje",
+          "europeiske sertifiseringsstandarder",
         ],
+        heroPartner: "Partner i Sverige",
+        heroCerts: "Sertifiserte sveisere",
+        heroWelding: "TIG / MIG / MAG / MMA",
+        heroStandards: "Europeiske standarder",
       };
     case "da":
       return {
@@ -84,12 +102,18 @@ function getTrustUi(locale: Locale) {
           "Vi arbejder sammen med partnere på projekter i Sverige og i regionen.",
         certTitle: "Certificerede svejsere og godkendelser",
         certText:
-          "Vi arbejder med certificerede svejsere. Vi har godkendelser og certifikater til svejsning i forskellige positioner samt praktisk erfaring fra produktion og montage.",
+          "Vi arbejder med certificerede svejsere. Vi har praktisk erfaring fra produktion og montage samt certificering efter europæiske krav.",
         certItems: [
+          "TIG-svejsning",
+          "MIG / MAG-svejsning",
+          "MMA-svejsning",
           "certificerede svejsere",
-          "svejsning i forskellige positioner",
-          "erfaring fra produktion og montage",
+          "europæiske certificeringsstandarder",
         ],
+        heroPartner: "Partner i Sverige",
+        heroCerts: "Certificerede svejsere",
+        heroWelding: "TIG / MIG / MAG / MMA",
+        heroStandards: "Europæiske standarder",
       };
     case "fi":
       return {
@@ -99,12 +123,18 @@ function getTrustUi(locale: Locale) {
           "Teemme yhteistyötä kumppaneiden kanssa projekteissa Ruotsissa ja koko alueella.",
         certTitle: "Sertifioidut hitsaajat ja hyväksynnät",
         certText:
-          "Työskentelemme sertifioitujen hitsaajien kanssa. Meillä on hyväksynnät ja sertifikaatit hitsaukseen eri asennoissa sekä käytännön kokemusta tuotanto- ja asennustöistä.",
+          "Työskentelemme sertifioitujen hitsaajien kanssa. Meillä on käytännön kokemusta tuotanto- ja asennustöistä sekä eurooppalaisten vaatimusten mukaisia pätevyyksiä.",
         certItems: [
+          "TIG-hitsaus",
+          "MIG / MAG -hitsaus",
+          "MMA-hitsaus",
           "sertifioidut hitsaajat",
-          "hitsaus eri asennoissa",
-          "kokemus tuotannosta ja asennuksesta",
+          "eurooppalaiset sertifiointistandardit",
         ],
+        heroPartner: "Kumppani Ruotsissa",
+        heroCerts: "Sertifioidut hitsaajat",
+        heroWelding: "TIG / MIG / MAG / MMA",
+        heroStandards: "Eurooppalaiset standardit",
       };
     case "et":
       return {
@@ -114,12 +144,18 @@ function getTrustUi(locale: Locale) {
           "Teeme koostööd partneritega projektides Rootsis ja kogu piirkonnas.",
         certTitle: "Sertifitseeritud keevitajad ja load",
         certText:
-          "Meil töötavad sertifitseeritud keevitajad. Olemas on load ja sertifikaadid keevitamiseks erinevates asendites ning praktiline kogemus tootmis- ja paigaldustöödes.",
+          "Meil töötavad sertifitseeritud keevitajad. Olemas on praktiline kogemus tootmises ja paigalduses ning pädevused vastavalt Euroopa nõuetele.",
         certItems: [
+          "TIG-keevitus",
+          "MIG / MAG-keevitus",
+          "MMA-keevitus",
           "sertifitseeritud keevitajad",
-          "keevitamine erinevates asendites",
-          "kogemus tootmises ja paigalduses",
+          "Euroopa sertifitseerimisstandardid",
         ],
+        heroPartner: "Partner Rootsis",
+        heroCerts: "Sertifitseeritud keevitajad",
+        heroWelding: "TIG / MIG / MAG / MMA",
+        heroStandards: "Euroopa standardid",
       };
     case "en":
     default:
@@ -130,12 +166,18 @@ function getTrustUi(locale: Locale) {
           "We work together with partners on projects in Sweden and across the region.",
         certTitle: "Certified welders and approvals",
         certText:
-          "We work with certified welders. We have approvals and welding certificates for different welding positions, together with practical experience in workshop and site work.",
+          "We work with certified welders. We have practical workshop and site experience together with certification according to European requirements.",
         certItems: [
+          "TIG welding",
+          "MIG / MAG welding",
+          "MMA welding",
           "certified welders",
-          "welding in different positions",
-          "workshop and site experience",
+          "European certification standards",
         ],
+        heroPartner: "Partner in Sweden",
+        heroCerts: "Certified welders",
+        heroWelding: "TIG / MIG / MAG / MMA",
+        heroStandards: "European standards",
       };
   }
 }
@@ -202,6 +244,36 @@ export default function HomePageContent({ locale }: { locale: Locale }) {
               <Link className="btnGhost" href={`/${locale}/partners`}>
                 {PARTNERS_LABEL[locale]}
               </Link>
+            </div>
+
+            <div
+              style={{
+                marginTop: 18,
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: 10,
+                position: "relative",
+              }}
+            >
+              {[trust.heroPartner, trust.heroCerts, trust.heroWelding, trust.heroStandards].map(
+                (item) => (
+                  <div
+                    key={item}
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.14)",
+                      background: "rgba(0,0,0,0.24)",
+                      borderRadius: 14,
+                      padding: "12px 14px",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      lineHeight: 1.35,
+                      color: "rgba(255,255,255,0.92)",
+                    }}
+                  >
+                    {item}
+                  </div>
+                )
+              )}
             </div>
 
             <div className="kpis">
@@ -309,6 +381,76 @@ export default function HomePageContent({ locale }: { locale: Locale }) {
           </Link>
         </div>
       </section>
+
+      <style jsx>{`
+        .trustGrid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+          margin-top: 14px;
+        }
+
+        .trustPartner,
+        .trustCerts {
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 18px;
+          padding: 18px;
+        }
+
+        .trustPartner {
+          display: grid;
+          grid-template-columns: 84px 1fr;
+          gap: 14px;
+          align-items: center;
+        }
+
+        .trustLogoWrap {
+          width: 84px;
+          height: 84px;
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        .trustLogo {
+          width: 100%;
+          height: auto;
+          object-fit: contain;
+        }
+
+        .trustText h3,
+        .trustCerts h3 {
+          margin: 0;
+          font-size: 18px;
+          line-height: 1.25;
+        }
+
+        .trustText p,
+        .trustCerts p {
+          margin: 10px 0 0;
+          color: rgba(255, 255, 255, 0.8);
+          line-height: 1.7;
+        }
+
+        .trustList {
+          margin: 14px 0 0;
+          padding-left: 18px;
+          color: rgba(255, 255, 255, 0.86);
+          line-height: 1.7;
+        }
+
+        @media (min-width: 900px) {
+          .trustGrid {
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 18px;
+          }
+        }
+      `}</style>
     </div>
   );
 }
