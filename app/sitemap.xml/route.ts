@@ -8,15 +8,18 @@ export async function GET() {
     "",
     "/ru",
     "/en",
-    "/services",
     "/ru/services",
     "/en/services",
-    "/about",
-    "/ru/about",
-    "/en/about",
-    "/contact",
     "/ru/contact",
     "/en/contact",
+    "/ru/projects",
+    "/en/projects",
+    "/ru/partners",
+    "/en/partners",
+    "/ru/careers",
+    "/en/careers",
+    "/ru/quote",
+    "/en/quote",
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -24,7 +27,9 @@ export async function GET() {
 ${routes
   .map((route) => {
     const url = `${baseUrl}${route}`;
-    const priority = route === "" || route === "/ru" || route === "/en" ? "1.0" : "0.8";
+    const priority =
+      route === "" || route === "/ru" || route === "/en" ? "1.0" : "0.8";
+
     return `  <url>
     <loc>${url}</loc>
     <changefreq>weekly</changefreq>
