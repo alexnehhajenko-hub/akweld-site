@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -40,6 +41,38 @@ const initialForm: FormState = {
   services: "",
   message: "",
 };
+
+function getPartnersMetadata(locale: Locale): Metadata {
+  switch (locale) {
+    case "ru":
+      return {
+        title: "Партнёры и сотрудничество",
+        description:
+          "Сотрудничество с AKWELD: поддержка проектов, рабочая сила, металлоконструкции, монтаж и партнёрские запросы для работы в Прибалтике и Скандинавии.",
+      };
+    case "sv":
+      return {
+        title: "Partners och samarbete",
+        description:
+          "Samarbeta med AKWELD inom projektstöd, arbetskraft, stålkonstruktioner, montage och partnerförfrågningar i Baltikum och Skandinavien.",
+      };
+    default:
+      return {
+        title: "Partners and Cooperation",
+        description:
+          "Work with AKWELD on project support, workforce, steel structures, installation and partnership requests across the Baltics and Scandinavia.",
+      };
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return getPartnersMetadata(locale);
+}
 
 function getUi(locale: Locale) {
   switch (locale) {
@@ -325,14 +358,10 @@ function formatFileSize(size: number) {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function PartnersPage({
-  params,
-}: {
-  params: { locale: Locale };
-}) {
-  const t = getT(params.locale);
-  const ui = getUi(params.locale);
-  const partner = getPartnerText(params.locale);
+function PartnersPageClient({ locale }: { locale: Locale }) {
+  const t = getT(locale);
+  const ui = getUi(locale);
+  const partner = getPartnerText(locale);
   const router = useRouter();
 
   const [form, setForm] = useState<FormState>(initialForm);
@@ -415,7 +444,7 @@ export default function PartnersPage({
 
     try {
       const body = new FormData();
-      body.append("locale", params.locale);
+      body.append("locale", locale);
       body.append("companyName", form.companyName.trim());
       body.append("contactName", form.contactName.trim());
       body.append("email", form.email.trim());
@@ -444,7 +473,7 @@ export default function PartnersPage({
 
       setForm(initialForm);
       setFiles([]);
-      router.push(`/${params.locale}/success`);
+      router.push(`/${locale}/success`);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Request failed";
       setStatus({
@@ -459,13 +488,13 @@ export default function PartnersPage({
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
       <div style={{ marginBottom: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-        <Link className="btnGhost" href={`/${params.locale}`}>
+        <Link className="btnGhost" href={`/${locale}`}>
           ← {ui.home}
         </Link>
-        <Link className="btnGhost" href={`/${params.locale}/services`}>
+        <Link className="btnGhost" href={`/${locale}/services`}>
           {ui.services}
         </Link>
-        <Link className="btnGhost" href={`/${params.locale}/projects`}>
+        <Link className="btnGhost" href={`/${locale}/projects`}>
           {ui.projects}
         </Link>
       </div>
@@ -764,4 +793,13 @@ export default function PartnersPage({
       </section>
     </div>
   );
+}
+
+export default async function PartnersPage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  return <PartnersPageClient locale={locale} />;
 }
