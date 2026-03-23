@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
@@ -56,6 +57,40 @@ const initialForm: FormState = {
 
 function isSupportedLocale(locale: Locale): locale is CareersLocale {
   return locale === "ru" || locale === "en";
+}
+
+function getCareersMetadata(locale: Locale): Metadata {
+  switch (locale) {
+    case "ru":
+      return {
+        title: "Вакансии сварщиков и слесарей",
+        description:
+          "AKWELD ищет сварщиков, слесарей, монтажников металлоконструкций и трубопровода для проектов в Эстонии и Швеции. Отправьте анкету онлайн.",
+      };
+    default:
+      return {
+        title: "Careers for Welders and Fitters",
+        description:
+          "AKWELD is hiring welders, fitters, steel structure installers and pipe installers for projects in Estonia and Sweden. Apply online.",
+      };
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+
+  if (!isSupportedLocale(locale)) {
+    return {
+      title: "Careers",
+      description: "AKWELD careers and job applications.",
+    };
+  }
+
+  return getCareersMetadata(locale);
 }
 
 const TITLE: Record<CareersLocale, string> = {
@@ -246,10 +281,7 @@ function fieldLabel(text: string) {
   );
 }
 
-export default function CareersPage({ params }: { params: { locale: Locale } }) {
-  if (!isSupportedLocale(params.locale)) return notFound();
-
-  const locale = params.locale;
+function CareersPageClient({ locale }: { locale: CareersLocale }) {
   const l = LABELS[locale];
   const formSectionRef = useRef<HTMLElement | null>(null);
   const router = useRouter();
@@ -702,4 +734,16 @@ export default function CareersPage({ params }: { params: { locale: Locale } }) 
       </section>
     </div>
   );
+}
+
+export default async function CareersPage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+
+  if (!isSupportedLocale(locale)) return notFound();
+
+  return <CareersPageClient locale={locale} />;
 }
