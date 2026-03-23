@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -15,6 +16,38 @@ const ALLOWED_TYPES = [
   "image/png",
   "image/webp",
 ];
+
+function getContactMetadata(locale: Locale): Metadata {
+  switch (locale) {
+    case "ru":
+      return {
+        title: "Контакты и запрос цены",
+        description:
+          "Свяжитесь с AKWELD по вопросам металлоконструкций, монтажа, сварочных работ и поддержки рабочей силой. Отправьте запрос и файлы через форму.",
+      };
+    case "sv":
+      return {
+        title: "Kontakt och offertförfrågan",
+        description:
+          "Kontakta AKWELD om stålkonstruktioner, montage, svetsarbeten och arbetskraftsstöd. Skicka förfrågan och filer via formuläret.",
+      };
+    default:
+      return {
+        title: "Contact and Quote Request",
+        description:
+          "Contact AKWELD about steel structures, installation, welding services and workforce support. Send your request and files through the form.",
+      };
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return getContactMetadata(locale);
+}
 
 function isRu(locale: Locale) {
   return locale === "ru";
@@ -42,9 +75,9 @@ function formatFileSize(size: number) {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function ContactPage({ params }: { params: { locale: Locale } }) {
-  const t = getT(params.locale);
-  const ru = isRu(params.locale);
+function ContactPageClient({ locale }: { locale: Locale }) {
+  const t = getT(locale);
+  const ru = isRu(locale);
   const router = useRouter();
 
   const [form, setForm] = useState<FormState>(initialForm);
@@ -131,7 +164,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
     try {
       const body = new FormData();
-      body.append("locale", params.locale);
+      body.append("locale", locale);
       body.append("name", form.name.trim());
       body.append("phone", form.phone.trim());
       body.append("email", form.email.trim());
@@ -157,7 +190,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
       setForm(initialForm);
       setFiles([]);
-      router.push(`/${params.locale}/success`);
+      router.push(`/${locale}/success`);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Request failed";
 
@@ -305,7 +338,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
             </form>
 
             <div style={{ marginTop: 12 }}>
-              <Link className="btnGhost" href={`/${params.locale}/services`}>
+              <Link className="btnGhost" href={`/${locale}/services`}>
                 {t.common.viewServices}
               </Link>
             </div>
@@ -320,4 +353,13 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
       </section>
     </div>
   );
+}
+
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  return <ContactPageClient locale={locale} />;
 }
