@@ -1,9 +1,14 @@
 import "./globals.css";
 import Script from "next/script";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "AKWELD",
-  description: "Steel structures, fabrication, installation, workforce rental",
+export const metadata: Metadata = {
+  metadataBase: new URL("https://akweldsteel.com"),
+  title: {
+    default: "AKWELD",
+    template: "%s | AKWELD",
+  },
+  description: "Steel structures, fabrication, installation and workforce support.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
