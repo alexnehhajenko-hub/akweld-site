@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -42,6 +43,38 @@ const PROJECT_GALLERY = [
   },
 ];
 
+function getProjectsMetadata(locale: Locale): Metadata {
+  switch (locale) {
+    case "ru":
+      return {
+        title: "Проекты по металлоконструкциям и монтажу",
+        description:
+          "Примеры проектов AKWELD: металлоконструкции, монтаж, изготовление, ремонтные работы и промышленная поддержка для объектов в Прибалтике и Скандинавии.",
+      };
+    case "sv":
+      return {
+        title: "Projekt inom stålkonstruktioner och montage",
+        description:
+          "Se exempel på AKWELD-projekt inom stålkonstruktioner, montage, tillverkning, reparationsarbeten och industriellt stöd i Baltikum och Skandinavien.",
+      };
+    default:
+      return {
+        title: "Steel Structure and Installation Projects",
+        description:
+          "See AKWELD project examples in steel structures, installation, fabrication, repair works and industrial support across the Baltics and Scandinavia.",
+      };
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return getProjectsMetadata(locale);
+}
+
 function getPhotoUi(locale: Locale) {
   switch (locale) {
     case "ru":
@@ -69,10 +102,10 @@ function isRu(locale: Locale) {
   return locale === "ru";
 }
 
-export default function ProjectsPage({ params }: { params: { locale: Locale } }) {
-  const t = getT(params.locale);
-  const ru = isRu(params.locale);
-  const photoUi = getPhotoUi(params.locale);
+export default function ProjectsPageClient({ locale }: { locale: Locale }) {
+  const t = getT(locale);
+  const ru = isRu(locale);
+  const photoUi = getPhotoUi(locale);
   const [openedImage, setOpenedImage] = useState<null | {
     src: string;
     alt: string;
@@ -81,13 +114,13 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
   return (
     <div className="container" style={{ paddingTop: 20, paddingBottom: 44 }}>
       <div style={{ marginBottom: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
-        <Link className="btnGhost" href={`/${params.locale}`}>
+        <Link className="btnGhost" href={`/${locale}`}>
           ← {ru ? "На главную" : "Home"}
         </Link>
-        <Link className="btnGhost" href={`/${params.locale}/services`}>
+        <Link className="btnGhost" href={`/${locale}/services`}>
           {ru ? "Услуги" : "Services"}
         </Link>
-        <Link className="btnGhost" href={`/${params.locale}/contact`}>
+        <Link className="btnGhost" href={`/${locale}/contact`}>
           {ru ? "Контакты" : "Contact"}
         </Link>
       </div>
@@ -102,10 +135,10 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
         </p>
 
         <div className="heroActions">
-          <Link className="btn" href={`/${params.locale}/contact`}>
+          <Link className="btn" href={`/${locale}/contact`}>
             {ru ? "Запросить цену" : "Get a quote"}
           </Link>
-          <Link className="btnGhost" href={`/${params.locale}/services`}>
+          <Link className="btnGhost" href={`/${locale}/services`}>
             {ru ? "Посмотреть услуги" : "View services"}
           </Link>
         </div>
@@ -116,7 +149,7 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
           {t.projects.items.map((p, idx) => (
             <Link
               key={p.title}
-              href={`/${params.locale}/projects/${PROJECT_SLUGS[idx] ?? "industrial-platforms"}`}
+              href={`/${locale}/projects/${PROJECT_SLUGS[idx] ?? "industrial-platforms"}`}
               className="card"
               style={{ display: "block" }}
             >
@@ -249,4 +282,13 @@ export default function ProjectsPage({ params }: { params: { locale: Locale } })
       ) : null}
     </div>
   );
+}
+
+export default async function ProjectsPage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  return <ProjectsPageClient locale={locale} />;
 }
