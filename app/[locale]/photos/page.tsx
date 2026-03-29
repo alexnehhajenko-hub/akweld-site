@@ -1,5 +1,3 @@
-cd ~/Projects/akweld-site
-cat > 'app/[locale]/photos/page.tsx' <<'EOF'
 "use client";
 
 import Image from "next/image";
@@ -187,4 +185,3 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
     </div>
   );
 }
-EOF
