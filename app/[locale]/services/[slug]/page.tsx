@@ -4,14 +4,14 @@ import { notFound } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
-const HERO_BG = "/hero-bg.png";
+const HERO_BG = "/hero-bg.webp";
 
 const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
   fabrication: "/service_fabrication_01.png",
-  installation: "/work_platform_site_01.png",
+  installation: "/work_platform_site_01.webp",
   workforce: "/workforce_dino_team_01.png",
-  repairs: "/work_repairs_01.png",
-  capacity: "/work_capacity_01.png",
+  repairs: "/work_repairs_01.webp",
+  capacity: "/work_capacity_01.webp",
   custom: "/work_platform_walkway_01.jpg",
 };
 
@@ -93,7 +93,7 @@ function getUi(locale: Locale) {
         overview: "Palvelun kuvaus",
         ctaTitle: "Tarvitsetteko tarjouksen tai haluatteko keskustella projektista?",
         ctaText:
-          "Lähettäkää meille pyyntö, työn kuvaus tai piirustukset. Käymme laajuuden läpi, tarkennamme yksityiskohdat ja ehdotamme seuraavaa askelta.",
+          "Lähettäkää meille pyyntö, työn kuvaus tai piirustukset. Käymme laajuuden läpi, tarkennamme yksityiskohtia ja ehdotamme seuraavaa askelta.",
         viewProjects: "Katso projektit",
         otherServices: "Muut palvelut",
       };
