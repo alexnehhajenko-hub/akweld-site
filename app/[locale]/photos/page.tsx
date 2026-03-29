@@ -1,3 +1,5 @@
+cd ~/Projects/akweld-site
+cat > 'app/[locale]/photos/page.tsx' <<'EOF'
 "use client";
 
 import Image from "next/image";
@@ -137,8 +139,8 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
 
           <p className="heroText" style={{ maxWidth: "none" }}>
             {ru
-              ? "Когда добавишь реальные фото работников в папку public, они сразу появятся здесь."
-              : "When you add real worker photos into the public folder, they will appear here immediately."}
+              ? "Когда добавишь реальные фото работников в папку public, они появятся здесь."
+              : "When you add real worker photos into the public folder, they will appear here."}
           </p>
 
           <div
@@ -185,3 +187,4 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
     </div>
   );
 }
+EOF
