@@ -74,8 +74,8 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
 
         <p className="heroText" style={{ maxWidth: "none" }}>
           {ru
-            ? "Здесь собраны фотографии наших работ и команды. Позже можно будет добавлять новые объекты, сотрудников и отдельные альбомы."
-            : "Here you can see photos of our work and team. Later, more projects, employees and separate galleries can be added."}
+            ? "Здесь собраны фотографии наших работ и команды."
+            : "Here you can see photos of our work and team."}
         </p>
       </section>
 
@@ -137,8 +137,8 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
 
           <p className="heroText" style={{ maxWidth: "none" }}>
             {ru
-              ? "Ниже подготовлены места под фотографии сотрудников. Когда добавишь реальные фото в папку public, они сразу начнут отображаться."
-              : "Below are prepared slots for employee photos. Once you add real files into the public folder, they will appear here immediately."}
+              ? "Когда добавишь реальные фото работников в папку public, они сразу появятся здесь."
+              : "When you add real worker photos into the public folder, they will appear here immediately."}
           </p>
 
           <div
