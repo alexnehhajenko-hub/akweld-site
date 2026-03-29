@@ -185,7 +185,7 @@ function getTrustUi(locale: Locale) {
 export default function HomePageContent({ locale }: { locale: Locale }) {
   const t = getT(locale);
   const trust = getTrustUi(locale);
-  const HERO_BG = "/hero-bg.png";
+  const HERO_BG = "/hero-bg.webp";
 
   const showHiringLink = locale === "ru" || locale === "en";
 
