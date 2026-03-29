@@ -21,6 +21,7 @@ const NAV_LABELS: Record<
   {
     services: string;
     projects: string;
+    photos: string;
     careers: string;
     partners: string;
   }
@@ -28,42 +29,49 @@ const NAV_LABELS: Record<
   ru: {
     services: "Услуги",
     projects: "Проекты",
+    photos: "Фотографии",
     careers: "Работа",
     partners: "Партнёры",
   },
   en: {
     services: "Services",
     projects: "Projects",
+    photos: "Photos",
     careers: "Careers",
     partners: "Partners",
   },
   et: {
     services: "Services",
     projects: "Projects",
+    photos: "Photos",
     careers: "Careers",
     partners: "Partners",
   },
   sv: {
     services: "Services",
     projects: "Projects",
+    photos: "Photos",
     careers: "Careers",
     partners: "Partners",
   },
   fi: {
     services: "Services",
     projects: "Projects",
+    photos: "Photos",
     careers: "Careers",
     partners: "Partners",
   },
   no: {
     services: "Services",
     projects: "Projects",
+    photos: "Photos",
     careers: "Careers",
     partners: "Partners",
   },
   da: {
     services: "Services",
     projects: "Projects",
+    photos: "Photos",
     careers: "Careers",
     partners: "Partners",
   },
@@ -106,6 +114,7 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         <nav className="nav" aria-label="Main navigation">
           <Link href={`/${locale}/services`}>{nav.services}</Link>
           <Link href={`/${locale}/projects`}>{nav.projects}</Link>
+          <Link href={`/${locale}/photos`}>{nav.photos}</Link>
           {showHiringLinks && <Link href={`/${locale}/careers`}>{nav.careers}</Link>}
           {showHiringLinks && <Link href={`/${locale}/partners`}>{nav.partners}</Link>}
         </nav>
