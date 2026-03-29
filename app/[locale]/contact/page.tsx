@@ -263,10 +263,6 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                 <a className="btn" href={`mailto:${CONTACT_EMAIL}`}>
                   Email: {CONTACT_EMAIL}
                 </a>
-
-                <Link className="btnGhost" href={`/${params.locale}/photos`}>
-                  {ru ? "Фотографии" : "Photos"}
-                </Link>
               </div>
             </div>
           </div>
@@ -314,7 +310,9 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                 name="location"
                 value={form.location}
                 onChange={(e) => updateField("location", e.target.value)}
-                placeholder={ru ? "Где находится проект / страна / город" : "Project location / country / city"}
+                placeholder={
+                  ru ? "Где находится проект / страна / город" : "Project location / country / city"
+                }
               />
 
               <textarea
@@ -349,11 +347,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
               ) : null}
 
               <button className="btn" type="submit" disabled={isSending}>
-                {isSending
-                  ? ru
-                    ? "Отправляем..."
-                    : "Sending..."
-                  : t.contact.formSend}
+                {isSending ? (ru ? "Отправляем..." : "Sending...") : t.contact.formSend}
               </button>
 
               <div className="small">
