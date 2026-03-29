@@ -165,17 +165,11 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
                 >
                   <Image
                     src={src}
-                    alt={ru ? `Работник ${index + 1}` : `Worker ${index + 1}`}
+                    alt={ru ? `Фото сотрудника ${index + 1}` : `Team photo ${index + 1}`}
                     fill
                     sizes="(max-width: 768px) 100vw, 25vw"
                     style={{ objectFit: "cover" }}
                   />
-                </div>
-
-                <div style={{ padding: 14 }}>
-                  <div style={{ fontWeight: 700 }}>
-                    {ru ? `Работник ${index + 1}` : `Worker ${index + 1}`}
-                  </div>
                 </div>
               </div>
             ))}
