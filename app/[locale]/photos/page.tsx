@@ -37,15 +37,6 @@ const WORK_PHOTOS = [
   },
 ];
 
-const TEAM_PHOTOS = [
-  "/team-worker-01.jpg",
-  "/team-worker-02.jpg",
-  "/team-worker-03.jpg",
-  "/team-worker-04.jpg",
-  "/team-worker-05.jpg",
-  "/team-worker-06.jpg",
-];
-
 function isRu(locale: Locale) {
   return locale === "ru";
 }
@@ -74,8 +65,8 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
 
         <p className="heroText" style={{ maxWidth: "none" }}>
           {ru
-            ? "Здесь собраны фотографии наших работ и команды."
-            : "Here you can see photos of our work and team."}
+            ? "Здесь собраны фотографии наших работ."
+            : "Here you can see photos of our work."}
         </p>
       </section>
 
@@ -125,54 +116,6 @@ export default function PhotosPage({ params }: { params: { locale: Locale } }) {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="heroCard">
-          <h2 className="sectionTitle" style={{ fontSize: 24 }}>
-            {ru ? "Наша команда" : "Our team"}
-          </h2>
-
-          <p className="heroText" style={{ maxWidth: "none" }}>
-            {ru
-              ? "Когда добавишь реальные фото работников в папку public, они появятся здесь."
-              : "When you add real worker photos into the public folder, they will appear here."}
-          </p>
-
-          <div
-            style={{
-              marginTop: 18,
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: 14,
-            }}
-          >
-            {TEAM_PHOTOS.map((src, index) => (
-              <div
-                key={src}
-                className="card"
-                style={{ padding: 0, overflow: "hidden" }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    aspectRatio: "4 / 5",
-                    background: "#0a1017",
-                  }}
-                >
-                  <Image
-                    src={src}
-                    alt={ru ? `Фото сотрудника ${index + 1}` : `Team photo ${index + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
