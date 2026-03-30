@@ -17,6 +17,31 @@ const nextConfig = {
         destination: "/ru",
         permanent: true,
       },
+      {
+        source: "/sv/about",
+        destination: "/sv",
+        permanent: true,
+      },
+      {
+        source: "/fi/about",
+        destination: "/fi",
+        permanent: true,
+      },
+      {
+        source: "/no/about",
+        destination: "/no",
+        permanent: true,
+      },
+      {
+        source: "/da/about",
+        destination: "/da",
+        permanent: true,
+      },
+      {
+        source: "/et/about",
+        destination: "/et",
+        permanent: true,
+      },
     ];
   },
 };
