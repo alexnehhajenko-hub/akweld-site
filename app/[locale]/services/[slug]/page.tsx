@@ -5,6 +5,8 @@ import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
 const HERO_BG = "/hero-bg.webp";
+const DIRECTOR_NAME = "Anton Morozov";
+const DIRECTOR_PHOTO = "/director-anton-morozov.jpg";
 
 const SERVICE_IMAGE_BY_SLUG: Record<string, string> = {
   fabrication: "/service_fabrication_01.png",
@@ -674,14 +676,44 @@ export default function ServicePage({
             {lead}
           </p>
 
-          <div className="heroActions">
-            <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
-              Email: {CONTACT_EMAIL}
-            </a>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+              marginTop: 18,
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                width: 56,
+                height: 56,
+                borderRadius: "50%",
+                overflow: "hidden",
+                flexShrink: 0,
+                background: "#0a1017",
+              }}
+            >
+              <Image
+                src={DIRECTOR_PHOTO}
+                alt={DIRECTOR_NAME}
+                fill
+                sizes="56px"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
 
-            <Link className="btnGhost" href={`/${params.locale}/contact`}>
-              {ui.getQuote}
-            </Link>
+            <div className="heroActions" style={{ margin: 0 }}>
+              <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
+                Email: {CONTACT_EMAIL}
+              </a>
+
+              <Link className="btnGhost" href={`/${params.locale}/contact`}>
+                {ui.getQuote}
+              </Link>
+            </div>
           </div>
         </div>
       </section>
