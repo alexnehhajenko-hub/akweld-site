@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -7,6 +8,8 @@ import { getT, type Locale } from "@/src/i18n";
 
 const CONTACT_EMAIL = "info@akweldsteel.com";
 const PARTNER_NAME = "SK Licenssvets Frölunda AB";
+const DIRECTOR_NAME = "Anton Morozov";
+const DIRECTOR_PHOTO = "/director-anton-morozov.jpg";
 const MAX_FILES = 5;
 const MAX_FILE_SIZE_MB = 10;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
@@ -524,13 +527,43 @@ export default function PartnersPageClient({ locale }: { locale: Locale }) {
               {t.partners.text1}
             </p>
 
-            <div className="heroActions" style={{ marginTop: 18 }}>
-              <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
-                Email: {CONTACT_EMAIL}
-              </a>
-              <a className="btn" href="#partner-request-form">
-                {ui.sendRequest}
-              </a>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                flexWrap: "wrap",
+                marginTop: 18,
+              }}
+            >
+              <div
+                style={{
+                  position: "relative",
+                  width: 56,
+                  height: 56,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  flexShrink: 0,
+                  background: "#0a1017",
+                }}
+              >
+                <Image
+                  src={DIRECTOR_PHOTO}
+                  alt={DIRECTOR_NAME}
+                  fill
+                  sizes="56px"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+
+              <div className="heroActions" style={{ marginTop: 0 }}>
+                <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
+                  Email: {CONTACT_EMAIL}
+                </a>
+                <a className="btn" href="#partner-request-form">
+                  {ui.sendRequest}
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -737,23 +770,59 @@ export default function PartnersPageClient({ locale }: { locale: Locale }) {
               {ui.openToCoop}
             </h2>
 
-            <p className="heroText" style={{ maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}>
+            <p
+              className="heroText"
+              style={{ maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}
+            >
               {t.partners.closing}
             </p>
 
             <div
-              className="heroActions"
               style={{
+                display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
+                gap: 12,
+                flexWrap: "wrap",
                 width: "100%",
+                marginTop: 18,
               }}
             >
-              <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
-                Email: {CONTACT_EMAIL}
-              </a>
-              <a className="btn" href="#partner-request-form">
-                {ui.sendRequest}
-              </a>
+              <div
+                style={{
+                  position: "relative",
+                  width: 56,
+                  height: 56,
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  flexShrink: 0,
+                  background: "#0a1017",
+                }}
+              >
+                <Image
+                  src={DIRECTOR_PHOTO}
+                  alt={DIRECTOR_NAME}
+                  fill
+                  sizes="56px"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+
+              <div
+                className="heroActions"
+                style={{
+                  justifyContent: "center",
+                  width: "auto",
+                  marginTop: 0,
+                }}
+              >
+                <a className="btnGhost" href={`mailto:${CONTACT_EMAIL}`}>
+                  Email: {CONTACT_EMAIL}
+                </a>
+                <a className="btn" href="#partner-request-form">
+                  {ui.sendRequest}
+                </a>
+              </div>
             </div>
           </div>
         </div>
