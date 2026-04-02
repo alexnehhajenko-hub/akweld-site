@@ -203,7 +203,6 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
 
         <div className="section" style={{ paddingTop: 18 }}>
           <div
-            className="card"
             style={{
               display: "grid",
               gridTemplateColumns: "minmax(220px, 260px) 1fr",
@@ -218,7 +217,6 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                 aspectRatio: "4 / 5",
                 borderRadius: 18,
                 overflow: "hidden",
-                border: "1px solid rgba(255,255,255,0.12)",
                 background: "#0a1017",
               }}
             >
@@ -313,6 +311,7 @@ export default function ContactPage({ params }: { params: { locale: Locale } }) 
                 placeholder={
                   ru ? "Где находится проект / страна / город" : "Project location / country / city"
                 }
+                autoComplete="off"
               />
 
               <textarea
