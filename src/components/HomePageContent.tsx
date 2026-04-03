@@ -182,9 +182,170 @@ function getTrustUi(locale: Locale) {
   }
 }
 
+function getPartnerPitchUi(locale: Locale) {
+  switch (locale) {
+    case "ru":
+      return {
+        title: "Почему с AKWELD удобно работать",
+        items: [
+          {
+            title: "Готовые бригады",
+            text: "Свои сварщики с аттестацией, слесари и foreman, который говорит по-английски.",
+          },
+          {
+            title: "Быстрый выезд",
+            text: "Базируемся в Эстонии и готовы выехать на объект в течение 7–10 дней.",
+          },
+          {
+            title: "Шведский налоговый номер",
+            text: "У компании есть шведский налоговый номер для работы по проектам в Швеции.",
+          },
+          {
+            title: "Работа по требованиям объекта",
+            text: "Работаем по чертежам, требованиям площадки, технике безопасности и согласованным срокам.",
+          },
+        ],
+      };
+    case "sv":
+      return {
+        title: "Varför det är enkelt att arbeta med AKWELD",
+        items: [
+          {
+            title: "Kompletta team",
+            text: "Egna certifierade svetsare, montörer och en foreman som talar engelska.",
+          },
+          {
+            title: "Snabb mobilisering",
+            text: "Vi är baserade i Estland och kan mobilisera till site inom 7–10 dagar.",
+          },
+          {
+            title: "Svenskt skattenummer",
+            text: "Företaget har svenskt skattenummer för arbete i Sverige.",
+          },
+          {
+            title: "Arbete enligt platskrav",
+            text: "Vi arbetar enligt ritningar, sitekrav, säkerhetsregler och överenskomna tidsplaner.",
+          },
+        ],
+      };
+    case "no":
+      return {
+        title: "Hvorfor det er enkelt å jobbe med AKWELD",
+        items: [
+          {
+            title: "Komplette team",
+            text: "Egne sertifiserte sveisere, montører og en foreman som snakker engelsk.",
+          },
+          {
+            title: "Rask mobilisering",
+            text: "Vi er basert i Estland og kan mobilisere til prosjekt innen 7–10 dager.",
+          },
+          {
+            title: "Svensk skattenummer",
+            text: "Selskapet har svensk skattenummer for arbeid i Sverige.",
+          },
+          {
+            title: "Arbeid etter sitekrav",
+            text: "Vi arbeider etter tegninger, krav på stedet, sikkerhetsregler og avtalte tidsplaner.",
+          },
+        ],
+      };
+    case "da":
+      return {
+        title: "Hvorfor det er nemt at arbejde med AKWELD",
+        items: [
+          {
+            title: "Komplette teams",
+            text: "Egne certificerede svejsere, montører og en foreman, der taler engelsk.",
+          },
+          {
+            title: "Hurtig mobilisering",
+            text: "Vi er baseret i Estland og kan mobilisere til projektet inden for 7–10 dage.",
+          },
+          {
+            title: "Svensk skattenummer",
+            text: "Virksomheden har svensk skattenummer til arbejde i Sverige.",
+          },
+          {
+            title: "Arbejde efter sitekrav",
+            text: "Vi arbejder efter tegninger, sitekrav, sikkerhedsregler og aftalte tidsplaner.",
+          },
+        ],
+      };
+    case "fi":
+      return {
+        title: "Miksi AKWELDin kanssa on helppo työskennellä",
+        items: [
+          {
+            title: "Valmiit tiimit",
+            text: "Omat sertifioidut hitsaajat, asentajat ja foreman, joka puhuu englantia.",
+          },
+          {
+            title: "Nopea mobilisointi",
+            text: "Toimimme Virosta ja voimme lähteä kohteeseen 7–10 päivän sisällä.",
+          },
+          {
+            title: "Ruotsalainen veronumero",
+            text: "Yrityksellä on ruotsalainen veronumero työskentelyyn Ruotsissa.",
+          },
+          {
+            title: "Työmaan vaatimusten mukaan",
+            text: "Työskentelemme piirustusten, työmaavaatimusten, turvallisuussääntöjen ja sovittujen aikataulujen mukaan.",
+          },
+        ],
+      };
+    case "et":
+      return {
+        title: "Miks on AKWELDiga lihtne töötada",
+        items: [
+          {
+            title: "Valmis meeskonnad",
+            text: "Oma sertifitseeritud keevitajad, paigaldajad ja foreman, kes räägib inglise keelt.",
+          },
+          {
+            title: "Kiire väljasõit",
+            text: "Asume Eestis ja saame objektile liikuda 7–10 päeva jooksul.",
+          },
+          {
+            title: "Rootsi maksunumber",
+            text: "Ettevõttel on Rootsi maksunumber projektidel töötamiseks Rootsis.",
+          },
+          {
+            title: "Töö objekti nõuete järgi",
+            text: "Töötame jooniste, objekti nõuete, ohutusreeglite ja kokkulepitud tähtaegade järgi.",
+          },
+        ],
+      };
+    case "en":
+    default:
+      return {
+        title: "Why AKWELD is easy to work with",
+        items: [
+          {
+            title: "All-in-one teams",
+            text: "Own certified welders, fitters and a foreman who speaks English.",
+          },
+          {
+            title: "Fast mobilization",
+            text: "Based in Estonia, ready to mobilize to site within 7–10 days.",
+          },
+          {
+            title: "Swedish tax number",
+            text: "The company has a Swedish tax number for work in Sweden.",
+          },
+          {
+            title: "Compliance-focused work",
+            text: "We work to drawings, site requirements, safety rules and agreed timelines.",
+          },
+        ],
+      };
+  }
+}
+
 export default function HomePageContent({ locale }: { locale: Locale }) {
   const t = getT(locale);
   const trust = getTrustUi(locale);
+  const pitch = getPartnerPitchUi(locale);
   const HERO_BG = "/hero-bg.webp";
 
   const showHiringLink = locale === "ru" || locale === "en";
@@ -323,6 +484,23 @@ export default function HomePageContent({ locale }: { locale: Locale }) {
       <section className="section">
         <div className="heroCard">
           <h2 className="sectionTitle" style={{ fontSize: 24 }}>
+            {pitch.title}
+          </h2>
+
+          <div className="pitchGrid">
+            {pitch.items.map((item) => (
+              <div key={item.title} className="pitchCard">
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="heroCard">
+          <h2 className="sectionTitle" style={{ fontSize: 24 }}>
             {trust.title}
           </h2>
 
@@ -383,6 +561,32 @@ export default function HomePageContent({ locale }: { locale: Locale }) {
       </section>
 
       <style jsx>{`
+        .pitchGrid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          margin-top: 14px;
+        }
+
+        .pitchCard {
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 18px;
+          padding: 18px;
+        }
+
+        .pitchCard h3 {
+          margin: 0;
+          font-size: 18px;
+          line-height: 1.25;
+        }
+
+        .pitchCard p {
+          margin: 10px 0 0;
+          color: rgba(255, 255, 255, 0.8);
+          line-height: 1.7;
+        }
+
         .trustGrid {
           display: grid;
           grid-template-columns: 1fr;
@@ -445,6 +649,11 @@ export default function HomePageContent({ locale }: { locale: Locale }) {
         }
 
         @media (min-width: 900px) {
+          .pitchGrid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+          }
+
           .trustGrid {
             grid-template-columns: 0.9fr 1.1fr;
             gap: 18px;
