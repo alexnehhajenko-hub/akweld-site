@@ -680,7 +680,7 @@ export default function ServicePage({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 12,
+              gap: 14,
               flexWrap: "wrap",
               marginTop: 18,
             }}
@@ -688,19 +688,20 @@ export default function ServicePage({
             <div
               style={{
                 position: "relative",
-                width: 56,
-                height: 56,
-                borderRadius: "50%",
+                width: 96,
+                height: 120,
+                borderRadius: 16,
                 overflow: "hidden",
                 flexShrink: 0,
                 background: "#0a1017",
+                border: "1px solid rgba(255,255,255,0.14)",
               }}
             >
               <Image
                 src={DIRECTOR_PHOTO}
                 alt={DIRECTOR_NAME}
                 fill
-                sizes="56px"
+                sizes="96px"
                 style={{ objectFit: "cover" }}
               />
             </div>
