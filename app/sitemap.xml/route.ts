@@ -2,10 +2,9 @@
 export const runtime = "nodejs";
 
 export async function GET() {
-  const baseUrl = "https://akweldsteel.com";
+  const baseUrl = "https://www.akweldsteel.com";
 
   const routes = [
-    "",
     "/ru",
     "/en",
     "/ru/services",
@@ -27,8 +26,7 @@ export async function GET() {
 ${routes
   .map((route) => {
     const url = `${baseUrl}${route}`;
-    const priority =
-      route === "" || route === "/ru" || route === "/en" ? "1.0" : "0.8";
+    const priority = route === "/ru" || route === "/en" ? "1.0" : "0.8";
 
     return `  <url>
     <loc>${url}</loc>
