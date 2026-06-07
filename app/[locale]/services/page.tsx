@@ -2,27 +2,55 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getT, type Locale } from "@/src/i18n";
 
+const BASE_URL = "https://www.akweldsteel.com";
+
 function getServicesMetadata(locale: Locale): Metadata {
-  switch (locale) {
-    case "ru":
-      return {
-        title: "Услуги по металлоконструкциям и монтажу",
-        description:
-          "Услуги AKWELD: изготовление металлоконструкций, монтаж, сварочные работы и поддержка рабочей силой для промышленных проектов.",
-      };
-    case "sv":
-      return {
-        title: "Tjänster inom stålkonstruktioner och montage",
-        description:
-          "AKWELD erbjuder tillverkning av stålkonstruktioner, montage, svetsarbeten och arbetskraftsstöd för industriprojekt.",
-      };
-    default:
-      return {
-        title: "Steel Fabrication, Installation and Workforce Services",
-        description:
-          "Explore AKWELD services: steel fabrication, installation, welding and workforce support for industrial and construction projects.",
-      };
-  }
+  const canonical = `${BASE_URL}/${locale}/services`;
+
+  const meta =
+    locale === "ru"
+      ? {
+          title: "Услуги по металлоконструкциям и монтажу | AKWELD",
+          description:
+            "Услуги AKWELD: изготовление металлоконструкций, монтаж, сварочные работы и поддержка рабочей силой для промышленных проектов.",
+        }
+      : locale === "sv"
+        ? {
+            title: "Tjänster inom stålkonstruktioner och montage | AKWELD",
+            description:
+              "AKWELD erbjuder tillverkning av stålkonstruktioner, montage, svetsarbeten och arbetskraftsstöd för industriprojekt.",
+          }
+        : {
+            title: "Steel Fabrication, Installation and Workforce Services | AKWELD",
+            description:
+              "Explore AKWELD services: steel fabrication, installation, welding and workforce support for industrial and construction projects.",
+          };
+
+  return {
+    title: {
+      absolute: meta.title,
+    },
+    description: meta.description,
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical,
+      languages: {
+        en: `${BASE_URL}/en/services`,
+        ru: `${BASE_URL}/ru/services`,
+        "x-default": `${BASE_URL}/en/services`,
+      },
+    },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: canonical,
+      siteName: "AKWELD",
+      type: "website",
+    },
+  };
 }
 
 export async function generateMetadata({
