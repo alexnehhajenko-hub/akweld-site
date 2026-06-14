@@ -1,5 +1,5 @@
-import { permanentRedirect } from "next/navigation";
+import HomePageContent from "@/src/components/HomePageContent";
 
 export default function Home() {
-  permanentRedirect("/en");
+  return <HomePageContent locale="en" />;
 }
