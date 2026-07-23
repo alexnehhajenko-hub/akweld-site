@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getT, type Locale } from "@/src/i18n";
 
@@ -567,6 +568,24 @@ function getBlueprintDataUri(kind: "fabrication" | "workforce") {
   `;
 
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: Locale; slug: string };
+}): Metadata {
+  const card = getT(params.locale).services.cards.find((c) => c.slug === params.slug);
+
+  if (!card) return {};
+
+  return {
+    title: card.title,
+    description: getLeadBySlug(card.slug, params.locale),
+    alternates: {
+      canonical: `https://www.akweldsteel.com/${params.locale}/services/${card.slug}`,
+    },
+  };
 }
 
 export default function ServicePage({
