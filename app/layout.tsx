@@ -3,7 +3,7 @@ import Script from "next/script";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://akweldsteel.com"),
+  metadataBase: new URL("https://www.akweldsteel.com"),
   title: {
     default: "AKWELD",
     template: "%s | AKWELD",
