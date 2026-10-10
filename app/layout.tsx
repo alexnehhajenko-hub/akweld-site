@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     template: "%s | AKWELD",
   },
   description: "Steel structures, fabrication, installation and workforce support.",
+  icons: { icon: "/akweld-mark.svg", shortcut: "/akweld-mark.svg", apple: "/akweld-mark.svg" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
