@@ -104,10 +104,13 @@ export default function SiteHeader({ locale }: { locale: Locale }) {
         className="brand"
         style={{ textDecoration: "none", color: "inherit" }}
       >
-        <div className="brandText">
-          <span className="brandName">AKWELD</span>
-          <span className="brandTag">Steel fabrication · Installation · Workforce</span>
-        </div>
+        <img
+          src="/akweld-logo.svg"
+          alt="AKWELD — Steel Solutions"
+          className="brandWordmark"
+          width={300}
+          height={58}
+        />
       </Link>
 
       {isDesktop ? (
